@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/types/location.schema.json",
+  "title": "Location Record",
+  "description": "A specific site you care about: an office, a store, a facility, a hand-drawn area of interest. Distinct from `place`, which is a named administrative area from the gazetteer - AIT Austin is a location, Travis County is a place. Nearly all of the original mdm.locations fields moved onto the envelope: kind -> category.primary, parent -> parent_id, the address fields -> geo.address under their original names, latitude/longitude -> geo.point as [lon, lat], code -> identifiers. The payload is correspondingly thin, which is the point.",
+
+  "allOf": [{ "$ref": "../record.schema.json" }],
+
+  "properties": {
+    "type": { "const": "location" },
+    "geo": {
+      "description": "Required in practice: a location record without geography is just a label.",
+      "anyOf": [
+        { "required": ["point"] },
+        { "required": ["address"] },
+        { "required": ["shapes"] }
+      ]
+    },
+    "data": { "$ref": "#/$defs/location_data" }
+  },
+  "required": ["geo"],
+
+  "$defs": {
+    "location_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "phone": { "type": "string", "maxLength": 64 },
+        "email": { "type": "string", "format": "email", "maxLength": 256 },
+        "hours": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "OSM opening_hours syntax if you want it machine-readable, free text otherwise.",
+          "examples": ["Mo-Fr 07:00-17:00; Sa 08:00-12:00"]
+        },
+        "floor": { "type": "string", "maxLength": 32 },
+        "room": { "type": "string", "maxLength": 64 },
+        "access_notes": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Gate codes, dock instructions, badge requirements. Often warrants visibility=restricted on the whole record."
+        },
+        "capacity": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "id": "c7180d1b-06e9-4ae7-b861-4c895c639ab1",
+      "type": "location",
+      "label": "AIT Austin",
+      "category": { "primary": "address", "kind": "branch" },
+      "geo": {
+        "address": {
+          "street_address": "4616 W Howard Ln",
+          "address_locality": "Austin",
+          "address_region": "TX",
+          "postal_code": "78727",
+          "country_code": "US"
+        }
+      }
+    }
+  ]
+}

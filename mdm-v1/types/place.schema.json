@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/types/place.schema.json",
+  "title": "Place Record (Gazetteer)",
+  "description": "A named administrative or natural area: a country, state, county, city, NWS zone, tribal area, watershed. This is the one type here that was not in the original set, added because geo.places and geo.place_closure on every other record point at these. Without it, 'everything in Travis County' has nothing to resolve against, and areas end up stored as bare points - which is exactly what the existing ATLAS file does with Texas. Build this table first; everything geographic depends on it.",
+
+  "allOf": [{ "$ref": "../record.schema.json" }],
+
+  "properties": {
+    "type": { "const": "place" },
+    "category": {
+      "type": "object",
+      "required": ["kind"],
+      "description": "`kind` is required: a place whose kind is unknown cannot be placed in the containment hierarchy.",
+      "properties": {
+        "kind": {
+          "description": "What sort of area this is.",
+          "examples": ["country", "region", "county", "locality", "postal_area", "nws_zone", "nws_county_zone", "marine_zone", "fire_zone", "tribal", "neighborhood", "watershed", "district"]
+        }
+      }
+    },
+    "data": { "$ref": "#/$defs/place_data" }
+  },
+  "required": ["category"],
+
+  "$defs": {
+    "place_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "adm_level": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 8,
+          "description": "Depth in the administrative hierarchy: 0 country, 1 state/region, 2 county, 3 locality. Lets you query a whole tier without enumerating kinds."
+        },
+        "population": { "type": ["integer", "null"], "minimum": 0 },
+        "area_sq_km": { "type": ["number", "null"], "minimum": 0 },
+        "boundary_source": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Which authoritative dataset the boundary geometry came from, and its vintage.",
+          "examples": ["census_tiger_2024", "nws_z_2025", "osm"]
+        }
+      }
+    }
+  },
+
+  "$comment": "External codes go in envelope `identifiers`, not here. Expected schemes: fips_state, fips_county, same, ugc_zone, ugc_county, iso3166_2, gnis, geonames, osm_relation. Build a (scheme, value) -> id index over all place records; that index is what lets an IPAWS SAME code, an NWS UGC zone and a geocoder string all resolve to the same record.",
+
+  "examples": [
+    {
+      "id": "b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10",
+      "type": "place",
+      "slug": "us-tx-travis",
+      "label": "Travis County",
+      "category": { "kind": "county", "jurisdiction": "county" },
+      "identifiers": { "fips_county": ["48453"], "same": ["048453"], "ugc_county": ["TXC453"] },
+      "data": { "adm_level": 2 }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/types/employment.schema.json",
+  "title": "Employment Record",
+  "description": "The link between a person and an organization, as a record in its own right. Keeping it reified was the right call in the original model and is kept here: an employment has dates, a title, a manager and its own lifecycle, none of which fit on a plain `relations` edge. The same pattern serves frequency licenses, SOP approvals and org memberships. From the original: person / organization / manager / office_location -> relations, start_date and end_date -> envelope valid_from and valid_to, is_primary -> the relations entry's `primary` flag, is_current -> derived, never stored.",
+
+  "allOf": [{ "$ref": "../record.schema.json" }],
+
+  "properties": {
+    "type": { "const": "employment" },
+    "relations": {
+      "description": "Must contain exactly one rel='person' and one rel='organization' edge; everything else is optional.",
+      "allOf": [
+        { "contains": { "type": "object", "properties": { "rel": { "const": "person" } }, "required": ["rel"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "properties": { "rel": { "const": "organization" } }, "required": ["rel"] }, "minContains": 1, "maxContains": 1 }
+      ]
+    },
+    "data": { "$ref": "#/$defs/employment_data" }
+  },
+  "required": ["relations"],
+
+  "$defs": {
+    "employment_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "job_title": { "type": "string", "maxLength": 256, "examples": ["CSSR"] },
+        "department": { "type": ["string", "null"], "maxLength": 256 },
+        "employment_type": {
+          "type": ["string", "null"],
+          "enum": ["full_time", "part_time", "contract", "temporary", "intern", "volunteer", "seasonal", null],
+          "description": "Null when the source system did not say."
+        },
+        "work_email": { "type": "string", "maxLength": 256, "description": "Work contact lives here, not on the person, because it changes when the job does." },
+        "extension": { "type": "string", "maxLength": 32 },
+        "work_phone": { "type": "string", "maxLength": 64 },
+        "office": { "type": "string", "maxLength": 128, "description": "Free-text office name. The office as a real site goes in relations as rel='office_location'." },
+        "compensation": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Almost always warrants visibility=confidential on the whole record.",
+          "properties": {
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+            "amount_minor": { "type": "integer", "description": "Minor units. Integers only." },
+            "period": { "enum": ["hour", "week", "month", "year"] }
+          }
+        }
+      }
+    }
+  },
+
+  "$comment": "is_current is derived, not stored: valid_to == null && status == 'active'. Storing it guarantees a record that says is_current: true with an end_date two years in the past.",
+
+  "examples": [
+    {
+      "id": "977aac49-4e5d-42b9-a3c6-23cf12af4c0d",
+      "type": "employment",
+      "label": "Cameron Dietz - CSSR @ Applied Industrial Technologies",
+      "relations": [
+        { "rel": "person", "type": "person", "id": "378ae13a-f609-45f5-92e0-2755e41cd5de", "label": "Cameron Dietz", "primary": true },
+        { "rel": "organization", "type": "organization", "id": "83621ca5-3a81-4c57-b4f1-b7ff1e5f2f8f", "label": "Applied Industrial Technologies" }
+      ],
+      "data": { "job_title": "CSSR" }
+    }
+  ]
+}

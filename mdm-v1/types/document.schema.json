@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/types/document.schema.json",
+  "title": "Document Record",
+  "description": "A document in the repository. Merges the two originals - mdm.documents and the per-entry shape from documents.schema.json - into one record. title -> label, description -> summary, the kebab id -> slug, doc_type -> category.kind, topics -> category.domain, authors/mentions/citations -> relations, path/file_type/size_bytes/checksum -> attachments, date_added -> created_at. embedding and embedding_model are deliberately absent: they bloat every record and are invalidated wholesale on a model change, so they belong in a sidecar keyed by (record_id, model, version).",
+
+  "allOf": [{ "$ref": "../record.schema.json" }],
+
+  "properties": {
+    "type": { "const": "document" },
+    "data": { "$ref": "#/$defs/document_data" }
+  },
+
+  "$defs": {
+    "document_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "publisher": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Issuing body as plain text. When the publisher exists as an organization record, add a relations entry with rel='publisher' as well - the string stays for display and for sources you never model."
+        },
+        "publication_date": {
+          "type": "string",
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$",
+          "description": "Publisher's original publication date. YYYY-MM-DD, or YYYY-MM / YYYY when that is all that is known - which is why this is not format: date.",
+          "examples": ["2023", "2023-11", "2023-11-14"]
+        },
+        "edition": { "type": "string", "maxLength": 64, "examples": ["3rd edition", "Change 2"] },
+        "language": { "type": "string", "maxLength": 16, "description": "BCP 47 tag.", "examples": ["en", "es-MX"] },
+        "page_count": { "type": ["integer", "null"], "minimum": 0 },
+        "abstract": { "type": "string", "maxLength": 8000, "description": "Longer than `summary`, which stays short enough for search snippets." },
+        "citation": { "type": "string", "maxLength": 1024, "description": "Formatted citation string for reuse in other documents." }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "id": "0f2c9a84-3d51-4e7b-8a62-1c5b9e0d4f33",
+      "type": "document",
+      "slug": "nims-doctrine-2023",
+      "label": "National Incident Management System",
+      "summary": "FEMA doctrine establishing the national approach to incident management.",
+      "category": { "primary": "fema", "kind": "doctrine", "domain": "emergency_management.planning" },
+      "attachments": [{ "role": "primary", "path": "docs/fema/nims-doctrine-2023.pdf", "file_type": "pdf" }],
+      "data": { "publisher": "FEMA", "publication_date": "2023" }
+    }
+  ]
+}

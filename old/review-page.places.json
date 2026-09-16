@@ -1,0 +1,31 @@
+[
+  {
+    "id": "things-to-do",
+    "type": "category",
+    "slug": "things-to-do",
+    "name": "Things To Do",
+    "description": "Activities and attractions",
+    "parentIds": [],
+    "status": "published",
+    "visibility": "public",
+    "metadata": {
+      "location": "Austin",
+      "type": "category"
+    },
+    "tags": [
+      "activities"
+    ],
+    "seo": {
+      "title": "Things to do Austin",
+      "description": "Activities Austin",
+      "keywords": [
+        "Austin activities"
+      ]
+    },
+    "media": {
+      "featuredImage": ""
+    },
+    "relationships": {
+      "related": []
+    }
+  },

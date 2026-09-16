@@ -1,0 +1,14 @@
+{
+    "name": "",
+    "sku": "",
+    "version": "",
+    "manufacturer": null,
+    "categories": [],
+    "features": null,
+    "pricing": null,
+    "documents": [],
+    "related_items": [],
+    "source_system": "",
+    "source_record_id": "",
+    "metadata": null
+}

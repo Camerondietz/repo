@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/documents/schema/index.schema.json",
+  "title": "Document repository catalog",
+  "type": "object",
+  "required": ["repo_version", "updated", "count", "documents"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "repo_version": {
+      "type": "string",
+      "description": "Semver of the catalog itself, bumped on any change to index.json."
+    },
+    "updated": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the last change to this file, YYYY-MM-DD."
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of entries in documents (sanity check for consumers)."
+    },
+    "documents": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/document" }
+    }
+  },
+  "$defs": {
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "path"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Stable unique identifier, kebab-case. Never reused."
+        },
+        "title": { "type": "string" },
+        "category": {
+          "type": "string",
+          "description": "Matches a folder name under docs/, e.g. fema, military, technical-references, other."
+        },
+        "path": {
+          "type": "string",
+          "description": "File path relative to repo root, e.g. docs/fema/nims-doctrine-2023.pdf."
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "description": "Freeform topical tags describing what the document is."
+        },
+        "apps": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ids of consuming apps that should treat this document as relevant. Empty array if none yet."
+        },
+        "source_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Original public URL the document was obtained from."
+        },
+        "publisher": { "type": "string" },
+        "publication_date": {
+          "type": "string",
+          "description": "Publisher's original publication date. YYYY-MM-DD, or YYYY-MM / YYYY if that's all that's known."
+        },
+        "date_added": { "type": "string", "format": "date" },
+        "last_verified": {
+          "type": "string",
+          "format": "date",
+          "description": "Last date source_url and file contents were reconfirmed against the publisher."
+        },
+        "version": {
+          "type": "string",
+          "description": "Revision of this entry within this repo, e.g. 1.0."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "superseded", "deprecated", "withdrawn"]
+        },
+        "superseded_by": {
+          "type": "string",
+          "description": "id of the document that replaces this one. Required when status is superseded."
+        },
+        "checksum_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "file_type": {
+          "type": "string",
+          "description": "File extension without the dot, e.g. pdf."
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "const": "superseded" } },
+            "required": ["status"]
+          },
+          "then": { "required": ["superseded_by"] }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.8760776,
+          30.2008883
+        ]
+      },
+      "properties": {
+        "address": "European Wax Center, West Slaughter Lane, Austin, Travis County, Texas, 78749, United States",
+        "name": "European Wax Center",
+        "category": "Custom",
+        "source": "manual",
+        "_atlasType": "point"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.7046302,
+          30.299084
+        ]
+      },
+      "properties": {
+        "address": "European Wax Center, 1900, Aldrich Street, Aldrich Street District, Austin, Travis County, Texas, 78723, United States",
+        "name": "European Wax Center",
+        "category": "Custom",
+        "source": "manual",
+        "_atlasType": "point"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.762492,
+          30.2558149
+        ]
+      },
+      "properties": {
+        "address": "European Wax Center, 1100, South Lamar Boulevard, Evergreen Heights, Austin, Travis County, Texas, 78704, United States",
+        "name": "European Wax Center",
+        "category": "Custom",
+        "source": "manual",
+        "_atlasType": "point"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.5456116,
+          31.2638905
+        ]
+      },
+      "properties": {
+        "address": "Texas, United States",
+        "name": "Texas",
+        "category": "Custom",
+        "source": "manual",
+        "_atlasType": "point"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -98.05297851562501,
+              30.45104143350694
+            ],
+            [
+              -98.18756103515625,
+              30.3136166899307
+            ],
+            [
+              -97.99255371093751,
+              30.230594564932193
+            ],
+            [
+              -97.79205322265626,
+              30.339694848974272
+            ],
+            [
+              -97.89642333984376,
+              30.453409130203596
+            ],
+            [
+              -98.05297851562501,
+              30.45104143350694
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "lakeway",
+        "category": "Hazard",
+        "source": "manual",
+        "_atlasType": "polygon",
+        "notes": "where i lived"
+      }
+    }
+  ],
+  "metadata": {
+    "generated": "2026-08-31T21:53:38.627Z",
+    "tool": "ATLAS",
+    "count": 5
+  }
+}

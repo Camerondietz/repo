@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/atlas-export.schema.json",
+  "title": "ATLAS GeoJSON Export",
+  "description": "INTERCHANGE FORMAT, NOT STORAGE. Records live in the MDM envelope; this is the RFC 7946 view emitted for map tools that speak GeoJSON and nothing else. The mapping is lossless in both directions: Feature.geometry comes from geo.point or geo.shapes[], and Feature.properties carries the rest of the envelope verbatim. Legacy ATLAS keys are still accepted on read so existing files keep parsing.",
+  "type": "object",
+  "required": ["type", "features"],
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": { "type": "string" },
+    "type": { "const": "FeatureCollection" },
+    "bbox": { "$ref": "./record.schema.json#/$defs/bbox" },
+    "features": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/feature" }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Kept at this name rather than `meta` because the existing ATLAS writer already emits it here.",
+      "properties": {
+        "generated": { "type": "string", "format": "date-time" },
+        "tool": { "type": "string", "examples": ["ATLAS"] },
+        "count": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+
+  "$defs": {
+    "feature": {
+      "type": "object",
+      "required": ["type", "geometry", "properties"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "Feature" },
+        "id": { "type": ["string", "number"], "description": "GeoJSON feature id. Mirror the record's `id` here so map click handlers can resolve back to MDM." },
+        "bbox": { "$ref": "./record.schema.json#/$defs/bbox" },
+        "geometry": {
+          "oneOf": [
+            { "$ref": "./record.schema.json#/$defs/geometry" },
+            { "type": "null" }
+          ],
+          "description": "From geo.point (as a Point) or one entry of geo.shapes[]. A record with several shapes exports as several features sharing one properties.id."
+        },
+        "properties": { "$ref": "#/$defs/feature_properties" }
+      }
+    },
+
+    "feature_properties": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "The MDM envelope minus `geo`, so the feature round-trips back into a record without loss. Legacy ATLAS keys below are deprecated but still read.",
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "uri": { "type": "string", "format": "uri" },
+        "type": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "description": "MDM record type - NOT the GeoJSON type, which is always 'Feature'." },
+        "slug": { "type": "string" },
+        "label": { "type": "string" },
+        "summary": { "type": "string" },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "category": { "$ref": "./record.schema.json#/properties/category" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "status": { "$ref": "./record.schema.json#/properties/status" },
+        "visibility": { "$ref": "./record.schema.json#/properties/visibility" },
+        "identifiers": { "$ref": "./record.schema.json#/properties/identifiers" },
+        "address": { "$ref": "./record.schema.json#/$defs/address", "description": "Flattened from geo.address, since geo itself is dissolved into the Feature." },
+        "shape_role": { "type": "string", "description": "Which geo.shapes[].role this feature's geometry came from. Absent means it came from geo.point." },
+        "precision": { "$ref": "./record.schema.json#/$defs/geo/properties/precision" },
+        "timezone": { "type": "string" },
+        "place_closure": { "type": "array", "items": { "type": "string" } },
+        "source_system": { "type": "string" },
+        "source_record_id": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "data": { "type": "object" },
+        "metadata": { "type": "object" },
+
+        "name": { "type": "string", "deprecated": true, "description": "LEGACY ATLAS. Read as `label`; writers should emit `label`." },
+        "source": { "type": "string", "deprecated": true, "description": "LEGACY ATLAS. Read as `source_system`." },
+        "notes": { "type": "string", "deprecated": true, "description": "LEGACY ATLAS. Read as `summary`." },
+        "_atlasType": { "type": "string", "deprecated": true, "description": "LEGACY ATLAS. Dropped on import - it only restated geometry.type." }
+      }
+    }
+  }
+}

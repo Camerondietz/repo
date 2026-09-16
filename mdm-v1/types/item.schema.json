@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/types/item.schema.json",
+  "title": "Item Record",
+  "description": "A product, part or physical thing. From the original mdm.items: name -> label, sku -> identifiers.sku, categories -> category, version -> envelope version, and manufacturer / documents / related_items all became relations. Money is stored in integer minor units to keep binary floating point out of prices.",
+
+  "allOf": [{ "$ref": "../record.schema.json" }],
+
+  "properties": {
+    "type": { "const": "item" },
+    "data": { "$ref": "#/$defs/item_data" }
+  },
+
+  "$defs": {
+    "item_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "features": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Specifications as key/value pairs. Open because every product family has different ones; when a family stabilizes, give it its own data_schema rather than guessing a universal spec model.",
+          "examples": [{ "bore_mm": 25, "material": "52100 chrome steel", "seal": "2RS" }]
+        },
+        "pricing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "ISO 4217." },
+            "list_minor": { "type": "integer", "description": "List price in MINOR units - cents, not dollars. Integers only; never store money as a float." },
+            "sale_minor": { "type": "integer" },
+            "unit": { "type": "string", "maxLength": 32, "examples": ["each", "ft", "box-100"] },
+            "as_of": { "type": "string", "format": "date" }
+          }
+        },
+        "condition": { "enum": ["new", "refurbished", "used", "salvage", "unknown"] },
+        "quantity_on_hand": { "type": ["integer", "null"], "minimum": 0 },
+        "uom": { "type": "string", "maxLength": 32, "description": "Unit of measure for quantity.", "examples": ["each", "ft", "lb"] },
+        "serial_number": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Only for a record tracking ONE physical unit. A product-model record has no serial; put it in identifiers.serial if you track units as separate records."
+        },
+        "lifecycle": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Dates about the physical unit, distinct from the record's own valid_from/valid_to.",
+          "properties": {
+            "acquired_on": { "type": ["string", "null"], "format": "date" },
+            "warranty_until": { "type": ["string", "null"], "format": "date" },
+            "service_due": { "type": ["string", "null"], "format": "date" }
+          }
+        }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "id": "6d0a1b2c-7e8f-4a90-b1c2-3d4e5f607182",
+      "type": "item",
+      "label": "SKF 6205-2RS Deep Groove Ball Bearing",
+      "category": { "primary": "bearings", "kind": "ball_bearing" },
+      "identifiers": { "sku": ["AIT-44821"], "mpn": ["6205-2RS"] },
+      "data": { "features": { "bore_mm": 25 }, "pricing": { "currency": "USD", "list_minor": 1899, "unit": "each" } }
+    }
+  ]
+}

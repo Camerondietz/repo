@@ -1,0 +1,95 @@
+{
+  "$schema": "../types/person.schema.json",
+
+  "id": "378ae13a-f609-45f5-92e0-2755e41cd5de",
+  "uri": "https://mdm.cameron-dietz.com/id/person/378ae13a-f609-45f5-92e0-2755e41cd5de",
+  "type": "person",
+  "slug": "cameron-dietz",
+
+  "label": "Cameron Dietz",
+  "summary": "Customer service sales representative; maintains the INTELCOM reference catalog.",
+  "aliases": ["Cam Dietz", "C. Dietz"],
+
+  "category": {
+    "primary": "staff",
+    "kind": "employee",
+    "discipline": "commercial",
+    "audience": "internal"
+  },
+  "tags": ["mdm-steward"],
+
+  "status": "active",
+  "state": "active",
+
+  "valid_from": "2026-07-29T07:06:01Z",
+  "valid_to": null,
+  "last_verified": "2026-09-01",
+  "review_due": "2027-09-01",
+
+  "visibility": "restricted",
+  "pii": true,
+  "owner": { "type": "person", "id": "378ae13a-f609-45f5-92e0-2755e41cd5de", "label": "Cameron Dietz" },
+
+  "parent_id": null,
+  "relations": [
+    {
+      "rel": "primary_location",
+      "type": "location",
+      "id": "c7180d1b-06e9-4ae7-b861-4c895c639ab1",
+      "label": "AIT Austin",
+      "primary": true
+    },
+    {
+      "rel": "employment",
+      "type": "employment",
+      "id": "977aac49-4e5d-42b9-a3c6-23cf12af4c0d",
+      "label": "CSSR @ Applied Industrial Technologies",
+      "primary": true
+    }
+  ],
+
+  "identifiers": {
+    "email": ["dietz.cameron@gmail.com"]
+  },
+
+  "url": "https://cameron-dietz.com",
+  "links": [],
+  "attachments": [],
+
+  "geo": {
+    "address": {
+      "address_locality": "Austin",
+      "address_region": "TX",
+      "country_code": "US"
+    },
+    "precision": "locality",
+    "places": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+    "place_closure": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+    "timezone": "America/Chicago"
+  },
+
+  "source_system": "",
+  "source_record_id": "",
+
+  "apps": ["intelcom", "mdm"],
+
+  "created_at": "2026-07-29T07:06:01.768237Z",
+  "updated_at": "2026-07-29T07:06:01.768257Z",
+  "deleted_at": null,
+
+  "metadata": {},
+
+  "data": {
+    "given_name": "Cameron",
+    "additional_name": "",
+    "family_name": "Dietz",
+    "full_name": "Cameron Dietz",
+    "birth_date": null,
+    "roles": ["catalog steward"],
+    "skills": ["data modeling", "geospatial integration"],
+    "contact": {
+      "email": "dietz.cameron@gmail.com",
+      "preferred": "email"
+    }
+  }
+}

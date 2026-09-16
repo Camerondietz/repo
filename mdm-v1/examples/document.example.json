@@ -1,0 +1,114 @@
+{
+  "$schema": "../types/document.schema.json",
+
+  "id": "0f2c9a84-3d51-4e7b-8a62-1c5b9e0d4f33",
+  "uri": "https://mdm.cameron-dietz.com/id/document/0f2c9a84-3d51-4e7b-8a62-1c5b9e0d4f33",
+  "type": "document",
+  "slug": "nims-doctrine-2023",
+
+  "label": "National Incident Management System",
+  "summary": "FEMA doctrine establishing the national approach to incident management across all jurisdictions and disciplines.",
+  "aliases": ["NIMS", "NIMS Doctrine", "NIMS 3rd Edition"],
+
+  "category": {
+    "primary": "fema",
+    "kind": "doctrine",
+    "domain": ["emergency_management.planning", "emergency_management.command"],
+    "form": "reference",
+    "audience": ["responder", "command"],
+    "jurisdiction": "federal",
+    "phase": ["preparedness", "response"]
+  },
+  "tags": ["nims", "ics", "doctrine", "foundational"],
+
+  "status": "active",
+  "version": "1.0",
+  "data_schema": "https://mdm.cameron-dietz.com/schema/types/document.schema.json",
+  "superseded_by": null,
+
+  "valid_from": "2023-11-01T00:00:00Z",
+  "valid_to": null,
+  "last_verified": "2026-08-20",
+  "review_due": "2027-08-20",
+
+  "visibility": "public",
+  "pii": false,
+  "owner": { "type": "person", "id": "378ae13a-f609-45f5-92e0-2755e41cd5de", "label": "Cameron Dietz" },
+
+  "parent_id": null,
+  "relations": [
+    {
+      "rel": "publisher",
+      "type": "organization",
+      "id": "d4a8b103-6f29-4e57-9c80-3b1e5d7f2a94",
+      "label": "Federal Emergency Management Agency",
+      "primary": true
+    },
+    {
+      "rel": "cites",
+      "type": "document",
+      "id": "8b3f0c5d-2a71-4e96-b048-9d5c1e7a3f20",
+      "label": "ICS Resource Center Field Operations Guide"
+    }
+  ],
+
+  "identifiers": {
+    "fema_pub": ["FEMA P-1025"]
+  },
+
+  "url": "https://www.fema.gov/sites/default/files/documents/fema_nims-doctrine-2023.pdf",
+  "links": [
+    { "rel": "errata", "href": "https://www.fema.gov/emergency-managers/nims", "label": "NIMS program page" }
+  ],
+
+  "attachments": [
+    {
+      "role": "primary",
+      "path": "docs/fema/nims-doctrine-2023.pdf",
+      "media_type": "application/pdf",
+      "file_type": "pdf",
+      "size_bytes": 4812390,
+      "checksum_sha256": "9f2b4c6d8e0a1b3c5d7e9f0a2b4c6d8e0f1a3b5c7d9e1f3a5b7c9d1e3f5a7b9c",
+      "label": "NIMS Doctrine, 3rd edition"
+    },
+    {
+      "role": "thumbnail",
+      "path": "docs/fema/thumbs/nims-doctrine-2023.webp",
+      "media_type": "image/webp",
+      "file_type": "webp",
+      "size_bytes": 24118
+    }
+  ],
+
+  "geo": {
+    "places": ["9e0d5a72-4c18-4b93-8e60-1f2a7d3c5b89"],
+    "place_closure": ["9e0d5a72-4c18-4b93-8e60-1f2a7d3c5b89"]
+  },
+
+  "source_system": "manual",
+  "source_record_id": "",
+  "source_url": "https://www.fema.gov/emergency-managers/nims",
+  "checksum_sha256": "1e3f5a7b9c1d3e5f7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f",
+
+  "apps": ["intelcom", "docs-repo"],
+
+  "created_at": "2026-03-04T15:20:11Z",
+  "updated_at": "2026-08-20T10:05:44Z",
+  "deleted_at": null,
+  "created_by": { "type": "person", "id": "378ae13a-f609-45f5-92e0-2755e41cd5de", "label": "Cameron Dietz" },
+  "updated_by": { "type": "service", "id": "svc-link-checker", "label": "Link Checker" },
+
+  "metadata": {
+    "embedding_ref": "embeddings/documents/0f2c9a84-3d51-4e7b-8a62-1c5b9e0d4f33?model=text-embedding-3-large"
+  },
+
+  "data": {
+    "publisher": "FEMA",
+    "publication_date": "2023-11",
+    "edition": "3rd edition",
+    "language": "en",
+    "page_count": 158,
+    "abstract": "Defines the comprehensive, nationwide, systematic approach to incident management, including the Incident Command System, Multiagency Coordination Systems, and Public Information.",
+    "citation": "Federal Emergency Management Agency. National Incident Management System. 3rd ed. Washington, DC: FEMA, 2023."
+  }
+}

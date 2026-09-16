@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/collection.schema.json",
+  "title": "MDM Collection",
+  "description": "The single wrapper for any list of records, replacing both the documents catalog wrapper and the ATLAS FeatureCollection. Wrapping the array in an object leaves room to add pagination and counts later without breaking clients.",
+  "type": "object",
+  "required": ["items"],
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "./record.schema.json" },
+      "description": "The records, or one page of them."
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Collection-level information. Open, because different producers have different things to say.",
+      "properties": {
+        "repo_version": {
+          "type": "string",
+          "description": "Semver of the catalog itself, bumped on any change to the file."
+        },
+        "generated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this collection was produced."
+        },
+        "updated": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of the last content change, YYYY-MM-DD."
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of entries in `items`. A sanity check for consumers, not a total - see `total`."
+        },
+        "total": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "Total matching records across all pages, when countable cheaply. Null when unknown; do not let clients depend on it."
+        },
+        "next": {
+          "type": ["string", "null"],
+          "maxLength": 2048,
+          "description": "Opaque cursor for the next page; null on the last page."
+        },
+        "prev": {
+          "type": ["string", "null"],
+          "maxLength": 2048,
+          "description": "Opaque cursor for the previous page; null on the first page."
+        },
+        "tool": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Producing tool, e.g. ATLAS.",
+          "examples": ["ATLAS", "mdm-export"]
+        },
+        "filters": {
+          "type": "object",
+          "description": "Filters that were applied to produce this set, echoed back so a client can show what it is looking at."
+        }
+      }
+    }
+  }
+}

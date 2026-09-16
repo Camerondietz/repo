@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON Workbench</title>
+<style>
+:root{
+  --bg:#f7f7f5; --panel:#fff; --panel-2:#fbfbfa; --ink:#1b1b19; --ink-2:#5c5c57;
+  --ink-3:#8a8a83; --line:#e2e2dd; --line-2:#cfcfc8; --accent:#2f6f4f; --accent-ink:#fff;
+  --warn:#8a5a00; --warn-bg:#fdf3e0; --err:#a3241f; --err-bg:#fdecea; --ok:#1f6b3f; --ok-bg:#e9f5ee;
+  --s-str:#2a6e4f; --s-num:#9a5b00; --s-bool:#6b3fa0; --s-null:#8a8a83; --s-key:#1b4f8a;
+  --sel:#dceadf; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.06);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  html[data-theme="auto"]{
+    --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+    --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+    --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+    --s-str:#8fd0a8; --s-num:#e0b064; --s-bool:#c4a2ef; --s-null:#77776f; --s-key:#8ab7e8;
+    --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+  }
+}
+html[data-theme="dark"]{
+  --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+  --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+  --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+  --s-str:#8fd0a8; --s-num:#e0b064; --s-bool:#c4a2ef; --s-null:#77776f; --s-key:#8ab7e8;
+  --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.5 var(--sans);overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:var(--panel);border:1px solid var(--line-2);border-radius:6px;padding:4px 9px;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--panel-2);border-color:var(--ink-3)}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button.primary:hover{filter:brightness(1.08)}
+button.on{background:var(--sel);border-color:var(--accent)}
+button.icon{padding:3px 6px;line-height:1}
+input[type=text],input[type=search],input[type=number],select,textarea{
+  background:var(--panel);border:1px solid var(--line-2);border-radius:6px;padding:4px 7px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.app{display:flex;flex-direction:column;height:100%}
+header{border-bottom:1px solid var(--line);background:var(--panel);flex:0 0 auto}
+.bar{display:flex;align-items:center;gap:6px;padding:6px 10px;flex-wrap:wrap}
+.bar+.bar{border-top:1px solid var(--line)}
+.brand{font-weight:700;letter-spacing:-.01em;margin-right:6px;white-space:nowrap}
+.brand span{color:var(--accent)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 2px}
+.grow{flex:1 1 auto}
+.seg{display:flex;border:1px solid var(--line-2);border-radius:6px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:4px 10px}
+.seg button+button{border-left:1px solid var(--line-2)}
+.seg button.on{background:var(--accent);color:var(--accent-ink);font-weight:600}
+main{flex:1 1 auto;display:flex;min-height:0}
+.pane{display:flex;flex-direction:column;min-width:0;min-height:0}
+#leftPane{flex:0 0 46%}
+#rightPane{flex:1 1 auto;border-left:1px solid var(--line)}
+#splitter{flex:0 0 5px;cursor:col-resize;background:transparent}
+#splitter:hover{background:var(--line)}
+.paneHead{display:flex;align-items:center;gap:6px;padding:5px 8px;border-bottom:1px solid var(--line);background:var(--panel-2);flex-wrap:wrap;flex:0 0 auto}
+.paneBody{flex:1 1 auto;overflow:auto;min-height:0}
+#editor{width:100%;height:100%;border:0;border-radius:0;resize:none;padding:10px 12px;
+  font:12.5px/1.65 var(--mono);background:var(--panel);tab-size:2;white-space:pre}
+#editor:focus{outline:none}
+.tabs{display:flex;gap:2px;padding:5px 8px 0;border-bottom:1px solid var(--line);background:var(--panel-2);flex:0 0 auto;overflow-x:auto}
+.tabs button{border-radius:6px 6px 0 0;border-bottom-color:transparent;background:transparent;border-color:transparent}
+.tabs button.on{background:var(--panel);border-color:var(--line);border-bottom-color:var(--panel);margin-bottom:-1px;font-weight:600}
+.tabPanel{display:none;padding:10px 12px}
+.tabPanel.on{display:block}
+footer{flex:0 0 auto;border-top:1px solid var(--line);background:var(--panel);padding:4px 10px;
+  display:flex;gap:14px;align-items:center;font:11.5px/1.4 var(--mono);color:var(--ink-2);flex-wrap:wrap}
+.pill{border-radius:999px;padding:1px 9px;font-weight:600;font-family:var(--sans);font-size:11px}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.err{background:var(--err-bg);color:var(--err)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+/* tree */
+#tree{padding:6px 4px 40px;font:12.5px/1.5 var(--mono)}
+.node{position:relative}
+.node>.children{margin-left:13px;border-left:1px dotted var(--line-2);padding-left:6px}
+.row{display:flex;align-items:flex-start;gap:4px;padding:1px 4px;border-radius:4px;min-height:20px}
+.row:hover{background:var(--panel-2)}
+.row.hit{background:var(--sel)}
+.row.flash{animation:fl 1.1s ease-out}
+@keyframes fl{0%{background:var(--accent);color:var(--accent-ink)}100%{background:transparent}}
+.caret{flex:0 0 13px;width:13px;height:18px;border:0;background:transparent;padding:0;color:var(--ink-3);
+  cursor:pointer;font-size:10px;line-height:18px;text-align:center}
+.caret.leaf{cursor:default;color:transparent}
+.k{color:var(--s-key)}
+.v{white-space:pre-wrap;word-break:break-word;cursor:text;border-radius:3px;padding:0 2px}
+.v:hover{background:var(--sel)}
+.v.str{color:var(--s-str)}.v.num{color:var(--s-num)}.v.bool{color:var(--s-bool)}.v.null{color:var(--s-null);font-style:italic}
+.muted{color:var(--ink-3)}
+.acts{display:none;gap:2px;margin-left:auto;flex:0 0 auto}
+.row:hover .acts{display:flex}
+.acts button{padding:0 5px;font-size:11px;line-height:17px;background:var(--panel)}
+.vedit{font:inherit;padding:0 3px;min-width:120px;width:auto}
+/* tables */
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{text-align:left;padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{position:sticky;top:0;background:var(--panel-2);font-weight:600;z-index:1}
+td.mono,th.mono{font-family:var(--mono);font-size:11.5px}
+tbody tr:hover{background:var(--panel-2)}
+.bar-meter{height:6px;background:var(--line);border-radius:3px;overflow:hidden;min-width:60px}
+.bar-meter i{display:block;height:100%;background:var(--accent)}
+/* misc */
+.field{display:flex;align-items:center;gap:6px;margin:0 0 8px}
+.field label{color:var(--ink-2);flex:0 0 auto}
+.hint{color:var(--ink-3);font-size:11.5px;margin:6px 0}
+.out{font-family:var(--mono);font-size:11.5px;white-space:pre-wrap;word-break:break-word;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:8px;max-height:46vh;overflow:auto}
+.msg{border-radius:6px;padding:7px 10px;margin:8px 0;font-size:12px}
+.msg.err{background:var(--err-bg);color:var(--err)}
+.msg.ok{background:var(--ok-bg);color:var(--ok)}
+.msg.warn{background:var(--warn-bg);color:var(--warn)}
+.errlist{max-height:40vh;overflow:auto;border:1px solid var(--line);border-radius:6px}
+.errlist div.e{padding:6px 9px;border-bottom:1px solid var(--line);cursor:pointer;font-size:12px}
+.errlist div.e:hover{background:var(--panel-2)}
+.errlist code{font-family:var(--mono);font-size:11px;color:var(--s-key)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;margin:8px 0 14px}
+.card{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.card b{display:block;font-size:19px;font-weight:700;letter-spacing:-.02em}
+.card span{color:var(--ink-3);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+h4{margin:16px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}
+h4:first-child{margin-top:0}
+dialog{border:1px solid var(--line-2);border-radius:10px;background:var(--panel);color:var(--ink);
+  padding:0;box-shadow:var(--shadow);max-width:min(560px,92vw);width:100%}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+dialog .dh{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700}
+dialog .db{padding:14px}
+dialog .df{padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end}
+dialog textarea{width:100%;min-height:150px;font:12.5px/1.6 var(--mono);resize:vertical}
+dialog input[type=text]{width:100%}
+.drop{position:fixed;inset:0;background:rgba(47,111,79,.14);border:3px dashed var(--accent);
+  z-index:99;display:none;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent)}
+.drop.on{display:flex}
+.scrollx{overflow-x:auto}
+.tag{display:inline-block;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;
+  padding:0 5px;font-family:var(--mono);font-size:11px;margin:0 3px 3px 0}
+.rowflex{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="bar">
+      <div class="brand">JSON<span>&#9679;</span>Workbench</div>
+      <button id="bOpen">Open&#8230;</button>
+      <input type="file" id="fInput" multiple accept=".json,.txt,.csv,.tsv,.xml,.geojson,application/json" hidden>
+      <button id="bSave">Save</button>
+      <button id="bCopy">Copy</button>
+      <button id="bNew">New</button>
+      <button id="bSample">Sample</button>
+      <div class="sep"></div>
+      <button id="bUndo" class="icon" title="Undo (Ctrl+Z)">&#8630;</button>
+      <button id="bRedo" class="icon" title="Redo (Ctrl+Y)">&#8631;</button>
+      <div class="sep"></div>
+      <button id="bFormat">Format</button>
+      <button id="bMin">Minify</button>
+      <button id="bSort">Sort keys</button>
+      <div class="grow"></div>
+      <button id="bTheme" class="icon" title="Theme">&#9681;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="pane" id="leftPane">
+      <div class="paneHead">
+        <div class="seg" id="viewSeg">
+          <button data-view="text" class="on">Text</button>
+          <button data-view="tree">Tree</button>
+        </div>
+        <span id="treeTools" style="display:none;gap:6px;align-items:center">
+          <span class="muted">Depth</span>
+          <button data-lvl="1">1</button><button data-lvl="2">2</button>
+          <button data-lvl="3">3</button><button data-lvl="4">4</button>
+          <button data-lvl="99">All</button>
+          <button data-lvl="0">None</button>
+        </span>
+        <div class="grow"></div>
+        <input type="search" id="findBox" placeholder="Find key or value" style="width:150px">
+      </div>
+      <div class="paneBody" id="leftBody">
+        <textarea id="editor" spellcheck="false" placeholder="Paste or open JSON, CSV, or XML&#8230;"></textarea>
+        <div id="tree" style="display:none"></div>
+      </div>
+    </section>
+
+    <div id="splitter"></div>
+
+    <section class="pane" id="rightPane">
+      <div class="tabs" id="tabs">
+        <button data-tab="validate" class="on">Verify</button>
+        <button data-tab="query">Query</button>
+        <button data-tab="convert">Convert</button>
+        <button data-tab="metrics">Metrics</button>
+        <button data-tab="records">Records</button>
+        <button data-tab="help">Help</button>
+      </div>
+      <div class="paneBody">
+
+        <div class="tabPanel on" data-panel="validate">
+          <div class="rowflex">
+            <button id="bCheckSyntax" class="primary">Check syntax</button>
+            <button id="bLoadSchema">Load schema files&#8230;</button>
+            <input type="file" id="schemaInput" multiple accept=".json" hidden>
+            <button id="bPasteSchema">Paste schema</button>
+            <button id="bClearSchemas">Clear</button>
+          </div>
+          <div class="rowflex">
+            <label>Validate against</label>
+            <select id="schemaPick" style="flex:1 1 220px"><option value="">(none loaded)</option></select>
+            <button id="bValidate" class="primary">Validate</button>
+          </div>
+          <div id="validateOut"></div>
+        </div>
+
+        <div class="tabPanel" data-panel="query">
+          <div class="rowflex">
+            <input type="text" id="qInput" value="$..*" placeholder="$.store.book[?(@.price &lt; 10)].title" style="flex:1 1 260px">
+            <button id="bQuery" class="primary">Run</button>
+          </div>
+          <div class="rowflex">
+            <button class="qex" data-q="$.*">$.*</button>
+            <button class="qex" data-q="$..id">$..id</button>
+            <button class="qex" data-q="$[*].label">$[*].label</button>
+            <button class="qex" data-q="$..[?(@.type=='person')]">filter</button>
+            <button id="bQueryUse">Replace document with result</button>
+          </div>
+          <div id="queryOut"></div>
+        </div>
+
+        <div class="tabPanel" data-panel="convert">
+          <h4>JSON &#8594; CSV</h4>
+          <div class="rowflex">
+            <label>Rows from</label><input type="text" id="csvPath" value="$" style="width:120px">
+            <label>Delim</label>
+            <select id="csvDelim"><option value=",">,</option><option value=";">;</option><option value="&#9;">Tab</option><option value="|">|</option></select>
+            <label><input type="checkbox" id="csvCompact"> Arrays as JSON</label>
+            <button id="bToCsv" class="primary">Convert</button>
+          </div>
+          <h4>JSON &#8594; XML</h4>
+          <div class="rowflex">
+            <label>Root</label><input type="text" id="xmlRoot" value="root" style="width:110px">
+            <label>Item</label><input type="text" id="xmlItem" value="item" style="width:110px">
+            <button id="bToXml" class="primary">Convert</button>
+          </div>
+          <h4>Import into the document</h4>
+          <div class="rowflex">
+            <button id="bFromCsv">Parse editor as CSV</button>
+            <button id="bFromXml">Parse editor as XML</button>
+            <label><input type="checkbox" id="csvNest" checked> Expand dotted keys to nesting</label>
+            <label><input type="checkbox" id="csvTypes" checked> Infer types</label>
+            <label><input type="checkbox" id="csvDrop" checked> Drop empty cells</label>
+          </div>
+          <div id="convertOut"></div>
+          <div class="rowflex" id="convertActions" style="display:none;margin-top:8px">
+            <button id="bConvCopy">Copy output</button>
+            <button id="bConvSave" class="primary">Download</button>
+          </div>
+        </div>
+
+        <div class="tabPanel" data-panel="metrics">
+          <div class="rowflex">
+            <button id="bMetrics" class="primary">Analyze</button>
+            <label>Records at</label><input type="text" id="metPath" value="auto" style="width:110px">
+          </div>
+          <div id="metricsOut"><p class="hint">Analyze the document for size, shape, type distribution, key frequency and per-field fill rates.</p></div>
+        </div>
+
+        <div class="tabPanel" data-panel="records">
+          <div class="rowflex">
+            <label>Array at</label><input type="text" id="recPath" value="auto" style="width:120px">
+            <button id="bRecLoad">Load</button>
+            <button id="bRecAdd" class="primary">Add record</button>
+            <input type="search" id="recFilter" placeholder="Filter" style="flex:1 1 130px">
+          </div>
+          <div id="recordsOut"><p class="hint">Point at any array and manage its entries: view, clone, delete, or add a blank modelled on the existing ones.</p></div>
+        </div>
+
+        <div class="tabPanel" data-panel="help">
+          <h4>Query syntax</h4>
+          <table>
+            <tr><td class="mono">$</td><td>root</td></tr>
+            <tr><td class="mono">.key</td><td>child, also <span class="mono">['key']</span></td></tr>
+            <tr><td class="mono">[0] [-1]</td><td>index, negative counts from end</td></tr>
+            <tr><td class="mono">[1:4]</td><td>slice</td></tr>
+            <tr><td class="mono">.* [*]</td><td>all children</td></tr>
+            <tr><td class="mono">..key</td><td>recursive descent</td></tr>
+            <tr><td class="mono">[?(@.a=='x')]</td><td>filter; ops == != &lt; &lt;= &gt; &gt;= =~</td></tr>
+            <tr><td class="mono">[?(@.a)]</td><td>field exists and is truthy</td></tr>
+          </table>
+          <h4>Shortcuts</h4>
+          <table>
+            <tr><td class="mono">Ctrl+S</td><td>download</td></tr>
+            <tr><td class="mono">Ctrl+Z / Ctrl+Y</td><td>undo / redo structural edits</td></tr>
+            <tr><td class="mono">Ctrl+Enter</td><td>format</td></tr>
+            <tr><td class="mono">Drag &amp; drop</td><td>open files anywhere on the page</td></tr>
+          </table>
+          <h4>Notes</h4>
+          <p class="hint">Everything runs in your browser. No network calls, no uploads &#8212; works offline from <span class="mono">file://</span> and from a static host alike. The document is kept in <span class="mono">localStorage</span> so a reload does not lose work.</p>
+          <p class="hint">The schema validator covers the common draft 2020-12 keywords: types, <span class="mono">required</span>, <span class="mono">properties</span>, <span class="mono">patternProperties</span>, <span class="mono">additionalProperties</span>, <span class="mono">propertyNames</span>, <span class="mono">items</span>, <span class="mono">prefixItems</span>, <span class="mono">contains</span>, <span class="mono">enum</span>, <span class="mono">const</span>, <span class="mono">allOf</span>/<span class="mono">anyOf</span>/<span class="mono">oneOf</span>/<span class="mono">not</span>, <span class="mono">if</span>/<span class="mono">then</span>/<span class="mono">else</span>, <span class="mono">$ref</span> and <span class="mono">$defs</span>, numeric and string bounds, and common <span class="mono">format</span> values. Load several schema files together and cross-file <span class="mono">$ref</span> resolves by <span class="mono">$id</span>.</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span id="stStatus" class="pill ok">empty</span>
+    <span id="stSize">0 B</span>
+    <span id="stNodes">0 nodes</span>
+    <span id="stDepth">depth 0</span>
+    <span id="stSel" class="muted"></span>
+    <span class="grow"></span>
+    <span id="stName" class="muted">untitled.json</span>
+  </footer>
+</div>
+
+<div class="drop" id="drop">Drop files to open</div>
+
+<dialog id="dlg">
+  <div class="dh" id="dlgTitle">Edit</div>
+  <div class="db" id="dlgBody"></div>
+  <div class="df">
+    <button type="button" id="dlgCancel">Cancel</button>
+    <button type="button" id="dlgOk" class="primary">OK</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------------------------------------------------------------- helpers */
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function el(tag,cls,txt){var e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e}
+function typeOf(v){ if(v===null)return "null"; if(Array.isArray(v))return "array"; return typeof v }
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function bytes(n){ if(n<1024)return n+" B"; if(n<1048576)return (n/1024).toFixed(1)+" KB"; return (n/1048576).toFixed(2)+" MB" }
+function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+function deep(v){ return v===undefined?undefined:JSON.parse(JSON.stringify(v)) }
+function download(name,text,mime){
+  var b=new Blob([text],{type:mime||"application/json"}), u=URL.createObjectURL(b), a=el("a");
+  a.href=u; a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(u); a.remove()},0);
+}
+function store(k,v){ try{ v===undefined?localStorage.removeItem(k):localStorage.setItem(k,v) }catch(e){} }
+function recall(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+
+/* ------------------------------------------------------------------ state */
+var S={ text:"", doc:undefined, ok:false, err:null, view:"text", name:"untitled.json",
+        undo:[], redo:[], schemas:[], sel:null, hits:[] };
+
+var editor=$("#editor"), treeEl=$("#tree");
+
+function setText(t,opts){
+  opts=opts||{};
+  S.text=t;
+  if(!opts.fromEditor) editor.value=t;
+  try{ S.doc = t.trim()===""?undefined:JSON.parse(t); S.ok=true; S.err=null }
+  catch(e){ S.ok=false; S.err=parseErr(e,t); S.doc=undefined }
+  store("jw.doc",t); store("jw.name",S.name);
+  refreshStatus();
+  if(S.view==="tree") renderTree();
+}
+function setDoc(v,label){
+  pushUndo(label);
+  S.doc=v; var t=JSON.stringify(v,null,2);
+  S.text=t; editor.value=t; S.ok=true; S.err=null;
+  store("jw.doc",t); refreshStatus();
+  if(S.view==="tree") renderTree();
+}
+function pushUndo(){ S.undo.push(S.text); if(S.undo.length>80)S.undo.shift(); S.redo.length=0 }
+function parseErr(e,t){
+  var m=/position\s+(\d+)/i.exec(e.message), pos=m?+m[1]:-1, line=1, col=1;
+  if(pos>=0){ var upto=t.slice(0,pos); line=upto.split("\n").length; col=pos-upto.lastIndexOf("\n") }
+  return { message:e.message.replace(/^JSON\.parse:\s*/,""), pos:pos, line:line, col:col };
+}
+
+/* --------------------------------------------------------------- doc stats */
+function walk(v,fn,path,depth){
+  path=path||[]; depth=depth||0; fn(v,path,depth);
+  if(v&&typeof v==="object"){
+    if(Array.isArray(v)) for(var i=0;i<v.length;i++) walk(v[i],fn,path.concat(i),depth+1);
+    else for(var k in v) if(Object.prototype.hasOwnProperty.call(v,k)) walk(v[k],fn,path.concat(k),depth+1);
+  }
+}
+function stats(v){
+  var n=0,d=0,types={};
+  if(v===undefined) return {nodes:0,depth:0,types:types};
+  walk(v,function(x,p,dep){ n++; if(dep>d)d=dep; var t=typeOf(x); types[t]=(types[t]||0)+1 });
+  return {nodes:n,depth:d,types:types};
+}
+function refreshStatus(){
+  var st=$("#stStatus");
+  if(S.text.trim()===""){ st.className="pill ok"; st.textContent="empty" }
+  else if(S.ok){ st.className="pill ok"; st.textContent="valid JSON" }
+  else { st.className="pill err"; st.textContent="line "+S.err.line+":"+S.err.col }
+  $("#stSize").textContent=bytes(new Blob([S.text]).size);
+  var s=stats(S.doc);
+  $("#stNodes").textContent=s.nodes+" nodes";
+  $("#stDepth").textContent="depth "+s.depth;
+  $("#stName").textContent=S.name;
+}
+
+/* ------------------------------------------------------------ path access */
+function getAt(path){ var c=S.doc; for(var i=0;i<path.length;i++){ if(c==null)return undefined; c=c[path[i]] } return c }
+function setAt(path,val){
+  if(!path.length){ S.doc=val; return }
+  var p=getAt(path.slice(0,-1)); if(p!=null) p[path[path.length-1]]=val;
+}
+function delAt(path){
+  if(!path.length){ S.doc=undefined; return }
+  var p=getAt(path.slice(0,-1)), k=path[path.length-1];
+  if(Array.isArray(p)) p.splice(k,1); else if(p) delete p[k];
+}
+function pathStr(path){
+  return "$"+path.map(function(k){
+    return typeof k==="number" ? "["+k+"]" : (/^[A-Za-z_$][\w$]*$/.test(k) ? "."+k : "['"+k+"']");
+  }).join("");
+}
+function commit(label){
+  var t=JSON.stringify(S.doc,null,2);
+  S.text=t; editor.value=t; store("jw.doc",t); refreshStatus(); renderTree();
+}
+
+/* ------------------------------------------------------------------- tree */
+var openSet=Object.create(null);
+function keyOf(path){ return path.join("") }
+
+function renderTree(){
+  treeEl.textContent="";
+  if(!S.ok){ treeEl.appendChild(el("p","hint","Document is not valid JSON — fix it in Text view first.")); return }
+  if(S.doc===undefined){ treeEl.appendChild(el("p","hint","Empty document.")); return }
+  treeEl.appendChild(buildNode("$",S.doc,[],0));
+}
+function buildNode(key,val,path,depth){
+  var t=typeOf(val), container=t==="object"||t==="array";
+  var wrap=el("div","node"), row=el("div","row");
+  var pk=keyOf(path);
+  var open=container && (openSet[pk]===undefined ? depth<2 : openSet[pk]);
+
+  var caret=el("button","caret"+(container?"":" leaf"));
+  caret.textContent=container?(open?"▾":"▸"):"•";
+  if(container) caret.onclick=function(){ toggle(wrap,path,!wrap.dataset.open||wrap.dataset.open==="0") };
+  row.appendChild(caret);
+
+  var kEl=el("span","k",typeof key==="number"?String(key):(path.length?JSON.stringify(key):"$"));
+  row.appendChild(kEl);
+  row.appendChild(el("span","muted",":"));
+
+  if(container){
+    var n=t==="array"?val.length:Object.keys(val).length;
+    var sum=el("span","muted",(t==="array"?"[ "+n+" ]":"{ "+n+" }"));
+    sum.style.cursor="pointer";
+    sum.onclick=function(){ toggle(wrap,path,!wrap.dataset.open||wrap.dataset.open==="0") };
+    row.appendChild(sum);
+  } else {
+    var v=el("span","v "+(t==="string"?"str":t==="number"?"num":t==="boolean"?"bool":"null"));
+    v.textContent = t==="string" ? JSON.stringify(val) : String(val);
+    v.title="Click to edit";
+    v.onclick=function(){ inlineEdit(v,path,val) };
+    row.appendChild(v);
+  }
+
+  var acts=el("span","acts");
+  if(container){
+    acts.appendChild(btn("+","Add child",function(){ addChild(path) }));
+  }
+  acts.appendChild(btn("✎","Edit as JSON",function(){ editJson(path) }));
+  if(path.length){
+    acts.appendChild(btn("⧉","Duplicate",function(){ dup(path) }));
+    acts.appendChild(btn("↑","Move up",function(){ move(path,-1) }));
+    acts.appendChild(btn("↓","Move down",function(){ move(path,1) }));
+    acts.appendChild(btn("×","Delete",function(){ pushUndo(); delAt(path); commit() }));
+  }
+  row.appendChild(acts);
+
+  row.onmousedown=function(){ S.sel=path; $("#stSel").textContent=pathStr(path) };
+  wrap.appendChild(row);
+  wrap._path=path; wrap._row=row;
+
+  if(container){
+    var kids=el("div","children");
+    wrap.appendChild(kids);
+    wrap.dataset.open=open?"1":"0";
+    kids.style.display=open?"":"none";
+    if(open) fillChildren(wrap,val,path,depth);
+  }
+  return wrap;
+}
+function btn(txt,title,fn){ var b=el("button",null,txt); b.title=title; b.onclick=function(e){e.stopPropagation();fn()}; return b }
+function fillChildren(wrap,val,path,depth){
+  var kids=wrap.querySelector(":scope > .children");
+  if(!kids || kids.dataset.filled==="1") return;
+  var frag=document.createDocumentFragment();
+  if(Array.isArray(val)) val.forEach(function(x,i){ frag.appendChild(buildNode(i,x,path.concat(i),depth+1)) });
+  else Object.keys(val).forEach(function(k){ frag.appendChild(buildNode(k,val[k],path.concat(k),depth+1)) });
+  kids.appendChild(frag); kids.dataset.filled="1";
+}
+function toggle(wrap,path,open){
+  var kids=wrap.querySelector(":scope > .children"); if(!kids)return;
+  wrap.dataset.open=open?"1":"0";
+  openSet[keyOf(path)]=open;
+  wrap.querySelector(":scope > .row > .caret").textContent=open?"▾":"▸";
+  if(open){ fillChildren(wrap,getAt(path),path,path.length); kids.style.display="" }
+  else kids.style.display="none";
+}
+function expandTo(level){
+  openSet=Object.create(null);
+  if(level>0) walk(S.doc,function(v,p,d){ if(v&&typeof v==="object"&&d<level) openSet[keyOf(p)]=true });
+  renderTree();
+}
+function reveal(path){
+  if(S.view!=="tree") setView("tree");
+  for(var i=0;i<path.length;i++) openSet[keyOf(path.slice(0,i))]=true;
+  renderTree();
+  var target=null;
+  (function find(node){
+    if(!node)return;
+    if(node._path && keyOf(node._path)===keyOf(path)) { target=node; return }
+    $$(":scope > .children > .node",node).forEach(find);
+  })(treeEl.firstChild);
+  if(target){
+    target._row.scrollIntoView({block:"center",behavior:"smooth"});
+    target._row.classList.add("flash");
+    setTimeout(function(){ target._row.classList.remove("flash") },1200);
+  }
+}
+
+/* ------------------------------------------------------------- tree edits */
+function inlineEdit(span,path,val){
+  var inp=el("input","vedit"); inp.type="text";
+  inp.value = typeof val==="string" ? val : String(val);
+  inp.size=Math.min(60,Math.max(8,inp.value.length+2));
+  span.replaceWith(inp); inp.focus(); inp.select();
+  var done=false;
+  function finish(save){
+    if(done)return; done=true;
+    if(save){
+      var raw=inp.value, nv;
+      if(typeof val==="string") nv=raw;
+      else { try{ nv=JSON.parse(raw) }catch(e){ nv=raw } }
+      pushUndo(); setAt(path,nv); commit(); return;
+    }
+    renderTree();
+  }
+  inp.onblur=function(){ finish(true) };
+  inp.onkeydown=function(e){
+    if(e.key==="Enter"){ e.preventDefault(); finish(true) }
+    if(e.key==="Escape"){ e.preventDefault(); finish(false) }
+  };
+}
+function addChild(path){
+  var parent=getAt(path), isArr=Array.isArray(parent);
+  dialog({
+    title:isArr?"Append item":"Add property",
+    fields:isArr?[{k:"val",label:"Value (JSON)",type:"area",value:'""'}]
+                :[{k:"key",label:"Key",type:"text",value:""},{k:"val",label:"Value (JSON)",type:"area",value:'""'}]
+  },function(r){
+    if(!r)return;
+    var v; try{ v=JSON.parse(r.val) }catch(e){ v=r.val }
+    pushUndo();
+    if(isArr) parent.push(v);
+    else { if(!r.key)return; parent[r.key]=v }
+    openSet[keyOf(path)]=true; commit();
+  });
+}
+function editJson(path){
+  var cur=getAt(path);
+  dialog({ title:"Edit "+pathStr(path), fields:[{k:"val",label:"",type:"area",value:JSON.stringify(cur,null,2)}] },
+  function(r){
+    if(!r)return; var v;
+    try{ v=JSON.parse(r.val) }catch(e){ alert("Not valid JSON: "+e.message); return }
+    pushUndo(); setAt(path,v); commit();
+  });
+}
+function dup(path){
+  var parent=getAt(path.slice(0,-1)), k=path[path.length-1];
+  pushUndo();
+  if(Array.isArray(parent)) parent.splice(k+1,0,deep(parent[k]));
+  else { var nk=k+"_copy",i=2; while(nk in parent) nk=k+"_copy"+(i++); parent[nk]=deep(parent[k]) }
+  commit();
+}
+function move(path,dir){
+  var parent=getAt(path.slice(0,-1)), k=path[path.length-1];
+  if(Array.isArray(parent)){
+    var j=k+dir; if(j<0||j>=parent.length)return;
+    pushUndo(); var tmp=parent[k]; parent[k]=parent[j]; parent[j]=tmp; commit();
+  } else {
+    var keys=Object.keys(parent), idx=keys.indexOf(k), j2=idx+dir;
+    if(j2<0||j2>=keys.length)return;
+    keys.splice(idx,1); keys.splice(j2,0,k);
+    var out={}; keys.forEach(function(kk){ out[kk]=parent[kk] });
+    pushUndo(); setAt(path.slice(0,-1),out); commit();
+  }
+}
+
+/* ----------------------------------------------------------------- dialog */
+var dlg=$("#dlg"), dlgCb=null;
+function dialog(spec,cb){
+  $("#dlgTitle").textContent=spec.title||"";
+  var body=$("#dlgBody"); body.textContent="";
+  spec.fields.forEach(function(f){
+    var wrap=el("div"); wrap.style.marginBottom="10px";
+    if(f.label){ var l=el("label",null,f.label); l.style.display="block"; l.style.marginBottom="4px";
+                 l.style.color="var(--ink-2)"; wrap.appendChild(l) }
+    var inp = f.type==="area" ? el("textarea") : el("input");
+    if(f.type!=="area"){
+      inp.type="text"; inp.style.width="100%";
+      inp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); finishDialog(true) } });
+    }
+    inp.value=f.value||""; inp.dataset.k=f.k;
+    wrap.appendChild(inp); body.appendChild(wrap);
+  });
+  dlgCb=cb;
+  if(dlg.showModal) dlg.showModal(); else dlg.setAttribute("open","");
+  var first=body.querySelector("input,textarea"); if(first){ first.focus(); first.select&&first.select() }
+}
+// Driven by explicit button handlers rather than the dialog's own close event:
+// that event does not fire in every renderer, and when it does not, every
+// callback here silently never runs.
+function finishDialog(okay){
+  var cb=dlgCb; dlgCb=null;
+  var out=null;
+  if(okay){ out={}; $$("#dlgBody [data-k]").forEach(function(i){ out[i.dataset.k]=i.value }) }
+  try{ dlg.close() }catch(e){ dlg.removeAttribute("open") }
+  if(cb) cb(out);
+}
+$("#dlgOk").onclick=function(){ finishDialog(true) };
+$("#dlgCancel").onclick=function(){ finishDialog(false) };
+dlg.addEventListener("cancel",function(e){ e.preventDefault(); finishDialog(false) });
+
+/* ------------------------------------------------------- schema validator */
+var SCHEMAS={ list:[], byId:{} };
+function addSchema(obj,name){
+  var id=obj.$id||("urn:local:"+name);
+  SCHEMAS.byId[id]=obj;
+  SCHEMAS.list=SCHEMAS.list.filter(function(s){return s.id!==id});
+  SCHEMAS.list.push({id:id,name:name,schema:obj});
+  refreshSchemaPick();
+}
+function refreshSchemaPick(){
+  var sel=$("#schemaPick"), cur=sel.value; sel.textContent="";
+  if(!SCHEMAS.list.length){ sel.appendChild(new Option("(none loaded)","")); return }
+  SCHEMAS.list.forEach(function(s){ sel.appendChild(new Option(s.name+"  —  "+s.id,s.id)) });
+  var auto=null;
+  if(S.doc&&typeof S.doc==="object"&&typeof S.doc.$schema==="string"){
+    var want=S.doc.$schema.replace(/^\.\.?\//,"");
+    SCHEMAS.list.forEach(function(s){ if(s.id.indexOf(want)>=0||s.name===want.split("/").pop()) auto=s.id });
+  }
+  sel.value=auto||cur||SCHEMAS.list[0].id;
+}
+function ptr(doc,frag){
+  if(!frag)return doc;
+  var parts=frag.replace(/^\//,"").split("/"), c=doc;
+  for(var i=0;i<parts.length;i++){
+    if(c==null)return undefined;
+    c=c[decodeURIComponent(parts[i]).replace(/~1/g,"/").replace(/~0/g,"~")];
+  }
+  return c;
+}
+function resolveRef(ref,base){
+  var hash="", docId=base;
+  var hi=ref.indexOf("#");
+  var head = hi<0 ? ref : ref.slice(0,hi);
+  hash = hi<0 ? "" : ref.slice(hi+1);
+  if(head){
+    try{ docId=new URL(head,base||"urn:local:root").href }
+    catch(e){ docId=head }
+  }
+  var doc=SCHEMAS.byId[docId];
+  if(!doc){
+    var tail=docId.split("/").pop();
+    for(var k in SCHEMAS.byId) if(k.split("/").pop()===tail){ doc=SCHEMAS.byId[k]; docId=k; break }
+  }
+  if(!doc) return null;
+  return { schema:ptr(doc,decodeURIComponent(hash)), base:docId };
+}
+var FORMATS={
+  "date-time":/^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}(\.\d+)?([Zz]|[+-]\d{2}:\d{2})$/,
+  "date":/^\d{4}-\d{2}-\d{2}$/, "time":/^\d{2}:\d{2}:\d{2}(\.\d+)?([Zz]|[+-]\d{2}:\d{2})?$/,
+  "email":/^[^@\s]+@[^@\s.]+\.[^@\s]+$/, "uuid":/^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
+  "uri":/^[a-zA-Z][a-zA-Z0-9+.-]*:\S*$/, "uri-reference":/^\S*$/,
+  "ipv4":/^(\d{1,3}\.){3}\d{1,3}$/, "hostname":/^[a-zA-Z0-9.-]+$/
+};
+function validate(schema,data){
+  var errors=[];
+  var root = schema.$id || "urn:local:root";
+  check(schema,data,[],root,"#");
+  return errors;
+
+  function add(path,msg,sp){ if(errors.length<400) errors.push({path:path.slice(),msg:msg,sp:sp}) }
+
+  function check(sc,v,path,base,sp){
+    if(sc===true||sc===undefined) return true;
+    if(sc===false){ add(path,"no value is allowed here",sp); return false }
+    var ok=true;
+
+    if(sc.$ref){
+      var r=resolveRef(sc.$ref,base);
+      if(!r||r.schema===undefined) add(path,"cannot resolve $ref "+sc.$ref,sp);
+      else if(!check(r.schema,v,path,r.base,sp+"/$ref")) ok=false;
+    }
+    var t=typeOf(v);
+    if(sc.type){
+      var types=Array.isArray(sc.type)?sc.type:[sc.type];
+      var pass=types.some(function(x){ return x===t || (x==="integer"&&t==="number"&&Number.isInteger(v)) });
+      if(!pass){ add(path,"expected "+types.join(" or ")+", found "+t,sp+"/type"); return false }
+    }
+    if("const" in sc && JSON.stringify(v)!==JSON.stringify(sc.const)){
+      add(path,"must equal "+JSON.stringify(sc.const),sp+"/const"); ok=false;
+    }
+    if(sc.enum && !sc.enum.some(function(x){return JSON.stringify(x)===JSON.stringify(v)})){
+      add(path,"must be one of "+sc.enum.map(function(x){return JSON.stringify(x)}).join(", "),sp+"/enum"); ok=false;
+    }
+    if(sc.allOf) sc.allOf.forEach(function(s,i){ if(!check(s,v,path,base,sp+"/allOf/"+i)) ok=false });
+    if(sc.anyOf){
+      var any=sc.anyOf.some(function(s){ return quiet(s,v,path,base) });
+      if(!any){ add(path,"does not match any of the "+sc.anyOf.length+" allowed forms",sp+"/anyOf"); ok=false }
+    }
+    if(sc.oneOf){
+      var n=sc.oneOf.filter(function(s){ return quiet(s,v,path,base) }).length;
+      if(n!==1){ add(path,"must match exactly one allowed form, matched "+n,sp+"/oneOf"); ok=false }
+    }
+    if(sc.not && quiet(sc.not,v,path,base)){ add(path,"must not match the excluded form",sp+"/not"); ok=false }
+    if(sc.if){
+      if(quiet(sc.if,v,path,base)){ if(sc.then&&!check(sc.then,v,path,base,sp+"/then")) ok=false }
+      else if(sc.else&&!check(sc.else,v,path,base,sp+"/else")) ok=false;
+    }
+
+    if(t==="string"){
+      if(sc.minLength!=null&&v.length<sc.minLength){ add(path,"shorter than minLength "+sc.minLength,sp); ok=false }
+      if(sc.maxLength!=null&&v.length>sc.maxLength){ add(path,"longer than maxLength "+sc.maxLength,sp); ok=false }
+      if(sc.pattern){ var re; try{re=new RegExp(sc.pattern)}catch(e){re=null}
+        if(re&&!re.test(v)){ add(path,"does not match pattern "+sc.pattern,sp+"/pattern"); ok=false } }
+      if(sc.format&&FORMATS[sc.format]&&!FORMATS[sc.format].test(v)){
+        add(path,"not a valid "+sc.format,sp+"/format"); ok=false }
+    }
+    if(t==="number"){
+      if(sc.minimum!=null&&v<sc.minimum){ add(path,"below minimum "+sc.minimum,sp); ok=false }
+      if(sc.maximum!=null&&v>sc.maximum){ add(path,"above maximum "+sc.maximum,sp); ok=false }
+      if(sc.exclusiveMinimum!=null&&v<=sc.exclusiveMinimum){ add(path,"must be > "+sc.exclusiveMinimum,sp); ok=false }
+      if(sc.exclusiveMaximum!=null&&v>=sc.exclusiveMaximum){ add(path,"must be < "+sc.exclusiveMaximum,sp); ok=false }
+      if(sc.multipleOf&&Math.abs(v/sc.multipleOf-Math.round(v/sc.multipleOf))>1e-9){
+        add(path,"not a multiple of "+sc.multipleOf,sp); ok=false }
+    }
+    if(t==="array"){
+      if(sc.minItems!=null&&v.length<sc.minItems){ add(path,"fewer than minItems "+sc.minItems,sp); ok=false }
+      if(sc.maxItems!=null&&v.length>sc.maxItems){ add(path,"more than maxItems "+sc.maxItems,sp); ok=false }
+      if(sc.uniqueItems){
+        var seen={},dupd=false;
+        v.forEach(function(x){ var s=JSON.stringify(x); if(seen[s])dupd=true; seen[s]=1 });
+        if(dupd){ add(path,"items must be unique",sp); ok=false }
+      }
+      var pre=sc.prefixItems||[];
+      pre.forEach(function(s,i){ if(i<v.length && !check(s,v[i],path.concat(i),base,sp+"/prefixItems/"+i)) ok=false });
+      if(sc.items!==undefined){
+        if(sc.items===false){
+          if(v.length>pre.length){ add(path,"no more than "+pre.length+" items allowed",sp+"/items"); ok=false }
+        } else for(var i=pre.length;i<v.length;i++)
+          if(!check(sc.items,v[i],path.concat(i),base,sp+"/items")) ok=false;
+      }
+      if(sc.contains){
+        var c=v.filter(function(x){ return quiet(sc.contains,x,path,base) }).length;
+        var lo=sc.minContains==null?1:sc.minContains;
+        if(c<lo){ add(path,"needs at least "+lo+" matching item(s), found "+c,sp+"/contains"); ok=false }
+        if(sc.maxContains!=null&&c>sc.maxContains){
+          add(path,"at most "+sc.maxContains+" matching item(s) allowed, found "+c,sp+"/contains"); ok=false }
+      }
+    }
+    if(t==="object"){
+      var keys=Object.keys(v);
+      (sc.required||[]).forEach(function(k){
+        if(!Object.prototype.hasOwnProperty.call(v,k)){ add(path,"missing required property “"+k+"”",sp+"/required"); ok=false }
+      });
+      if(sc.minProperties!=null&&keys.length<sc.minProperties){ add(path,"fewer than minProperties",sp); ok=false }
+      if(sc.maxProperties!=null&&keys.length>sc.maxProperties){ add(path,"more than maxProperties",sp); ok=false }
+      if(sc.dependentRequired) for(var dk in sc.dependentRequired) if(dk in v)
+        sc.dependentRequired[dk].forEach(function(k){ if(!(k in v)){ add(path,"“"+dk+"” requires “"+k+"”",sp); ok=false } });
+      var matched={};
+      if(sc.properties) keys.forEach(function(k){
+        if(k in sc.properties){ matched[k]=1;
+          if(!check(sc.properties[k],v[k],path.concat(k),base,sp+"/properties/"+k)) ok=false }
+      });
+      if(sc.patternProperties) Object.keys(sc.patternProperties).forEach(function(p){
+        var re; try{re=new RegExp(p)}catch(e){return}
+        keys.forEach(function(k){ if(re.test(k)){ matched[k]=1;
+          if(!check(sc.patternProperties[p],v[k],path.concat(k),base,sp+"/patternProperties")) ok=false } });
+      });
+      if(sc.propertyNames) keys.forEach(function(k){
+        if(!check(sc.propertyNames,k,path.concat(k),base,sp+"/propertyNames")) ok=false });
+      if(sc.additionalProperties!==undefined) keys.forEach(function(k){
+        if(matched[k])return;
+        if(sc.additionalProperties===false){ add(path.concat(k),"property “"+k+"” is not allowed here",sp+"/additionalProperties"); ok=false }
+        else if(!check(sc.additionalProperties,v[k],path.concat(k),base,sp+"/additionalProperties")) ok=false;
+      });
+    }
+    return ok;
+  }
+  function quiet(sc,v,path,base){
+    var save=errors; errors=[];
+    var r=check(sc,v,path,base,"#");
+    var had=errors.length; errors=save;
+    return r && had===0;
+  }
+}
+
+/* --------------------------------------------------------- JSONPath-lite */
+function jpath(expr,root){
+  var steps=tokenize(expr);
+  var cur=[{v:root,p:[]}];
+  steps.forEach(function(s){ cur=step(s,cur) });
+  return cur;
+
+  function tokenize(e){
+    e=e.trim(); if(e[0]==="$") e=e.slice(1);
+    var out=[],i=0;
+    while(i<e.length){
+      if(e[i]==="."&&e[i+1]==="."){
+        i+=2;
+        if(e[i]==="*"){ out.push({t:"desc",name:null}); i++ }
+        else if(e[i]==="["){ out.push({t:"desc",name:null}) }
+        else { var m=/^[\w$-]+/.exec(e.slice(i)); if(!m)throw new Error("expected a name after ..");
+               out.push({t:"desc",name:m[0]}); i+=m[0].length }
+        continue;
+      }
+      if(e[i]==="."){
+        i++;
+        if(e[i]==="*"){ out.push({t:"wild"}); i++; continue }
+        var mm=/^[\w$-]+/.exec(e.slice(i));
+        if(!mm) throw new Error("expected a name after .");
+        out.push({t:"key",name:mm[0]}); i+=mm[0].length; continue;
+      }
+      if(e[i]==="["){
+        var close=matchBracket(e,i);
+        if(close<0) throw new Error("unclosed [");
+        var inner=e.slice(i+1,close).trim(); i=close+1;
+        if(inner==="*"){ out.push({t:"wild"}); continue }
+        if(inner[0]==="?"){ out.push({t:"filter",expr:inner.replace(/^\?\s*\(?/,"").replace(/\)$/,"")}); continue }
+        if(/^["'].*["']$/.test(inner)){ out.push({t:"key",name:inner.slice(1,-1)}); continue }
+        if(inner.indexOf(":")>=0){
+          var ps=inner.split(":");
+          out.push({t:"slice",a:ps[0]===""?null:+ps[0],b:ps[1]===""||ps[1]==null?null:+ps[1]}); continue;
+        }
+        if(inner.indexOf(",")>=0){ out.push({t:"union",items:inner.split(",").map(function(x){
+          x=x.trim(); return /^["']/.test(x)?x.slice(1,-1):+x })}); continue }
+        out.push({t:"index",i:+inner}); continue;
+      }
+      if(/\s/.test(e[i])){ i++; continue }
+      throw new Error("unexpected character “"+e[i]+"”");
+    }
+    return out;
+  }
+  function matchBracket(s,start){
+    var d=0,q=null;
+    for(var i=start;i<s.length;i++){
+      var c=s[i];
+      if(q){ if(c===q)q=null; continue }
+      if(c==="'"||c==='"'){ q=c; continue }
+      if(c==="[")d++;
+      if(c==="]"){ d--; if(d===0)return i }
+    }
+    return -1;
+  }
+  function kids(v,p){
+    var out=[];
+    if(Array.isArray(v)) v.forEach(function(x,i){ out.push({v:x,p:p.concat(i)}) });
+    else if(v&&typeof v==="object") Object.keys(v).forEach(function(k){ out.push({v:v[k],p:p.concat(k)}) });
+    return out;
+  }
+  function step(s,cur){
+    var out=[];
+    cur.forEach(function(n){
+      var v=n.v;
+      switch(s.t){
+        case "key":
+          if(v&&typeof v==="object"&&s.name in v) out.push({v:v[s.name],p:n.p.concat(s.name)});
+          break;
+        case "wild": out=out.concat(kids(v,n.p)); break;
+        case "index":
+          if(Array.isArray(v)){ var i=s.i<0?v.length+s.i:s.i; if(i>=0&&i<v.length) out.push({v:v[i],p:n.p.concat(i)}) }
+          break;
+        case "slice":
+          if(Array.isArray(v)){
+            var a=s.a==null?0:(s.a<0?v.length+s.a:s.a), b=s.b==null?v.length:(s.b<0?v.length+s.b:s.b);
+            for(var j=clamp(a,0,v.length);j<clamp(b,0,v.length);j++) out.push({v:v[j],p:n.p.concat(j)});
+          }
+          break;
+        case "union":
+          s.items.forEach(function(it){
+            if(typeof it==="number"){ if(Array.isArray(v)&&v[it]!==undefined) out.push({v:v[it],p:n.p.concat(it)}) }
+            else if(v&&typeof v==="object"&&it in v) out.push({v:v[it],p:n.p.concat(it)});
+          });
+          break;
+        case "desc":
+          walk(v,function(x,rel){
+            if(s.name==null){ if(rel.length) out.push({v:x,p:n.p.concat(rel)}) }
+            else if(x&&typeof x==="object"&&!Array.isArray(x)&&Object.prototype.hasOwnProperty.call(x,s.name))
+              out.push({v:x[s.name],p:n.p.concat(rel,s.name)});
+          },[],0);
+          break;
+        case "filter":
+          kids(v,n.p).forEach(function(c){ if(evalFilter(s.expr,c.v)) out.push(c) });
+          break;
+      }
+    });
+    return out;
+  }
+  function evalFilter(expr,item){
+    var m=/^\s*(@[\w$.\[\]'"-]*)\s*(==|!=|<=|>=|<|>|=~)\s*(.+?)\s*$/.exec(expr);
+    if(!m){
+      var m2=/^\s*(@[\w$.\[\]'"-]*)\s*$/.exec(expr);
+      if(m2){ var vv=pick(m2[1],item); return vv!==undefined&&vv!==null&&vv!==false&&vv!=="" }
+      return false;
+    }
+    var left=pick(m[1],item), op=m[2], rs=m[3].trim(), right;
+    if(/^["'].*["']$/.test(rs)) right=rs.slice(1,-1);
+    else if(rs==="true") right=true; else if(rs==="false") right=false;
+    else if(rs==="null") right=null; else if(rs!==""&&!isNaN(+rs)) right=+rs;
+    else right=rs;
+    switch(op){
+      case "==": return left===right||String(left)===String(right);
+      case "!=": return !(left===right||String(left)===String(right));
+      case "<": return left<right; case "<=": return left<=right;
+      case ">": return left>right; case ">=": return left>=right;
+      case "=~": try{ return new RegExp(right).test(String(left)) }catch(e){ return false }
+    }
+    return false;
+  }
+  function pick(ref,item){
+    if(ref==="@") return item;
+    var rest=ref.slice(1), c=item;
+    rest.replace(/\.([\w$-]+)|\[(\d+)\]|\['([^']+)'\]|\["([^"]+)"\]/g,function(_,a,b,cq,dq){
+      var k=a!==undefined?a:(b!==undefined?+b:(cq!==undefined?cq:dq));
+      c = (c==null) ? undefined : c[k];
+      return "";
+    });
+    return c;
+  }
+}
+
+/* ---------------------------------------------------------------- CSV/XML */
+function flatten(v,prefix,out,compact){
+  out=out||{};
+  if(v===null||typeof v!=="object"){ out[prefix]=v; return out }
+  if(Array.isArray(v)){
+    if(compact){ out[prefix]=JSON.stringify(v); return out }
+    if(!v.length){ out[prefix]="[]"; return out }
+    v.forEach(function(x,i){ flatten(x,prefix?prefix+"."+i:String(i),out,compact) });
+    return out;
+  }
+  var ks=Object.keys(v);
+  if(!ks.length){ out[prefix]="{}"; return out }
+  ks.forEach(function(k){ flatten(v[k],prefix?prefix+"."+k:k,out,compact) });
+  return out;
+}
+function isEmptyVal(v){
+  if(v===""||v==null) return true;
+  if(Array.isArray(v)) return !v.length;
+  if(typeof v==="object") return !Object.keys(v).length;
+  return false;
+}
+function unflatten(obj){
+  var root={};
+  Object.keys(obj).forEach(function(p){
+    var parts=p.split("."), c=root;
+    parts.forEach(function(seg,i){
+      var last=i===parts.length-1;
+      if(last){
+        // A heterogeneous record set can produce both "tags.0" and "tags" columns.
+        // Never let an empty scalar clobber a container the indexed columns already built.
+        var prev=c[seg];
+        if(prev&&typeof prev==="object" && !isEmptyVal(prev) && isEmptyVal(obj[p])) return;
+        c[seg]=obj[p]; return;
+      }
+      var nextNum=/^\d+$/.test(parts[i+1]);
+      if(c[seg]===undefined||typeof c[seg]!=="object") c[seg]=nextNum?[]:{};
+      c=c[seg];
+    });
+  });
+  return root;
+}
+function csvEscape(s,d){
+  s=s==null?"":String(s);
+  return (s.indexOf(d)>=0||s.indexOf('"')>=0||/[\r\n]/.test(s)) ? '"'+s.replace(/"/g,'""')+'"' : s;
+}
+function toCSV(rows,d,compact){
+  if(!Array.isArray(rows)) rows=[rows];
+  var cols=[],seen={};
+  var flat=rows.map(function(r){
+    var f=(r&&typeof r==="object")?flatten(r,"",{},compact):{value:r};
+    Object.keys(f).forEach(function(k){ if(!seen[k]){seen[k]=1;cols.push(k)} });
+    return f;
+  });
+  var lines=[cols.map(function(c){return csvEscape(c,d)}).join(d)];
+  flat.forEach(function(f){
+    lines.push(cols.map(function(c){
+      var v=f[c]; return csvEscape(v===undefined?"":(typeof v==="object"?JSON.stringify(v):v),d);
+    }).join(d));
+  });
+  return lines.join("\n");
+}
+function parseCSV(text,d){
+  var rows=[],row=[],cur="",q=false,i=0;
+  while(i<text.length){
+    var c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){cur+='"';i+=2;continue} q=false;i++;continue }
+      cur+=c;i++;continue;
+    }
+    if(c==='"'){q=true;i++;continue}
+    if(c===d){row.push(cur);cur="";i++;continue}
+    if(c==="\r"){i++;continue}
+    if(c==="\n"){row.push(cur);rows.push(row);row=[];cur="";i++;continue}
+    cur+=c;i++;
+  }
+  if(cur!==""||row.length){row.push(cur);rows.push(row)}
+  return rows.filter(function(r){ return r.length>1||r[0]!=="" });
+}
+function coerce(s,infer){
+  if(!infer) return s;
+  if(s==="")return "";
+  if(s==="true")return true; if(s==="false")return false; if(s==="null")return null;
+  if(/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(s)) return +s;
+  if(/^[\[{]/.test(s)){ try{ return JSON.parse(s) }catch(e){} }
+  return s;
+}
+function csvToJson(text,d,nest,infer,dropEmpty){
+  var rows=parseCSV(text,d);
+  if(!rows.length) return [];
+  var head=rows[0];
+  return rows.slice(1).map(function(r){
+    var o={};
+    head.forEach(function(h,i){
+      var raw=r[i]===undefined?"":r[i];
+      // CSV is rectangular but records are not: every row carries every column.
+      // Dropping blanks stops absent fields from materialising as empty husks.
+      if(dropEmpty&&raw==="") return;
+      o[h]=coerce(raw,infer);
+    });
+    return nest?unflatten(o):o;
+  });
+}
+function xmlName(k){
+  var n=String(k).replace(/[^\w.-]/g,"_");
+  if(!/^[A-Za-z_]/.test(n)) n="_"+n;
+  return n;
+}
+function toXML(v,root,item){
+  var out=['<?xml version="1.0" encoding="UTF-8"?>'];
+  out.push(node(root||"root",v,0));
+  return out.join("\n");
+  function node(name,val,ind){
+    var pad=new Array(ind+1).join("  "), n=xmlName(name);
+    if(val===null) return pad+"<"+n+"/>";
+    if(typeof val!=="object") return pad+"<"+n+">"+esc(val)+"</"+n+">";
+    if(Array.isArray(val)){
+      if(!val.length) return pad+"<"+n+"/>";
+      return val.map(function(x){ return node(name===root?(item||"item"):name,x,ind) }).join("\n");
+    }
+    var attrs="",kids=[];
+    Object.keys(val).forEach(function(k){
+      if(k.charAt(0)==="@"){ attrs+=" "+xmlName(k.slice(1))+'="'+esc(val[k])+'"'; return }
+      if(k==="#text"){ kids.push(pad+"  "+esc(val[k])); return }
+      var child=val[k];
+      if(Array.isArray(child)&&child.length) kids.push(child.map(function(x){return node(k,x,ind+1)}).join("\n"));
+      else kids.push(node(k,child,ind+1));
+    });
+    if(!kids.length) return pad+"<"+n+attrs+"/>";
+    return pad+"<"+n+attrs+">\n"+kids.join("\n")+"\n"+pad+"</"+n+">";
+  }
+}
+function xmlToJson(text,infer){
+  var doc=new DOMParser().parseFromString(text,"application/xml");
+  var bad=doc.querySelector("parsererror");
+  if(bad) throw new Error(bad.textContent.replace(/\s+/g," ").slice(0,220));
+  return conv(doc.documentElement);
+  function conv(node){
+    var out={},has=false;
+    for(var i=0;i<node.attributes.length;i++){ out["@"+node.attributes[i].name]=coerce(node.attributes[i].value,infer); has=true }
+    var elems=[];
+    for(var j=0;j<node.childNodes.length;j++) if(node.childNodes[j].nodeType===1) elems.push(node.childNodes[j]);
+    var txt=""; for(var t=0;t<node.childNodes.length;t++)
+      if(node.childNodes[t].nodeType===3) txt+=node.childNodes[t].nodeValue;
+    txt=txt.trim();
+    if(!elems.length){ if(!has) return txt===""?null:coerce(txt,infer); if(txt!=="") out["#text"]=coerce(txt,infer); return out }
+    elems.forEach(function(c){
+      var val=conv(c), n=c.nodeName;
+      if(n in out){ if(!Array.isArray(out[n])) out[n]=[out[n]]; out[n].push(val) }
+      else out[n]=val;
+      has=true;
+    });
+    if(txt!=="") out["#text"]=coerce(txt,infer);
+    return out;
+  }
+}
+
+/* --------------------------------------------------------------- metrics */
+function findRecordsArray(spec){
+  if(spec&&spec!=="auto"){
+    try{ var r=jpath(spec,S.doc); if(r.length&&Array.isArray(r[0].v)) return {arr:r[0].v,path:r[0].p};
+         if(r.length) return {arr:r.map(function(x){return x.v}),path:[]} }catch(e){}
+    return null;
+  }
+  if(Array.isArray(S.doc)) return {arr:S.doc,path:[]};
+  if(!S.doc||typeof S.doc!=="object") return null;
+  var names=["items","features","documents","records","data","results","rows","entries"];
+  for(var i=0;i<names.length;i++) if(Array.isArray(S.doc[names[i]])) return {arr:S.doc[names[i]],path:[names[i]]};
+  var best=null;
+  Object.keys(S.doc).forEach(function(k){
+    if(Array.isArray(S.doc[k])&&(!best||S.doc[k].length>best.arr.length)) best={arr:S.doc[k],path:[k]};
+  });
+  return best;
+}
+
+/* ------------------------------------------------------------------- UI */
+function setView(v){
+  S.view=v;
+  $$("#viewSeg button").forEach(function(b){ b.classList.toggle("on",b.dataset.view===v) });
+  editor.style.display = v==="text"?"":"none";
+  treeEl.style.display = v==="tree"?"":"none";
+  $("#treeTools").style.display = v==="tree"?"inline-flex":"none";
+  if(v==="tree") renderTree();
+  else editor.value=S.text;
+}
+function tab(name){
+  $$("#tabs button").forEach(function(b){ b.classList.toggle("on",b.dataset.tab===name) });
+  $$(".tabPanel").forEach(function(p){ p.classList.toggle("on",p.dataset.panel===name) });
+}
+
+/* wiring: toolbar */
+editor.addEventListener("input",function(){ setText(editor.value,{fromEditor:true}) });
+$$("#viewSeg button").forEach(function(b){ b.onclick=function(){ setView(b.dataset.view) } });
+$$("#tabs button").forEach(function(b){ b.onclick=function(){ tab(b.dataset.tab) } });
+$$("#treeTools button").forEach(function(b){ b.onclick=function(){ expandTo(+b.dataset.lvl) } });
+
+$("#bOpen").onclick=function(){ $("#fInput").click() };
+$("#fInput").onchange=function(e){ openFiles(e.target.files); e.target.value="" };
+$("#bSave").onclick=function(){ download(S.name,S.text,"application/json") };
+$("#bCopy").onclick=function(){
+  navigator.clipboard&&navigator.clipboard.writeText(S.text);
+  flash($("#bCopy"),"Copied");
+};
+$("#bNew").onclick=function(){ S.name="untitled.json"; pushUndo(); setText("{\n  \n}") };
+$("#bSample").onclick=function(){ S.name="sample.json"; pushUndo(); setText(SAMPLE) };
+$("#bFormat").onclick=function(){ if(S.ok&&S.doc!==undefined){ pushUndo(); setText(JSON.stringify(S.doc,null,2)) } };
+$("#bMin").onclick=function(){ if(S.ok&&S.doc!==undefined){ pushUndo(); setText(JSON.stringify(S.doc)) } };
+$("#bSort").onclick=function(){
+  if(!S.ok||S.doc===undefined)return;
+  pushUndo(); setText(JSON.stringify(sortKeys(S.doc),null,2));
+};
+function sortKeys(v){
+  if(Array.isArray(v)) return v.map(sortKeys);
+  if(v&&typeof v==="object"){ var o={}; Object.keys(v).sort().forEach(function(k){ o[k]=sortKeys(v[k]) }); return o }
+  return v;
+}
+$("#bUndo").onclick=function(){ if(!S.undo.length)return; S.redo.push(S.text); setText(S.undo.pop()) };
+$("#bRedo").onclick=function(){ if(!S.redo.length)return; S.undo.push(S.text); setText(S.redo.pop()) };
+$("#bTheme").onclick=function(){
+  var cur=document.documentElement.dataset.theme;
+  var next=cur==="auto"?"light":cur==="light"?"dark":"auto";
+  document.documentElement.dataset.theme=next; store("jw.theme",next);
+  flash($("#bTheme"),next);
+};
+function flash(btn,msg){
+  var old=btn.textContent; btn.textContent=msg;
+  setTimeout(function(){ btn.textContent=old },900);
+}
+
+/* find */
+$("#findBox").addEventListener("input",function(){
+  var q=this.value.trim().toLowerCase();
+  if(!q||!S.ok||S.doc===undefined){ S.hits=[]; if(S.view==="tree")renderTree(); return }
+  var hits=[];
+  walk(S.doc,function(v,p){
+    if(hits.length>300)return;
+    var last=p.length?String(p[p.length-1]):"";
+    var isLeaf=!v||typeof v!=="object";
+    if(last.toLowerCase().indexOf(q)>=0 || (isLeaf&&String(v).toLowerCase().indexOf(q)>=0)) hits.push(p);
+  });
+  S.hits=hits;
+  if(S.view!=="tree") setView("tree");
+  hits.forEach(function(p){ for(var i=0;i<p.length;i++) openSet[keyOf(p.slice(0,i))]=true });
+  renderTree(); markHits();
+  $("#stSel").textContent=hits.length+" match"+(hits.length===1?"":"es");
+});
+function markHits(){
+  var set={}; S.hits.forEach(function(p){ set[keyOf(p)]=1 });
+  (function mark(node){
+    if(!node)return;
+    if(node._path&&set[keyOf(node._path)]) node._row.classList.add("hit");
+    $$(":scope > .children > .node",node).forEach(mark);
+  })(treeEl.firstChild);
+}
+
+/* files & drop */
+function openFiles(files){
+  Array.prototype.forEach.call(files,function(f){
+    var r=new FileReader();
+    r.onload=function(){
+      var txt=String(r.result), ext=(f.name.split(".").pop()||"").toLowerCase();
+      S.name=f.name.replace(/\.(csv|tsv|xml)$/i,".json");
+      try{
+        if(ext==="csv"||ext==="tsv"){
+          var d=ext==="tsv"?"\t":$("#csvDelim").value;
+          pushUndo(); setText(JSON.stringify(csvToJson(txt,d,$("#csvNest").checked,$("#csvTypes").checked,$("#csvDrop").checked),null,2));
+        } else if(ext==="xml"){
+          pushUndo(); setText(JSON.stringify(xmlToJson(txt,$("#csvTypes").checked),null,2));
+        } else {
+          pushUndo(); setText(txt);
+          var parsed; try{ parsed=JSON.parse(txt) }catch(e){ parsed=null }
+          if(parsed&&(parsed.$schema||parsed.$defs||parsed.properties)) addSchema(parsed,f.name);
+        }
+      }catch(e){ alert("Could not read "+f.name+": "+e.message) }
+    };
+    r.readAsText(f);
+  });
+}
+var dropEl=$("#drop"),dragN=0;
+window.addEventListener("dragenter",function(e){ e.preventDefault(); dragN++; dropEl.classList.add("on") });
+window.addEventListener("dragover",function(e){ e.preventDefault() });
+window.addEventListener("dragleave",function(){ if(--dragN<=0){dragN=0;dropEl.classList.remove("on")} });
+window.addEventListener("drop",function(e){
+  e.preventDefault(); dragN=0; dropEl.classList.remove("on");
+  if(e.dataTransfer.files.length) openFiles(e.dataTransfer.files);
+});
+
+/* splitter */
+(function(){
+  var sp=$("#splitter"),left=$("#leftPane"),dragging=false;
+  sp.addEventListener("mousedown",function(e){ dragging=true; e.preventDefault(); document.body.style.cursor="col-resize" });
+  window.addEventListener("mousemove",function(e){
+    if(!dragging)return;
+    var r=$("main").getBoundingClientRect();
+    left.style.flex="0 0 "+clamp((e.clientX-r.left)/r.width*100,18,82)+"%";
+  });
+  window.addEventListener("mouseup",function(){ dragging=false; document.body.style.cursor="" });
+})();
+
+/* ------------------------------------------------------------- Verify tab */
+$("#bCheckSyntax").onclick=function(){
+  var out=$("#validateOut"); out.textContent="";
+  if(S.text.trim()===""){ out.appendChild(msg("warn","Nothing to check — the document is empty.")); return }
+  if(S.ok){ out.appendChild(msg("ok","Valid JSON. "+stats(S.doc).nodes+" nodes, depth "+stats(S.doc).depth+".")); return }
+  out.appendChild(msg("err","Invalid JSON at line "+S.err.line+", column "+S.err.col+" — "+esc(S.err.message)));
+  var lines=S.text.split("\n"), a=Math.max(0,S.err.line-3), b=Math.min(lines.length,S.err.line+2);
+  var pre=el("div","out"),txt="";
+  for(var i=a;i<b;i++){
+    txt+=(i+1===S.err.line?"▶ ":"  ")+String(i+1).padStart(4)+" │ "+lines[i]+"\n";
+    if(i+1===S.err.line) txt+="       │ "+new Array(S.err.col).join(" ")+"^\n";
+  }
+  pre.textContent=txt; out.appendChild(pre);
+};
+function msg(kind,html){ var d=el("div","msg "+kind); d.innerHTML=html; return d }
+$("#bLoadSchema").onclick=function(){ $("#schemaInput").click() };
+$("#schemaInput").onchange=function(e){
+  Array.prototype.forEach.call(e.target.files,function(f){
+    var r=new FileReader();
+    r.onload=function(){ try{ addSchema(JSON.parse(String(r.result)),f.name) }catch(err){ alert(f.name+": "+err.message) } };
+    r.readAsText(f);
+  });
+  e.target.value="";
+};
+$("#bPasteSchema").onclick=function(){
+  dialog({title:"Paste a JSON Schema",fields:[{k:"s",label:"",type:"area",value:""}]},function(r){
+    if(!r||!r.s.trim())return;
+    try{ var o=JSON.parse(r.s); addSchema(o,(o.title||"pasted")+".json") }catch(e){ alert("Not valid JSON: "+e.message) }
+  });
+};
+$("#bClearSchemas").onclick=function(){ SCHEMAS={list:[],byId:{}}; refreshSchemaPick(); $("#validateOut").textContent="" };
+$("#bValidate").onclick=function(){
+  var out=$("#validateOut"); out.textContent="";
+  if(!S.ok){ out.appendChild(msg("err","Fix the JSON syntax first.")); return }
+  var id=$("#schemaPick").value;
+  if(!id){ out.appendChild(msg("warn","Load a schema file first, or paste one.")); return }
+  var sc=SCHEMAS.byId[id];
+  var errs;
+  try{ errs=validate(sc,S.doc) }catch(e){ out.appendChild(msg("err","Validator error: "+esc(e.message))); return }
+  if(!errs.length){ out.appendChild(msg("ok","Valid against "+esc(id.split("/").pop())+".")); return }
+  out.appendChild(msg("err",errs.length+" problem"+(errs.length===1?"":"s")+" found."));
+  var list=el("div","errlist");
+  errs.forEach(function(e){
+    var d=el("div","e");
+    d.innerHTML="<code>"+esc(pathStr(e.path))+"</code><br>"+esc(e.msg);
+    d.onclick=function(){ reveal(e.path) };
+    list.appendChild(d);
+  });
+  out.appendChild(list);
+  out.appendChild(el("p","hint","Click any problem to jump to it in the tree."));
+};
+
+/* -------------------------------------------------------------- Query tab */
+var lastQuery=[];
+$("#bQuery").onclick=runQuery;
+$("#qInput").addEventListener("keydown",function(e){ if(e.key==="Enter")runQuery() });
+$$(".qex").forEach(function(b){ b.onclick=function(){ $("#qInput").value=b.dataset.q; runQuery() } });
+function runQuery(){
+  var out=$("#queryOut"); out.textContent="";
+  if(!S.ok||S.doc===undefined){ out.appendChild(msg("err","Need a valid JSON document.")); return }
+  var res;
+  try{ res=jpath($("#qInput").value,S.doc) }
+  catch(e){ out.appendChild(msg("err","Bad query: "+esc(e.message))); return }
+  lastQuery=res;
+  out.appendChild(msg(res.length?"ok":"warn",res.length+" match"+(res.length===1?"":"es")+"."));
+  if(!res.length) return;
+  var list=el("div","errlist");
+  res.slice(0,200).forEach(function(r){
+    var d=el("div","e"), preview=JSON.stringify(r.v);
+    if(preview&&preview.length>120) preview=preview.slice(0,120)+"…";
+    d.innerHTML="<code>"+esc(pathStr(r.p))+"</code><br>"+esc(preview);
+    d.onclick=function(){ reveal(r.p) };
+    list.appendChild(d);
+  });
+  out.appendChild(list);
+  if(res.length>200) out.appendChild(el("p","hint","Showing the first 200 of "+res.length+"."));
+  var pre=el("div","out"); pre.textContent=JSON.stringify(res.map(function(r){return r.v}),null,2);
+  out.appendChild(el("h4",null,"Result")); out.appendChild(pre);
+}
+$("#bQueryUse").onclick=function(){
+  if(!lastQuery.length){ alert("Run a query first."); return }
+  setDoc(lastQuery.map(function(r){return r.v}));
+};
+
+/* ------------------------------------------------------------ Convert tab */
+var convOut="",convName="export.txt",convMime="text/plain";
+function showConv(text,name,mime){
+  convOut=text; convName=name; convMime=mime;
+  var o=$("#convertOut"); o.textContent="";
+  var pre=el("div","out"); pre.textContent=text.length>200000?text.slice(0,200000)+"\n…truncated for display":text;
+  o.appendChild(pre);
+  $("#convertActions").style.display="flex";
+}
+$("#bToCsv").onclick=function(){
+  if(!S.ok){ alert("Need valid JSON."); return }
+  var src=S.doc;
+  var p=$("#csvPath").value.trim();
+  if(p&&p!=="$"){ try{ var r=jpath(p,S.doc); src=r.length===1?r[0].v:r.map(function(x){return x.v}) }catch(e){ alert(e.message); return } }
+  showConv(toCSV(src,$("#csvDelim").value,$("#csvCompact").checked),S.name.replace(/\.json$/,"")+".csv","text/csv");
+};
+$("#bToXml").onclick=function(){
+  if(!S.ok){ alert("Need valid JSON."); return }
+  showConv(toXML(S.doc,$("#xmlRoot").value||"root",$("#xmlItem").value||"item"),
+           S.name.replace(/\.json$/,"")+".xml","application/xml");
+};
+$("#bFromCsv").onclick=function(){
+  try{
+    var j=csvToJson(editor.value,$("#csvDelim").value,$("#csvNest").checked,$("#csvTypes").checked,$("#csvDrop").checked);
+    setDoc(j); tab("metrics"); $("#convertOut").textContent="";
+    $("#convertActions").style.display="none";
+  }catch(e){ alert("CSV parse failed: "+e.message) }
+};
+$("#bFromXml").onclick=function(){
+  try{ setDoc(xmlToJson(editor.value,$("#csvTypes").checked)); $("#convertOut").textContent="";
+       $("#convertActions").style.display="none" }
+  catch(e){ alert("XML parse failed: "+e.message) }
+};
+$("#bConvCopy").onclick=function(){ navigator.clipboard&&navigator.clipboard.writeText(convOut); flash($("#bConvCopy"),"Copied") };
+$("#bConvSave").onclick=function(){ download(convName,convOut,convMime) };
+
+/* ------------------------------------------------------------ Metrics tab */
+$("#bMetrics").onclick=function(){
+  var out=$("#metricsOut"); out.textContent="";
+  if(!S.ok||S.doc===undefined){ out.appendChild(msg("err","Need a valid JSON document.")); return }
+  var s=stats(S.doc);
+  var raw=new Blob([S.text]).size, min=new Blob([JSON.stringify(S.doc)]).size;
+
+  var cards=el("div","cards");
+  [["Nodes",s.nodes],["Max depth",s.depth],["Raw",bytes(raw)],["Minified",bytes(min)],
+   ["Saved",raw?Math.round((1-min/raw)*100)+"%":"0%"]].forEach(function(c){
+    var d=el("div","card"); d.appendChild(el("b",null,String(c[1]))); d.appendChild(el("span",null,c[0])); cards.appendChild(d);
+  });
+  out.appendChild(cards);
+
+  out.appendChild(el("h4",null,"Types"));
+  var tt=el("table"); tt.innerHTML="<tr><th>Type</th><th>Count</th><th>Share</th></tr>";
+  Object.keys(s.types).sort(function(a,b){return s.types[b]-s.types[a]}).forEach(function(k){
+    var pct=(s.types[k]/s.nodes*100);
+    tt.innerHTML+="<tr><td class='mono'>"+k+"</td><td>"+s.types[k]+"</td><td><div class='bar-meter'><i style='width:"+pct.toFixed(1)+"%'></i></div></td></tr>";
+  });
+  out.appendChild(tt);
+
+  var keyCount={};
+  walk(S.doc,function(v,p){ if(p.length&&typeof p[p.length-1]==="string"){ var k=p[p.length-1]; keyCount[k]=(keyCount[k]||0)+1 } });
+  var ks=Object.keys(keyCount).sort(function(a,b){return keyCount[b]-keyCount[a]}).slice(0,25);
+  if(ks.length){
+    out.appendChild(el("h4",null,"Most frequent keys"));
+    var kt=el("table"); kt.innerHTML="<tr><th>Key</th><th>Count</th></tr>";
+    ks.forEach(function(k){ kt.innerHTML+="<tr><td class='mono'>"+esc(k)+"</td><td>"+keyCount[k]+"</td></tr>" });
+    out.appendChild(kt);
+  }
+
+  var lens=[];
+  walk(S.doc,function(v){ if(Array.isArray(v)) lens.push(v.length) });
+  if(lens.length){
+    var sum=lens.reduce(function(a,b){return a+b},0);
+    out.appendChild(el("h4",null,"Arrays"));
+    out.appendChild(el("p","hint",lens.length+" arrays — shortest "+Math.min.apply(null,lens)+
+      ", longest "+Math.max.apply(null,lens)+", average "+(sum/lens.length).toFixed(1)+"."));
+  }
+
+  var rec=findRecordsArray($("#metPath").value.trim());
+  if(rec&&rec.arr.length&&rec.arr.some(function(r){return r&&typeof r==="object"})){
+    out.appendChild(el("h4",null,"Field coverage — "+rec.arr.length+" records at "+pathStr(rec.path)));
+    var fields={};
+    rec.arr.forEach(function(r){
+      if(!r||typeof r!=="object")return;
+      var f=flatten(r,"",{},true);
+      Object.keys(f).forEach(function(k){
+        var s2=fields[k]||(fields[k]={n:0,empty:0,types:{}});
+        s2.n++;
+        var v=f[k];
+        if(v===""||v==null||v==="[]"||v==="{}") s2.empty++;
+        s2.types[typeOf(v)]=1;
+      });
+    });
+    var fks=Object.keys(fields).sort(function(a,b){return fields[b].n-fields[a].n||a.localeCompare(b)});
+    var ft=el("table");
+    ft.innerHTML="<tr><th>Field</th><th>Present</th><th>Fill</th><th>Non-empty</th><th>Types</th></tr>";
+    fks.forEach(function(k){
+      var f=fields[k], pct=f.n/rec.arr.length*100, filled=f.n-f.empty;
+      ft.innerHTML+="<tr><td class='mono'>"+esc(k)+"</td><td>"+f.n+" / "+rec.arr.length+"</td>"+
+        "<td><div class='bar-meter'><i style='width:"+pct.toFixed(1)+"%'></i></div></td>"+
+        "<td>"+filled+"</td><td class='mono'>"+Object.keys(f.types).join(", ")+"</td></tr>";
+    });
+    var wrapT=el("div","scrollx"); wrapT.appendChild(ft); out.appendChild(wrapT);
+    var dupes={},dupN=0;
+    rec.arr.forEach(function(r){ var s3=JSON.stringify(r); if(dupes[s3])dupN++; dupes[s3]=1 });
+    if(dupN) out.appendChild(msg("warn",dupN+" record"+(dupN===1?" is an exact duplicate":"s are exact duplicates")+" of another."));
+  }
+};
+
+/* ------------------------------------------------------------ Records tab */
+function renderRecords(){
+  var out=$("#recordsOut"); out.textContent="";
+  if(!S.ok||S.doc===undefined){ out.appendChild(msg("err","Need a valid JSON document.")); return }
+  var rec=findRecordsArray($("#recPath").value.trim());
+  if(!rec||!Array.isArray(rec.arr)){ out.appendChild(msg("warn","No array found. Enter a path such as $.items")); return }
+  var q=$("#recFilter").value.trim().toLowerCase();
+  out.appendChild(el("p","hint",rec.arr.length+" record"+(rec.arr.length===1?"":"s")+" at "+pathStr(rec.path)));
+
+  var cols=[];
+  rec.arr.slice(0,40).forEach(function(r){
+    if(r&&typeof r==="object"&&!Array.isArray(r))
+      Object.keys(r).forEach(function(k){ if(cols.indexOf(k)<0&&cols.length<6&&typeof r[k]!=="object") cols.push(k) });
+  });
+  var t=el("table"), head="<tr><th>#</th>";
+  cols.forEach(function(c){ head+="<th class='mono'>"+esc(c)+"</th>" });
+  t.innerHTML=head+"<th></th></tr>";
+  var tb=el("tbody"); t.appendChild(tb);
+
+  rec.arr.forEach(function(r,i){
+    var blob=JSON.stringify(r).toLowerCase();
+    if(q&&blob.indexOf(q)<0)return;
+    var tr=el("tr");
+    tr.appendChild(el("td",null,String(i)));
+    cols.forEach(function(c){
+      var v=(r&&typeof r==="object")?r[c]:undefined;
+      var s=v===undefined?"":(typeof v==="object"?JSON.stringify(v):String(v));
+      if(s.length>44) s=s.slice(0,44)+"…";
+      tr.appendChild(el("td","mono",s));
+    });
+    var td=el("td"); td.style.whiteSpace="nowrap";
+    td.appendChild(btn("View","Reveal in tree",function(){ reveal(rec.path.concat(i)) }));
+    td.appendChild(btn("Edit","Edit as JSON",function(){ editJson(rec.path.concat(i)) }));
+    td.appendChild(btn("⧉","Duplicate",function(){ dup(rec.path.concat(i)); renderRecords() }));
+    td.appendChild(btn("×","Delete",function(){
+      if(!confirm("Delete record "+i+"?"))return;
+      pushUndo(); delAt(rec.path.concat(i)); commit(); renderRecords();
+    }));
+    tr.appendChild(td); tb.appendChild(tr);
+  });
+  var wrapT=el("div","scrollx"); wrapT.appendChild(t); out.appendChild(wrapT);
+}
+$("#bRecLoad").onclick=renderRecords;
+$("#recFilter").addEventListener("input",renderRecords);
+$("#bRecAdd").onclick=function(){
+  var rec=findRecordsArray($("#recPath").value.trim());
+  if(!rec){ alert("No array found to add to."); return }
+  var tmpl={};
+  var first=rec.arr.find(function(r){ return r&&typeof r==="object"&&!Array.isArray(r) });
+  if(first) Object.keys(first).forEach(function(k){
+    var v=first[k];
+    tmpl[k]=Array.isArray(v)?[]:(v&&typeof v==="object")?{}:(typeof v==="number")?0:(typeof v==="boolean")?false:"";
+  });
+  dialog({title:"New record",fields:[{k:"v",label:"Modelled on the existing records — edit before adding",
+    type:"area",value:JSON.stringify(tmpl,null,2)}]},function(r){
+    if(!r)return; var v;
+    try{ v=JSON.parse(r.v) }catch(e){ alert("Not valid JSON: "+e.message); return }
+    pushUndo(); rec.arr.push(v); commit(); renderRecords();
+  });
+};
+
+/* ------------------------------------------------------------- shortcuts */
+window.addEventListener("keydown",function(e){
+  var mod=e.ctrlKey||e.metaKey;
+  if(!mod)return;
+  if(e.key==="s"){ e.preventDefault(); download(S.name,S.text,"application/json") }
+  else if(e.key==="Enter"){ e.preventDefault(); $("#bFormat").click() }
+  else if(e.key==="z"&&S.view==="tree"){ e.preventDefault(); $("#bUndo").click() }
+  else if(e.key==="y"){ e.preventDefault(); $("#bRedo").click() }
+});
+
+/* ---------------------------------------------------------------- sample */
+var SAMPLE=JSON.stringify({
+  meta:{generated:"2026-09-15T14:02:11Z",count:3,tool:"workbench"},
+  items:[
+    {id:"a1",type:"person",label:"Ada Lovelace",active:true,score:97.5,
+     tags:["math","pioneer"],address:{city:"London",country:"GB"},notes:null},
+    {id:"b2",type:"person",label:"Grace Hopper",active:true,score:99,
+     tags:["navy","compilers"],address:{city:"Arlington",country:"US"}},
+    {id:"c3",type:"place",label:"Bletchley Park",active:false,
+     location:{lon:-0.7406,lat:51.9976},tags:[]}
+  ]
+},null,2);
+
+/* ------------------------------------------------------------------ boot */
+(function(){
+  var th=recall("jw.theme"); if(th) document.documentElement.dataset.theme=th;
+  var saved=recall("jw.doc"), nm=recall("jw.name");
+  if(nm) S.name=nm;
+  setText(saved!=null&&saved!==""?saved:SAMPLE);
+  setView("text"); tab("validate");
+})();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+{
+  "$schema": "../atlas-export.schema.json",
+
+  "type": "FeatureCollection",
+  "bbox": [-98.1875, 30.2008, -97.7046, 30.4534],
+
+  "features": [
+    {
+      "type": "Feature",
+      "id": "a0c41e7b-3d95-4826-9f10-6b2e8d4a5c73",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-97.8760776, 30.2008883]
+      },
+      "properties": {
+        "id": "a0c41e7b-3d95-4826-9f10-6b2e8d4a5c73",
+        "uri": "https://mdm.cameron-dietz.com/id/location/a0c41e7b-3d95-4826-9f10-6b2e8d4a5c73",
+        "type": "location",
+        "slug": "european-wax-center-slaughter-ln",
+        "label": "European Wax Center - West Slaughter Ln",
+        "category": { "primary": "business", "kind": "salon" },
+        "tags": [],
+        "status": "active",
+        "visibility": "public",
+        "precision": "rooftop",
+        "address": {
+          "street_address": "West Slaughter Lane",
+          "address_locality": "Austin",
+          "address_region": "TX",
+          "postal_code": "78749",
+          "country_code": "US",
+          "formatted": "European Wax Center, West Slaughter Lane, Austin, Travis County, Texas, 78749, United States"
+        },
+        "place_closure": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+        "timezone": "America/Chicago",
+        "source_system": "manual",
+        "data": {}
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "f52b8d17-6c40-4e93-b7a2-0d8f1e6c94b5",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-97.7046302, 30.299084]
+      },
+      "properties": {
+        "id": "f52b8d17-6c40-4e93-b7a2-0d8f1e6c94b5",
+        "uri": "https://mdm.cameron-dietz.com/id/location/f52b8d17-6c40-4e93-b7a2-0d8f1e6c94b5",
+        "type": "location",
+        "slug": "european-wax-center-aldrich-st",
+        "label": "European Wax Center - Aldrich St",
+        "category": { "primary": "business", "kind": "salon" },
+        "status": "active",
+        "visibility": "public",
+        "precision": "rooftop",
+        "address": {
+          "street_address": "1900 Aldrich Street",
+          "address_locality": "Austin",
+          "address_region": "TX",
+          "postal_code": "78723",
+          "country_code": "US",
+          "formatted": "European Wax Center, 1900, Aldrich Street, Aldrich Street District, Austin, Travis County, Texas, 78723, United States"
+        },
+        "place_closure": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+        "timezone": "America/Chicago",
+        "source_system": "manual",
+        "data": {}
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "3e7a9c52-8b16-4f04-a5d8-9c0e2b7f6134",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-97.762492, 30.2558149]
+      },
+      "properties": {
+        "id": "3e7a9c52-8b16-4f04-a5d8-9c0e2b7f6134",
+        "uri": "https://mdm.cameron-dietz.com/id/location/3e7a9c52-8b16-4f04-a5d8-9c0e2b7f6134",
+        "type": "location",
+        "slug": "european-wax-center-south-lamar",
+        "label": "European Wax Center - South Lamar",
+        "category": { "primary": "business", "kind": "salon" },
+        "status": "active",
+        "visibility": "public",
+        "precision": "rooftop",
+        "address": {
+          "street_address": "1100 South Lamar Boulevard",
+          "address_locality": "Austin",
+          "address_region": "TX",
+          "postal_code": "78704",
+          "country_code": "US",
+          "formatted": "European Wax Center, 1100, South Lamar Boulevard, Evergreen Heights, Austin, Travis County, Texas, 78704, United States"
+        },
+        "place_closure": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+        "timezone": "America/Chicago",
+        "source_system": "manual",
+        "data": {}
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "5b9e0d3c-2a74-4186-9f53-7c1d8e0a6b92",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-98.05297851562501, 30.45104143350694],
+            [-98.18756103515625, 30.3136166899307],
+            [-97.99255371093751, 30.230594564932193],
+            [-97.79205322265626, 30.339694848974272],
+            [-97.89642333984376, 30.453409130203596],
+            [-98.05297851562501, 30.45104143350694]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "5b9e0d3c-2a74-4186-9f53-7c1d8e0a6b92",
+        "uri": "https://mdm.cameron-dietz.com/id/location/5b9e0d3c-2a74-4186-9f53-7c1d8e0a6b92",
+        "type": "location",
+        "slug": "lakeway-area-of-interest",
+        "label": "Lakeway",
+        "summary": "where i lived",
+        "category": { "primary": "hazard", "kind": "area_of_interest" },
+        "tags": ["hand-drawn"],
+        "status": "active",
+        "visibility": "internal",
+        "shape_role": "boundary",
+        "place_closure": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+        "timezone": "America/Chicago",
+        "source_system": "manual",
+        "data": {}
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "2f6b3d90-1e47-4c85-a3f2-7b90c5e81d64",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-98.5456116, 31.2638905]
+      },
+      "properties": {
+        "id": "2f6b3d90-1e47-4c85-a3f2-7b90c5e81d64",
+        "uri": "https://mdm.cameron-dietz.com/id/place/2f6b3d90-1e47-4c85-a3f2-7b90c5e81d64",
+        "type": "place",
+        "slug": "us-tx",
+        "label": "Texas",
+        "category": { "primary": "administrative", "kind": "region", "jurisdiction": "state" },
+        "status": "active",
+        "visibility": "public",
+        "precision": "region",
+        "identifiers": { "fips_state": ["48"], "iso3166_2": ["US-TX"], "same": ["048000"] },
+        "place_closure": ["9e0d5a72-4c18-4b93-8e60-1f2a7d3c5b89", "2f6b3d90-1e47-4c85-a3f2-7b90c5e81d64"],
+        "timezone": "America/Chicago",
+        "source_system": "census_tiger",
+        "data": { "adm_level": 1 },
+        "metadata": {
+          "note": "The original ATLAS file stored Texas as a bare point with address 'Texas, United States', which cannot answer containment questions. It is now a place record; this point is only its map label anchor, and the real boundary lives in geo.shapes on the record."
+        }
+      }
+    }
+  ],
+
+  "metadata": {
+    "generated": "2026-09-15T14:02:11Z",
+    "tool": "ATLAS",
+    "count": 5
+  }
+}

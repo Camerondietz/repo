@@ -1,0 +1,19 @@
+{
+    "title": "",
+    "doc_type": null,
+    "authors": [],
+    "author_names": null,
+    "topics": [],
+    "mentions": null,
+    "version": "",
+    "citations": null,
+    "url": "",
+    "embedding": null,
+    "embedding_model": "",
+    "visibility": null,
+    "permissions": null,
+    "owner": null,
+    "source_system": "",
+    "source_record_id": "",
+    "metadata": null
+}

@@ -1,0 +1,495 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/record.schema.json",
+  "title": "MDM Record",
+  "description": "Universal envelope for every entity in the unified data system. Three fields are required (id, type, label); everything else is optional, so a record can be three lines or forty. Type-specific content lives in `data`; the envelope carries only what is cross-cutting.",
+  "type": "object",
+  "required": ["id", "type", "label"],
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional self-identification on instance documents, so editors can offer completion."
+    },
+
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Stable internal identity. Never reused, never changes for the life of the record."
+    },
+    "uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "Dereferenceable identity. Pattern: https://mdm.cameron-dietz.com/id/{type}/{id}. When six apps pass a reference around, a resolvable URI is unambiguous in a way a bare UUID is not.",
+      "examples": ["https://mdm.cameron-dietz.com/id/person/378ae13a-f609-45f5-92e0-2755e41cd5de"]
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Entity type. Drives which type schema applies and how `data` is interpreted.",
+      "examples": ["person", "organization", "location", "place", "document", "item", "employment", "content_category", "frequency", "sop", "tool"]
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 128,
+      "description": "Human-readable handle for URLs and filenames. Unique within a type. Kebab-case ids like 'nims-doctrine-2023' belong here, not in `id`."
+    },
+
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "description": "Display name. Present on EVERY record so unified search, pickers and link previews can render any result without knowing its payload shape."
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "One-paragraph plain-language description, for search snippets and hover cards."
+    },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 512 },
+      "uniqueItems": true,
+      "maxItems": 128,
+      "default": [],
+      "description": "Alternate names, abbreviations, former names, common misspellings. Feed into the search index; also the cheapest deduplication signal when merging sources."
+    },
+
+    "category": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": { "$ref": "#/$defs/taxon_value" },
+      "maxProperties": 32,
+      "default": {},
+      "description": "Faceted classification: dimension -> value(s). Dimensions are independent axes that do not collide with each other. Depth WITHIN a dimension uses dots, so hierarchy is a prefix match rather than a closure table. Open map: new dimensions need no schema change.",
+      "examples": [
+        {
+          "primary": "fema",
+          "kind": "doctrine",
+          "domain": ["emergency_management.planning", "emergency_management.hazmat"],
+          "form": "reference",
+          "audience": "responder",
+          "jurisdiction": "federal"
+        }
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "maxLength": 128 },
+      "uniqueItems": true,
+      "maxItems": 256,
+      "default": [],
+      "description": "Uncontrolled freeform keywords for full-text search. Anything you intend to facet, filter or report on belongs in `category` instead."
+    },
+
+    "status": {
+      "enum": ["draft", "review", "active", "superseded", "deprecated", "withdrawn"],
+      "default": "active",
+      "description": "Record lifecycle: is this entry current and usable? Orthogonal to `state`."
+    },
+    "state": {
+      "type": "string",
+      "maxLength": 64,
+      "description": "Domain condition, orthogonal to `status`. An item can be status=active and state=out_of_service at the same time.",
+      "examples": ["in_service", "out_of_service", "vacant", "dispatched", "paid"]
+    },
+    "version": {
+      "type": "string",
+      "maxLength": 64,
+      "description": "Human revision label of this record as a whole.",
+      "examples": ["1.0", "Rev C", "2026-01"]
+    },
+    "data_schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "maxLength": 2048,
+      "description": "Optional URI of the schema `data` conforms to. Payload versioning lives here: bump the URI on a breaking payload change and old records keep pointing at the old schema."
+    },
+    "superseded_by": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "default": null,
+      "description": "id of the record replacing this one. Expected whenever status is 'superseded'."
+    },
+
+    "valid_from": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "When the fact became true in the world. Distinct from created_at, which is when the system learned it. Keeping these separate is what lets you ask what was in force on a given date."
+    },
+    "valid_to": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "default": null,
+      "description": "When the fact stopped being true. Null means still in force."
+    },
+    "last_verified": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Last date this record was reconfirmed against its source."
+    },
+    "review_due": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Next scheduled review. One query then finds everything stale across every type at once."
+    },
+
+    "visibility": {
+      "enum": ["public", "internal", "restricted", "confidential"],
+      "default": "internal",
+      "description": "Coarse access tier. This is a LABEL - the serving layer must actually enforce it. Per-group ACLs belong in a separate grants table keyed by record id, not here."
+    },
+    "pii": {
+      "type": "boolean",
+      "default": false,
+      "description": "Contains personal information. Explicit flag so retention and subject-access sweeps need not parse payloads."
+    },
+    "owner": {
+      "oneOf": [{ "$ref": "#/$defs/actor_ref" }, { "type": "null" }],
+      "default": null,
+      "description": "Who is accountable for keeping this record correct."
+    },
+
+    "parent_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "default": null,
+      "description": "Canonical containment parent, for hierarchies and ownership. Additional parents go in `relations`; a single containment tree is worth far more than multi-parent flexibility costs."
+    },
+    "relations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/relation" },
+      "maxItems": 1000,
+      "default": [],
+      "description": "Typed edges to other records. Keeps foreign keys out of `data` so generic tooling can walk the graph without knowing the domain."
+    },
+
+    "identifiers": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "uniqueItems": true
+      },
+      "maxProperties": 64,
+      "default": {},
+      "description": "Cross-walk of external identifiers keyed by issuing scheme. How the same real-world entity arriving from three different APIs resolves to one record. Arrays because an entity can hold several ids in one scheme. Index as (scheme, value) -> id.",
+      "examples": [{ "sku": ["AIT-44821"], "domain": ["applied.com"], "fips_county": ["48453"], "same": ["048453"] }]
+    },
+
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2048,
+      "description": "Canonical web location of the thing ITSELF - a document's file, an organization's website, a tool's homepage. Not provenance; see source_url."
+    },
+    "links": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/link" },
+      "maxItems": 64,
+      "default": [],
+      "description": "Additional named URLs beyond the canonical one."
+    },
+
+    "attachments": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/attachment" },
+      "maxItems": 256,
+      "default": [],
+      "description": "Files belonging to this record: the PDF, the photo, the featured image, the manual."
+    },
+
+    "geo": { "$ref": "#/$defs/geo" },
+
+    "source_system": {
+      "type": "string",
+      "maxLength": 128,
+      "default": "",
+      "description": "Originating system, when this record was imported or synced rather than created here.",
+      "examples": ["atlas", "ipaws", "nws", "csv_upload", "manual"]
+    },
+    "source_record_id": {
+      "type": "string",
+      "maxLength": 512,
+      "default": "",
+      "description": "The record's id in the source system. Paired with source_system this is a natural key that makes re-imports idempotent."
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2048,
+      "description": "Where this record was obtained. Provenance, not the thing's own address."
+    },
+    "checksum_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Hash of the record's canonical content. Deduplicates re-imports and detects drift. Exclude volatile fields (updated_at, geo.place_closure, checksum_sha256 itself) before hashing or values will never match across systems."
+    },
+
+    "apps": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 64 },
+      "uniqueItems": true,
+      "maxItems": 64,
+      "default": [],
+      "description": "Ids of consuming apps that should treat this record as relevant. Empty array means none yet."
+    },
+
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "deleted_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "default": null,
+      "description": "Soft delete. Null or absent means live; a timestamp means logically deleted - filter from normal reads without losing history."
+    },
+    "created_by": { "oneOf": [{ "$ref": "#/$defs/actor_ref" }, { "type": "null" }], "default": null },
+    "updated_by": { "oneOf": [{ "$ref": "#/$defs/actor_ref" }, { "type": "null" }], "default": null },
+
+    "metadata": {
+      "type": "object",
+      "default": {},
+      "description": "Open escape hatch. Because the envelope is strict, new or experimental fields go here instead of at the top level, then get promoted into real fields once they prove out."
+    },
+
+    "data": {
+      "type": "object",
+      "description": "Type-specific payload. Nested rather than flattened so payload field names can never collide with envelope field names - `version` already means three different things across the source systems this replaces."
+    }
+  },
+
+  "$defs": {
+    "taxon_value": {
+      "title": "Taxonomy Value",
+      "description": "One or many values on a classification dimension. Dots denote layers within the dimension, so 'emergency_management.hazmat' is matched by a prefix query for 'emergency_management'. Readers normalize with: v == null ? [] : Array.isArray(v) ? v : [v].",
+      "oneOf": [
+        { "type": "string", "pattern": "^[a-z0-9]+([._-][a-z0-9]+)*$", "maxLength": 256 },
+        {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 64,
+          "items": { "type": "string", "pattern": "^[a-z0-9]+([._-][a-z0-9]+)*$", "maxLength": 256 }
+        }
+      ]
+    },
+
+    "actor_ref": {
+      "title": "Actor Reference",
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "description": "A person, service, automation or the system itself.",
+      "properties": {
+        "type": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "examples": ["person", "service", "system", "api_key"] },
+        "id": { "type": "string", "maxLength": 256 },
+        "label": { "type": "string", "maxLength": 256, "description": "Display snapshot so a UI needs no second lookup. Not the source of truth." }
+      }
+    },
+
+    "relation": {
+      "title": "Relation",
+      "type": "object",
+      "required": ["rel", "id"],
+      "additionalProperties": false,
+      "description": "A plain edge. Relationships carrying their own attributes or dates - employment, licensing, approval - get their own record type instead.",
+      "properties": {
+        "rel": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "Role the target plays relative to this record.",
+          "examples": ["author", "manufacturer", "primary_location", "parent", "mentions", "cites", "related", "operates", "publisher"]
+        },
+        "type": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "description": "type of the referenced record." },
+        "id": { "type": "string", "format": "uuid", "description": "id of the referenced record." },
+        "label": { "type": "string", "maxLength": 512, "description": "Display snapshot so a UI can render the link without a join." },
+        "primary": { "type": "boolean", "default": false, "description": "Marks the principal edge when several share the same rel." }
+      }
+    },
+
+    "link": {
+      "title": "Link",
+      "type": "object",
+      "required": ["rel", "href"],
+      "additionalProperties": false,
+      "properties": {
+        "rel": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "examples": ["homepage", "api_docs", "login", "mirror", "errata", "training"] },
+        "href": { "type": "string", "format": "uri", "maxLength": 2048 },
+        "label": { "type": "string", "maxLength": 256 }
+      }
+    },
+
+    "attachment": {
+      "title": "Attachment",
+      "type": "object",
+      "required": ["role"],
+      "additionalProperties": false,
+      "description": "One file. Use `path` for something stored in your own repo or bucket, `href` for something remote.",
+      "properties": {
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": ["primary", "featured_image", "thumbnail", "manual", "appendix", "datasheet"]
+        },
+        "path": { "type": "string", "maxLength": 1024, "description": "Repo- or bucket-relative path.", "examples": ["docs/fema/nims-doctrine-2023.pdf"] },
+        "href": { "type": "string", "format": "uri", "maxLength": 2048 },
+        "media_type": { "type": "string", "maxLength": 128, "examples": ["application/pdf", "image/webp"] },
+        "file_type": { "type": "string", "maxLength": 16, "description": "Extension without the dot." },
+        "size_bytes": { "type": "integer", "minimum": 0 },
+        "checksum_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "label": { "type": "string", "maxLength": 256 }
+      }
+    },
+
+    "position": {
+      "title": "Position",
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 3,
+      "prefixItems": [
+        { "type": "number", "minimum": -180, "maximum": 180, "description": "Longitude." },
+        { "type": "number", "minimum": -90, "maximum": 90, "description": "Latitude." },
+        { "type": "number", "description": "Elevation in meters." }
+      ],
+      "items": false,
+      "description": "[longitude, latitude] or [longitude, latitude, elevation_m]. WGS84 / EPSG:4326 only. LONGITUDE COMES FIRST - GeoJSON order, the reverse of how humans, CAP alerts and most spreadsheets write coordinates, and the single most common bug in geospatial integrations. The per-slot bounds here catch a flip at validation time: [30.2672, -97.7431] fails because -97.74 is not a valid latitude.",
+      "examples": [[-97.7431, 30.2672]]
+    },
+
+    "linear_ring": {
+      "type": "array",
+      "minItems": 4,
+      "items": { "$ref": "#/$defs/position" },
+      "description": "Closed ring: first and last positions identical, exterior rings counterclockwise, holes clockwise. JSON Schema cannot express 'first element equals last', so only the 4-position minimum is enforced here - assert closure and winding in ingest code. CAP/IPAWS polygons in particular arrive as lat,lon pairs and frequently need both a flip and an explicit close."
+    },
+
+    "geometry": {
+      "title": "GeoJSON Geometry",
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "description": "RFC 7946 geometry object. Store WGS84 and project at display time.",
+      "properties": {
+        "type": { "enum": ["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon", "GeometryCollection"] },
+        "coordinates": {},
+        "geometries": { "type": "array", "items": { "$ref": "#/$defs/geometry" } },
+        "bbox": { "$ref": "#/$defs/bbox" }
+      },
+      "allOf": [
+        { "if": { "properties": { "type": { "const": "Point" } }, "required": ["type"] },
+          "then": { "required": ["coordinates"], "properties": { "coordinates": { "$ref": "#/$defs/position" } } } },
+        { "if": { "properties": { "type": { "const": "MultiPoint" } }, "required": ["type"] },
+          "then": { "required": ["coordinates"], "properties": { "coordinates": { "type": "array", "items": { "$ref": "#/$defs/position" } } } } },
+        { "if": { "properties": { "type": { "const": "LineString" } }, "required": ["type"] },
+          "then": { "required": ["coordinates"], "properties": { "coordinates": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/position" } } } } },
+        { "if": { "properties": { "type": { "const": "MultiLineString" } }, "required": ["type"] },
+          "then": { "required": ["coordinates"], "properties": { "coordinates": { "type": "array", "items": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/position" } } } } } },
+        { "if": { "properties": { "type": { "const": "Polygon" } }, "required": ["type"] },
+          "then": { "required": ["coordinates"], "properties": { "coordinates": { "type": "array", "items": { "$ref": "#/$defs/linear_ring" } } } } },
+        { "if": { "properties": { "type": { "const": "MultiPolygon" } }, "required": ["type"] },
+          "then": { "required": ["coordinates"], "properties": { "coordinates": { "type": "array", "items": { "type": "array", "items": { "$ref": "#/$defs/linear_ring" } } } } } },
+        { "if": { "properties": { "type": { "const": "GeometryCollection" } }, "required": ["type"] },
+          "then": { "required": ["geometries"] } }
+      ]
+    },
+
+    "bbox": {
+      "title": "Bounding Box",
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 6,
+      "items": { "type": "number" },
+      "description": "[west, south, east, north]. Cheap pre-filter before real geometry math, and enough to fit a map viewport."
+    },
+
+    "address": {
+      "title": "Postal Address",
+      "type": "object",
+      "additionalProperties": false,
+      "description": "schema.org PostalAddress field names, snake-cased. Uses address_region rather than 'state' so non-US data needs no parallel shape.",
+      "properties": {
+        "street_address": { "type": "string", "maxLength": 256 },
+        "address_locality": { "type": "string", "maxLength": 128, "description": "City, town or village." },
+        "address_region": { "type": "string", "maxLength": 128, "description": "State, province or prefecture." },
+        "postal_code": { "type": "string", "maxLength": 32 },
+        "country_code": { "type": "string", "pattern": "^[A-Z]{2}$", "description": "ISO 3166-1 alpha-2, uppercase." },
+        "formatted": { "type": "string", "maxLength": 1024, "description": "Single-string rendering for display, and for matching sources that only give you one blob." }
+      }
+    },
+
+    "shape": {
+      "title": "Shape",
+      "type": "object",
+      "required": ["role"],
+      "additionalProperties": false,
+      "description": "One geometry plus what it MEANS. A record can carry several: a repeater has a site point and a coverage polygon; an agency has a headquarters and a jurisdiction. Role is what lets one query ask the right question of every type.",
+      "properties": {
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": ["location", "boundary", "jurisdiction", "service_area", "coverage", "affected_area", "response_zone", "exclusion", "route"]
+        },
+        "geometry": { "$ref": "#/$defs/geometry" },
+        "circle": {
+          "type": "object",
+          "required": ["center", "radius_m"],
+          "additionalProperties": false,
+          "description": "CAP/IPAWS-style circle. GeoJSON has no circle primitive, so keep the authoritative parameters here AND write a derived polygon into `geometry` for anything doing spatial math.",
+          "properties": {
+            "center": { "$ref": "#/$defs/position" },
+            "radius_m": { "type": "number", "minimum": 0 }
+          }
+        },
+        "precision_m": { "type": "number", "minimum": 0, "description": "Approximate positional uncertainty in meters. A rooftop geocode and a ZIP centroid are not the same fact." },
+        "simplified": { "type": "boolean", "default": false, "description": "Display-resolution copy. Never run analysis against it." },
+        "valid_from": { "type": ["string", "null"], "format": "date-time" },
+        "valid_to": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+
+    "geo": {
+      "title": "Geography",
+      "type": "object",
+      "additionalProperties": false,
+      "description": "All location information, on the envelope rather than inside `data`, so 'what is near here' and 'what is in this county' work identically across every type in the catalog.",
+      "properties": {
+        "point": {
+          "$ref": "#/$defs/position",
+          "description": "Single canonical point for mapping, sorting and distance. For an area, use a point guaranteed to fall INSIDE it (point-on-surface), not the centroid - the centroid of a crescent-shaped county is outside the county."
+        },
+        "precision": {
+          "enum": ["rooftop", "parcel", "street", "intersection", "postal_code", "locality", "county", "region", "country", "derived", "unknown"],
+          "description": "How precisely `point` was determined. Drives whether you may render it as a pin, a circle, or a shaded area. Never show a ZIP-centroid point as a rooftop pin."
+        },
+        "address": { "$ref": "#/$defs/address" },
+        "shapes": { "type": "array", "items": { "$ref": "#/$defs/shape" }, "maxItems": 256, "default": [] },
+        "places": {
+          "type": "array",
+          "items": { "type": "string", "format": "uuid" },
+          "uniqueItems": true,
+          "maxItems": 512,
+          "default": [],
+          "description": "Directly asserted gazetteer place associations."
+        },
+        "place_closure": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true,
+          "maxItems": 2048,
+          "default": [],
+          "description": "DERIVED AT WRITE TIME: every place in `places`, plus all ancestors, plus every place containing `point` or intersecting `shapes`. Turns 'everything in Travis County' into one array-contains lookup with no geometry engine involved. Never edit by hand."
+        },
+        "bbox": { "$ref": "#/$defs/bbox" },
+        "elevation_m": { "type": ["number", "null"] },
+        "timezone": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "IANA zone, derived from location. Stored so downstream apps render local times without a lookup service.",
+          "examples": ["America/Chicago"]
+        }
+      }
+    }
+  }
+}

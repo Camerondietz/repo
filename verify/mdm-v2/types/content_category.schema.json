@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/types/content_category.schema.json",
+  "title": "Content Category Record",
+  "description": "A browsable category node on a website - the shape behind review-page.places.json. Named content_category rather than 'category' to avoid confusion with the envelope's `category` classification field: this is a page that visitors navigate to, not a facet applied to other records. From the original: name -> label, description -> summary, the kebab id -> slug (with a real UUID minted for id), type:'category' -> category.kind, status:'published' -> status:'active', parentIds[0] -> parent_id with any remainder in relations, relationships.related -> relations, media.featuredImage -> attachments. Only the SEO block is genuinely payload.",
+
+  "allOf": [{ "$ref": "../record.schema.json" }],
+
+  "properties": {
+    "type": { "const": "content_category" },
+    "slug": {
+      "description": "Required here: the slug IS the URL path segment for this category page."
+    },
+    "data": { "$ref": "#/$defs/content_category_data" }
+  },
+  "required": ["slug"],
+
+  "$defs": {
+    "content_category_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "seo": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Search-engine metadata. Kept in the payload because it is a presentation concern of one website, not a fact about the entity.",
+          "properties": {
+            "title": { "type": "string", "maxLength": 128, "description": "Overrides `label` in the page title tag when set." },
+            "description": { "type": "string", "maxLength": 320, "description": "Meta description. Overrides `summary` when set." },
+            "keywords": {
+              "type": "array",
+              "items": { "type": "string", "maxLength": 128 },
+              "uniqueItems": true,
+              "maxItems": 32,
+              "description": "Distinct from envelope `tags`: these are phrases aimed at search engines, tags are for your own retrieval. They will often differ in casing and wording."
+            },
+            "canonical": { "type": "string", "format": "uri-reference", "maxLength": 2048 },
+            "noindex": { "type": "boolean", "default": false }
+          }
+        },
+        "display": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Presentation controls for the category page.",
+          "properties": {
+            "sort_order": { "type": "integer", "description": "Manual ordering among siblings; lower sorts first." },
+            "layout": { "type": "string", "maxLength": 64, "examples": ["grid", "list", "map"] },
+            "icon": { "type": "string", "maxLength": 64 }
+          }
+        }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "id": "4a9f61d8-2c33-4f0e-9b7a-8e5d1c04b6f2",
+      "type": "content_category",
+      "slug": "things-to-do",
+      "label": "Things To Do",
+      "summary": "Activities and attractions",
+      "status": "active",
+      "visibility": "public",
+      "category": { "kind": "category", "locality": "austin" },
+      "tags": ["activities"],
+      "data": { "seo": { "title": "Things to do Austin", "keywords": ["Austin activities"] } }
+    }
+  ]
+}

@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schema Studio</title>
+<style>
+:root{
+  --bg:#f7f7f5; --panel:#fff; --panel-2:#fbfbfa; --ink:#1b1b19; --ink-2:#5c5c57;
+  --ink-3:#8a8a83; --line:#e2e2dd; --line-2:#cfcfc8; --accent:#2f6f4f; --accent-ink:#fff;
+  --warn:#8a5a00; --warn-bg:#fdf3e0; --err:#a3241f; --err-bg:#fdecea; --ok:#1f6b3f; --ok-bg:#e9f5ee;
+  --info:#1b4f8a; --info-bg:#e8f0fa;
+  --s-str:#2a6e4f; --s-num:#9a5b00; --s-bool:#6b3fa0; --s-null:#8a8a83; --s-key:#1b4f8a;
+  --sel:#dceadf; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.06);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  html[data-theme="auto"]{
+    --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+    --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+    --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+    --info:#8ab7e8; --info-bg:#1a2433;
+    --s-str:#8fd0a8; --s-num:#e0b064; --s-bool:#c4a2ef; --s-null:#77776f; --s-key:#8ab7e8;
+    --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+  }
+}
+html[data-theme="dark"]{
+  --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+  --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+  --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+  --info:#8ab7e8; --info-bg:#1a2433;
+  --s-str:#8fd0a8; --s-num:#e0b064; --s-bool:#c4a2ef; --s-null:#77776f; --s-key:#8ab7e8;
+  --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.5 var(--sans);overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:var(--panel);border:1px solid var(--line-2);border-radius:6px;padding:4px 9px;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--panel-2);border-color:var(--ink-3)}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button.primary:hover{filter:brightness(1.08)}
+button.on{background:var(--sel);border-color:var(--accent)}
+button.tiny{padding:1px 6px;font-size:11px;line-height:17px}
+input[type=text],input[type=search],select,textarea{background:var(--panel);border:1px solid var(--line-2);border-radius:6px;padding:4px 7px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.app{display:flex;flex-direction:column;height:100%}
+header{border-bottom:1px solid var(--line);background:var(--panel);flex:0 0 auto}
+.bar{display:flex;align-items:center;gap:6px;padding:6px 10px;flex-wrap:wrap}
+.bar+.bar{border-top:1px solid var(--line)}
+.brand{font-weight:700;letter-spacing:-.01em;margin-right:6px;white-space:nowrap}
+.brand span{color:var(--accent)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 2px}
+.grow{flex:1 1 auto}
+.tabs{display:flex;gap:2px;padding:5px 10px 0;background:var(--panel-2);border-top:1px solid var(--line)}
+.tabs button{border-radius:6px 6px 0 0;border-color:transparent;background:transparent}
+.tabs button.on{background:var(--panel);border-color:var(--line);border-bottom-color:var(--panel);margin-bottom:-1px;font-weight:600}
+main{flex:1 1 auto;display:flex;min-height:0}
+#rail{flex:0 0 232px;border-right:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;min-height:0}
+.railHead{padding:7px 10px;border-bottom:1px solid var(--line);font-weight:600;font-size:11px;
+  text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+#schemaList{overflow:auto;flex:1 1 auto;padding:4px}
+.sitem{border:1px solid transparent;border-radius:6px;padding:5px 7px;margin-bottom:2px;cursor:pointer}
+.sitem:hover{background:var(--panel-2)}
+.sitem.active{background:var(--sel);border-color:var(--accent)}
+.sitem .r1{display:flex;align-items:center;gap:5px}
+.sitem .nm{font-weight:600;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1 1 auto}
+.sitem .id{font-family:var(--mono);font-size:10px;color:var(--ink-3);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.sitem .star{color:var(--ink-3);font-size:13px;line-height:1}
+.sitem .star.on{color:var(--accent)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--warn);flex:0 0 auto}
+.dot.bad{background:var(--err)}
+#content{flex:1 1 auto;overflow:auto;min-width:0;padding:12px 14px 40px}
+footer{flex:0 0 auto;border-top:1px solid var(--line);background:var(--panel);padding:4px 10px;
+  display:flex;gap:14px;align-items:center;font:11.5px/1.4 var(--mono);color:var(--ink-2);flex-wrap:wrap}
+.pill{border-radius:999px;padding:1px 9px;font-weight:600;font-family:var(--sans);font-size:11px}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.err{background:var(--err-bg);color:var(--err)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px}
+th,td{text-align:left;padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{position:sticky;top:0;background:var(--panel-2);font-weight:600;z-index:2;border-bottom:1px solid var(--line-2)}
+td.mono,th.mono{font-family:var(--mono);font-size:11.5px}
+.matrix td:first-child,.matrix th:first-child{position:sticky;left:0;background:var(--panel);z-index:1;
+  border-right:1px solid var(--line-2);font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+.matrix th:first-child{z-index:3;background:var(--panel-2)}
+.matrix tbody tr:hover td{background:var(--panel-2)}
+.matrix tbody tr:hover td:first-child{background:var(--sel)}
+.cell{cursor:pointer;font-family:var(--mono);font-size:11px;line-height:1.45}
+.cell.own{border-left:3px solid var(--accent)}
+.cell.inh{color:var(--ink-3)}
+.cell.add{background:var(--warn-bg);border-left:3px solid var(--warn)}
+.cell.miss{color:var(--line-2);text-align:center}
+.req{color:var(--err);font-weight:700}
+.scrollx{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 10px;font-size:11.5px;color:var(--ink-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+/* panes */
+.panes{display:flex;gap:10px;align-items:stretch}
+.pane{flex:1 1 0;min-width:0;border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;background:var(--panel)}
+.paneHead{display:flex;gap:5px;align-items:center;padding:6px 8px;border-bottom:1px solid var(--line);background:var(--panel-2);border-radius:8px 8px 0 0}
+.paneHead select{flex:1 1 auto;min-width:0}
+.pane textarea{flex:1 1 auto;border:0;border-radius:0 0 8px 8px;resize:none;padding:8px 10px;min-height:54vh;
+  font:11.5px/1.6 var(--mono);background:var(--panel);white-space:pre;tab-size:2}
+.pane textarea:focus{outline:none}
+.paneFoot{padding:4px 8px;border-top:1px solid var(--line);font:11px/1.4 var(--mono);color:var(--ink-3)}
+/* misc */
+h4{margin:16px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}
+h4:first-child{margin-top:0}
+.rowflex{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.hint{color:var(--ink-3);font-size:11.5px;margin:6px 0}
+.msg{border-radius:6px;padding:7px 10px;margin:8px 0;font-size:12px}
+.msg.err{background:var(--err-bg);color:var(--err)}
+.msg.ok{background:var(--ok-bg);color:var(--ok)}
+.msg.warn{background:var(--warn-bg);color:var(--warn)}
+.msg.info{background:var(--info-bg);color:var(--info)}
+.finding{border:1px solid var(--line);border-left-width:3px;border-radius:6px;padding:7px 10px;margin-bottom:6px;font-size:12px}
+.finding.err{border-left-color:var(--err)}
+.finding.warn{border-left-color:var(--warn)}
+.finding.info{border-left-color:var(--info)}
+.finding b{font-family:var(--mono);font-size:11.5px}
+.finding .where{color:var(--ink-3);font-size:11px;font-family:var(--mono);margin-top:2px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:8px;margin:0 0 14px}
+.card{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.card b{display:block;font-size:19px;font-weight:700;letter-spacing:-.02em}
+.card span{color:var(--ink-3);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+dialog{border:1px solid var(--line-2);border-radius:10px;background:var(--panel);color:var(--ink);
+  padding:0;box-shadow:var(--shadow);max-width:min(720px,94vw);width:100%}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+dialog .dh{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700;
+  display:flex;justify-content:space-between;align-items:center;gap:10px}
+dialog .dh small{font-weight:400;color:var(--ink-3);font-family:var(--mono);font-size:11px}
+dialog .db{padding:14px;max-height:62vh;overflow:auto}
+dialog .df{padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+dialog textarea{width:100%;min-height:190px;font:12px/1.6 var(--mono);resize:vertical}
+.drop{position:fixed;inset:0;background:rgba(47,111,79,.14);border:3px dashed var(--accent);
+  z-index:99;display:none;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent)}
+.drop.on{display:flex}
+.chk{display:flex;gap:6px;align-items:center;font-size:12px;padding:3px 0}
+.diffA{background:var(--err-bg);color:var(--err)}
+.diffB{background:var(--ok-bg);color:var(--ok)}
+.tag{display:inline-block;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;
+  padding:0 5px;font-family:var(--mono);font-size:10.5px;margin:0 3px 3px 0;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="bar">
+      <div class="brand">Schema<span>&#9679;</span>Studio</div>
+      <button id="bOpen">Open files&#8230;</button>
+      <input type="file" id="fInput" multiple accept=".json" hidden>
+      <button id="bOpenDir" hidden>Open folder&#8230;</button>
+      <button id="bPaste">Paste&#8230;</button>
+      <button id="bNewSchema">New schema</button>
+      <div class="sep"></div>
+      <button id="bSaveAll">Download all</button>
+      <button id="bWriteAll" hidden class="primary">Save to disk</button>
+      <div class="sep"></div>
+      <button id="bSelAll">Select all</button>
+      <button id="bSelNone">None</button>
+      <div class="grow"></div>
+      <span id="fsNote" class="hint" style="margin:0"></span>
+      <button id="bTheme" title="Theme">&#9681;</button>
+    </div>
+    <div class="tabs" id="tabs">
+      <button data-tab="matrix" class="on">Matrix</button>
+      <button data-tab="side">Side by side</button>
+      <button data-tab="diff">Diff</button>
+      <button data-tab="defs">Defs</button>
+      <button data-tab="check">Check</button>
+      <button data-tab="help">Help</button>
+    </div>
+  </header>
+
+  <main>
+    <aside id="rail">
+      <div class="railHead">Schemas <span class="grow"></span><span id="railCount" class="hint" style="margin:0"></span></div>
+      <div id="schemaList"></div>
+    </aside>
+    <section id="content"></section>
+  </main>
+
+  <footer>
+    <span id="stStatus" class="pill ok">no schemas loaded</span>
+    <span id="stMaster">master: &#8212;</span>
+    <span id="stDirty"></span>
+    <span class="grow"></span>
+    <span id="stHint" class="hint" style="margin:0"></span>
+  </footer>
+</div>
+
+<div class="drop" id="drop">Drop schema files to load</div>
+
+<dialog id="dlg">
+  <div class="dh"><span id="dlgTitle">Edit</span><small id="dlgSub"></small></div>
+  <div class="db" id="dlgBody"></div>
+  <div class="df" id="dlgFoot">
+    <button type="button" id="dlgCancel">Cancel</button>
+    <button type="button" id="dlgOk" class="primary">OK</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function el(t,c,x){var e=document.createElement(t); if(c)e.className=c; if(x!=null)e.textContent=x; return e}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function typeOf(v){ if(v===null)return "null"; if(Array.isArray(v))return "array"; return typeof v }
+function deep(v){ return v===undefined?undefined:JSON.parse(JSON.stringify(v)) }
+function store(k,v){ try{ v===undefined?localStorage.removeItem(k):localStorage.setItem(k,v) }catch(e){} }
+function recall(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+function download(name,text,mime){
+  var b=new Blob([text],{type:mime||"application/json"}), u=URL.createObjectURL(b), a=el("a");
+  a.href=u; a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(u); a.remove()},0);
+}
+function copyText(txt,b){
+  function fb(){ var ta=el("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select(); var ok=false;
+    try{ ok=document.execCommand("copy") }catch(e){} ta.remove(); if(b) flash(b,ok?"✓":"Ctrl+C") }
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    navigator.clipboard.writeText(txt).then(function(){ if(b) flash(b,"✓") },fb);
+  else fb();
+}
+function flash(b,m){ var o=b.textContent; b.textContent=m; setTimeout(function(){b.textContent=o},900) }
+
+/* ------------------------------------------------------------------ state */
+// Each entry: {name, text, obj, ok, err, dirty, sel, handle}
+var DOCS=[], master=null, active=null, tabName="matrix";
+
+function idOf(d){ return (d.obj&&d.obj.$id) || ("urn:local:"+d.name) }
+function registry(){
+  var m={};
+  DOCS.forEach(function(d){ if(d.ok) m[idOf(d)]=d.obj });
+  return m;
+}
+function parseDoc(d){
+  try{ d.obj=JSON.parse(d.text); d.ok=true; d.err=null }
+  catch(e){ d.ok=false; d.err=e.message; }
+}
+function addDoc(name,text,handle){
+  var d={name:name,text:text,obj:null,ok:false,err:null,dirty:false,sel:true,handle:handle||null};
+  parseDoc(d);
+  var dup=DOCS.filter(function(x){return x.name===name})[0];
+  if(dup){ Object.assign(dup,{text:text,obj:d.obj,ok:d.ok,err:d.err,dirty:false,handle:handle||dup.handle}) }
+  else DOCS.push(d);
+  if(!master) pickMasterAuto();
+  persist(); renderAll();
+}
+function pickMasterAuto(){
+  // The master is whichever schema the others point at; fall back to the one
+  // that simply declares the most properties.
+  var counts={};
+  DOCS.forEach(function(d){
+    if(!d.ok)return;
+    JSON.stringify(d.obj).replace(/"\$ref"\s*:\s*"([^"]+)"/g,function(_,r){
+      var res=resolveRef(r,idOf(d)); if(res&&res.base&&res.base!==idOf(d)) counts[res.base]=(counts[res.base]||0)+1;
+      return "";
+    });
+  });
+  var best=null,bestN=-1;
+  DOCS.forEach(function(d){
+    if(!d.ok)return;
+    var n=counts[idOf(d)]||0;
+    var props=d.obj&&d.obj.properties?Object.keys(d.obj.properties).length:0;
+    var score=n*1000+props;
+    if(score>bestN){ bestN=score; best=d }
+  });
+  master=best;
+}
+function persist(){
+  try{
+    store("ss.docs",JSON.stringify(DOCS.map(function(d){
+      return {name:d.name,text:d.text,sel:d.sel,dirty:d.dirty};
+    })));
+    store("ss.master",master?master.name:"");
+  }catch(e){}
+}
+function restore(){
+  var raw=recall("ss.docs"); if(!raw)return false;
+  try{
+    var arr=JSON.parse(raw);
+    arr.forEach(function(x){
+      var d={name:x.name,text:x.text,obj:null,ok:false,err:null,dirty:!!x.dirty,sel:x.sel!==false,handle:null};
+      parseDoc(d); DOCS.push(d);
+    });
+    var mn=recall("ss.master");
+    master=DOCS.filter(function(d){return d.name===mn})[0]||null;
+    if(!master&&DOCS.length) pickMasterAuto();
+    return DOCS.length>0;
+  }catch(e){ return false }
+}
+
+/* ------------------------------------------------------------ ref plumbing */
+function ptr(doc,frag){
+  if(!frag)return doc;
+  var parts=frag.replace(/^\//,"").split("/"), c=doc;
+  for(var i=0;i<parts.length;i++){
+    if(c==null)return undefined;
+    c=c[decodeURIComponent(parts[i]).replace(/~1/g,"/").replace(/~0/g,"~")];
+  }
+  return c;
+}
+function resolveRef(ref,base){
+  var reg=registry();
+  var hi=ref.indexOf("#");
+  var head = hi<0 ? ref : ref.slice(0,hi);
+  var hash = hi<0 ? "" : ref.slice(hi+1);
+  var docId=base;
+  if(head){ try{ docId=new URL(head,base||"urn:local:root").href }catch(e){ docId=head } }
+  var doc=reg[docId];
+  if(!doc){
+    var tail=docId.split("/").pop();
+    for(var k in reg) if(k.split("/").pop()===tail){ doc=reg[k]; docId=k; break }
+  }
+  if(!doc) return null;
+  return { schema:ptr(doc,decodeURIComponent(hash)), base:docId, found:ptr(doc,decodeURIComponent(hash))!==undefined };
+}
+
+// Split a schema's properties into those it declares itself and those it picks
+// up through $ref / allOf, because that distinction is the whole point here.
+function analyze(d){
+  if(!d.ok||!d.obj) return {own:{},inh:{},req:{},ownReq:{},chain:[]};
+  var own={},inh={},req={},ownReq={},chain=[],seen={};
+  (function absorb(s,b,isOwn){
+    if(!s||typeof s!=="object")return;
+    if(s.properties) Object.keys(s.properties).forEach(function(k){
+      var tgt=isOwn?own:inh;
+      if(!(k in tgt)) tgt[k]={sc:s.properties[k],base:b};
+    });
+    if(Array.isArray(s.required)) s.required.forEach(function(k){ req[k]=1; if(isOwn) ownReq[k]=1 });
+    if(s.$ref){
+      var key=b+"|"+s.$ref;
+      if(!seen[key]){ seen[key]=1;
+        var r=resolveRef(s.$ref,b);
+        if(r&&r.schema){ if(chain.indexOf(r.base)<0&&r.base!==idOf(d)) chain.push(r.base); absorb(r.schema,r.base,false) }
+      }
+    }
+    if(Array.isArray(s.allOf)) s.allOf.forEach(function(x){ absorb(x,b,false) });
+  })(d.obj,idOf(d),true);
+  return {own:own,inh:inh,req:req,ownReq:ownReq,chain:chain};
+}
+
+// One-line human summary of a property subschema, for a matrix cell.
+function descr(sc,base){
+  if(sc===true) return "any";
+  if(sc===false) return "never";
+  if(!sc||typeof sc!=="object") return String(sc);
+  var bits=[];
+  if(sc.$ref){
+    var r=resolveRef(sc.$ref,base);
+    bits.push("→ "+sc.$ref.replace(/^.*#/,"#"));
+    if(!r||!r.found) bits.push("(unresolved)");
+  }
+  if(sc.const!==undefined) bits.push("const "+JSON.stringify(sc.const));
+  if(sc.enum) bits.push("enum("+sc.enum.length+")");
+  if(sc.type) bits.push(Array.isArray(sc.type)?sc.type.join("|"):sc.type);
+  if(sc.format) bits.push("· "+sc.format);
+  if(sc.oneOf) bits.push("oneOf("+sc.oneOf.length+")");
+  if(sc.anyOf) bits.push("anyOf("+sc.anyOf.length+")");
+  if(sc.allOf) bits.push("allOf("+sc.allOf.length+")");
+  if(sc.items) bits.push("[]");
+  if(sc.properties) bits.push("{"+Object.keys(sc.properties).length+"}");
+  if(sc.pattern) bits.push("re");
+  if(!bits.length) bits.push("—");
+  return bits.join(" ");
+}
+function sameSchema(a,b){ return JSON.stringify(a)===JSON.stringify(b) }
+
+/* -------------------------------------------------------------------- rail */
+function renderRail(){
+  var list=$("#schemaList"); list.textContent="";
+  $("#railCount").textContent=DOCS.length?DOCS.length+" files":"";
+  DOCS.forEach(function(d,i){
+    var it=el("div","sitem"+(d===active?" active":""));
+    var r1=el("div","r1");
+    var cb=el("input"); cb.type="checkbox"; cb.checked=d.sel;
+    cb.onclick=function(e){ e.stopPropagation(); d.sel=cb.checked; persist(); renderContent() };
+    r1.appendChild(cb);
+    var star=el("span","star"+(d===master?" on":""),d===master?"★":"☆");
+    star.title=d===master?"This is the master":"Make this the master";
+    star.onclick=function(e){ e.stopPropagation(); master=d; persist(); renderAll() };
+    r1.appendChild(star);
+    r1.appendChild(el("span","nm",d.name));
+    if(!d.ok) r1.appendChild(el("span","dot bad"));
+    else if(d.dirty) r1.appendChild(el("span","dot"));
+    var x=el("button","tiny","×"); x.title="Remove from the workspace";
+    x.onclick=function(e){ e.stopPropagation();
+      if(!confirm("Remove "+d.name+" from the workspace? Nothing on disk is touched."))return;
+      DOCS.splice(DOCS.indexOf(d),1);
+      if(master===d) pickMasterAuto();
+      if(active===d) active=null;
+      persist(); renderAll();
+    };
+    r1.appendChild(x);
+    it.appendChild(r1);
+    it.appendChild(el("div","id",d.ok?idOf(d):("⚠ "+(d.err||"invalid JSON")).slice(0,60)));
+    it.onclick=function(){ active=d; renderAll() };
+    list.appendChild(it);
+  });
+}
+function selected(){ return DOCS.filter(function(d){ return d.sel&&d.ok }) }
+
+/* ------------------------------------------------------------------ matrix */
+function renderMatrix(c){
+  var docs=selected();
+  if(!docs.length){ c.appendChild(msg("info","Tick some schemas in the sidebar to compare them.")); return }
+  var an={}, linked={};
+  docs.forEach(function(d){
+    an[d.name]=analyze(d);
+    // A standalone wrapper has no master relationship, so it is never "adding
+    // to" or "narrowing" one.
+    linked[d.name] = !!(master&&master.ok) &&
+      (d===master || an[d.name].chain.indexOf(idOf(master))>=0);
+  });
+  var mAn = master&&master.ok ? analyze(master) : null;
+  var mProps = mAn ? Object.assign({},mAn.inh,mAn.own) : {};
+
+  // Row order: master's own properties first, in declaration order, then anything
+  // else any schema contributes.
+  var rows=[], seen={};
+  if(master&&master.ok&&master.obj.properties)
+    Object.keys(master.obj.properties).forEach(function(k){ if(!seen[k]){seen[k]=1;rows.push(k)} });
+  docs.forEach(function(d){
+    var a=an[d.name];
+    Object.keys(a.own).concat(Object.keys(a.inh)).forEach(function(k){ if(!seen[k]){seen[k]=1;rows.push(k)} });
+  });
+
+  var f=$("#matFilter")?$("#matFilter").value.trim().toLowerCase():"";
+  var onlyDiff=$("#matDiff")&&$("#matDiff").checked;
+
+  var tbl=el("table","matrix");
+  var head="<thead><tr><th>property</th>";
+  docs.forEach(function(d){
+    var mark = d===master ? " ★" : (linked[d.name] ? "" : " ○");
+    head+="<th class='mono' title='"+(linked[d.name]?"extends the master":"standalone")+"'>"+
+      esc(d.name.replace(/\.schema\.json$/,""))+mark+"</th>";
+  });
+  tbl.innerHTML=head+"</tr></thead>";
+  var tb=el("tbody"); tbl.appendChild(tb);
+
+  var shown=0;
+  rows.forEach(function(k){
+    if(f&&k.toLowerCase().indexOf(f)<0)return;
+    var cells=docs.map(function(d){
+      var a=an[d.name];
+      var here = a.own[k] ? {sc:a.own[k].sc,base:a.own[k].base,own:true}
+               : a.inh[k] ? {sc:a.inh[k].sc,base:a.inh[k].base,own:false} : null;
+      return {d:d,a:a,here:here};
+    });
+    if(onlyDiff){
+      var sigs=cells.map(function(x){ return x.here?JSON.stringify(x.here.sc):"∅" });
+      if(sigs.every(function(s){return s===sigs[0]})) return;
+    }
+    shown++;
+    var tr=el("tr");
+    var th=el("td",null,k);
+    tr.appendChild(th);
+    cells.forEach(function(x){
+      var td=el("td");
+      if(!x.here){ td.className="cell miss"; td.textContent="—"; tr.appendChild(td); return }
+      var isLinked = linked[x.d.name];
+      var inMaster = mProps[k]!==undefined;
+      var cls = x.here.own ? ((inMaster||!isLinked)?"cell own":"cell add") : "cell inh";
+      td.className=cls;
+      var txt=descr(x.here.sc,x.here.base);
+      td.appendChild(document.createTextNode(txt));
+      if(x.a.req[k]) td.appendChild(el("span","req"," *"));
+      if(isLinked&&x.d!==master&&x.here.own&&inMaster&&!sameSchema(x.here.sc,mProps[k].sc))
+        td.appendChild(el("div","hint","narrows master"));
+      if(isLinked&&x.here.own&&!inMaster)
+        td.title="Declared here but absent from the master";
+      td.onclick=function(){ editProperty(x.d,k,x.here) };
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+
+  var tools=el("div","rowflex");
+  var fi=el("input"); fi.type="search"; fi.id="matFilter"; fi.placeholder="Filter properties"; fi.value=f;
+  fi.style.width="180px";
+  fi.oninput=function(){ var v=fi.value; renderContent(); var n=$("#matFilter"); if(n){n.value=v;n.focus();
+    n.setSelectionRange(v.length,v.length)} };
+  tools.appendChild(fi);
+  var dl=el("label","chk"); var dcb=el("input"); dcb.type="checkbox"; dcb.id="matDiff"; dcb.checked=!!onlyDiff;
+  dcb.onchange=function(){ renderContent() };
+  dl.appendChild(dcb); dl.appendChild(el("span",null,"Only rows that differ"));
+  tools.appendChild(dl);
+  var addp=el("button",null,"Add property to master"); addp.className="primary";
+  addp.onclick=function(){ addPropertyToMaster() };
+  tools.appendChild(addp);
+  c.appendChild(tools);
+
+  var lg=el("div","legend");
+  lg.innerHTML="<span><i style='background:var(--accent)'></i>declared here</span>"+
+    "<span><i style='background:var(--warn)'></i>declared here, not in master</span>"+
+    "<span style='color:var(--ink-3)'><i style='background:var(--line-2)'></i>inherited</span>"+
+    "<span><span class='req'>*</span> required</span>"+
+    "<span>★ master &nbsp; ○ standalone</span>"+
+    "<span>click any cell to edit it</span>";
+  c.appendChild(lg);
+
+  var wrap=el("div","scrollx"); wrap.style.maxHeight="70vh"; wrap.appendChild(tbl);
+  c.appendChild(wrap);
+  c.appendChild(el("p","hint",shown+" of "+rows.length+" properties shown across "+docs.length+" schemas."));
+}
+
+function editProperty(d,key,here){
+  var body=el("div");
+  var info=el("p","hint");
+  info.textContent = here.own
+    ? "Declared directly in "+d.name+"."
+    : "Inherited from "+here.base+". Saving will create a local override in "+d.name+".";
+  body.appendChild(info);
+  var ta=el("textarea"); ta.value=JSON.stringify(here.sc,null,2);
+  body.appendChild(ta);
+
+  var reqWrap=el("label","chk"); var reqCb=el("input"); reqCb.type="checkbox";
+  reqCb.checked=Array.isArray(d.obj.required)&&d.obj.required.indexOf(key)>=0;
+  reqWrap.appendChild(reqCb); reqWrap.appendChild(el("span",null,"Required in "+d.name));
+  body.appendChild(reqWrap);
+
+  var others=DOCS.filter(function(x){ return x!==d&&x.ok });
+  var pushBox=el("div");
+  if(others.length){
+    pushBox.appendChild(el("h4",null,"Also write this into"));
+    others.forEach(function(o){
+      var l=el("label","chk"); var cb=el("input"); cb.type="checkbox"; cb.dataset.n=o.name;
+      l.appendChild(cb); l.appendChild(el("span",null,o.name+(o===master?"  ★":"")));
+      pushBox.appendChild(l);
+    });
+    body.appendChild(pushBox);
+  }
+
+  dialog({title:"Property “"+key+"”", sub:d.name, body:body, extra:[
+    {label:"Copy JSON", fn:function(b){ copyText(ta.value,b); return false }},
+    {label:"Delete from "+d.name, fn:function(){
+      if(!confirm("Remove “"+key+"” from "+d.name+"?")) return false;
+      if(d.obj.properties) delete d.obj.properties[key];
+      if(Array.isArray(d.obj.required)) d.obj.required=d.obj.required.filter(function(x){return x!==key});
+      writeBack(d); return true;
+    }}
+  ]},function(ok){
+    if(!ok)return;
+    var val;
+    try{ val=JSON.parse(ta.value) }catch(e){ alert("Not valid JSON: "+e.message); return }
+    applyProperty(d,key,val,reqCb.checked);
+    $$("input[data-n]",pushBox).forEach(function(cb){
+      if(!cb.checked)return;
+      var o=DOCS.filter(function(x){return x.name===cb.dataset.n})[0];
+      if(o) applyProperty(o,key,deep(val),reqCb.checked);
+    });
+    renderAll();
+  });
+}
+function applyProperty(d,key,val,required){
+  if(!d.obj.properties) d.obj.properties={};
+  d.obj.properties[key]=val;
+  if(required){
+    if(!Array.isArray(d.obj.required)) d.obj.required=[];
+    if(d.obj.required.indexOf(key)<0) d.obj.required.push(key);
+  } else if(Array.isArray(d.obj.required)){
+    d.obj.required=d.obj.required.filter(function(x){return x!==key});
+  }
+  writeBack(d);
+}
+function writeBack(d){
+  d.text=JSON.stringify(d.obj,null,2);
+  d.dirty=true; parseDoc(d); persist();
+}
+function addPropertyToMaster(){
+  if(!master){ alert("No master selected."); return }
+  var body=el("div");
+  var nm=el("input"); nm.type="text"; nm.placeholder="property name"; nm.style.width="100%";
+  body.appendChild(el("h4",null,"Name")); body.appendChild(nm);
+  var ta=el("textarea"); ta.value='{\n  "type": "string",\n  "description": ""\n}';
+  body.appendChild(el("h4",null,"Schema")); body.appendChild(ta);
+  dialog({title:"Add property to master",sub:master.name,body:body},function(ok){
+    if(!ok||!nm.value.trim())return;
+    var val; try{ val=JSON.parse(ta.value) }catch(e){ alert("Not valid JSON: "+e.message); return }
+    applyProperty(master,nm.value.trim(),val,false);
+    renderAll();
+  });
+}
+
+/* ------------------------------------------------------------ side by side */
+var sidePicks=[0,1], syncScroll=true;
+function renderSide(c){
+  if(DOCS.length<1){ c.appendChild(msg("info","Load some schema files first.")); return }
+  var tools=el("div","rowflex");
+  [2,3,4].forEach(function(n){
+    var b=el("button",null,n+" panes"); if(sidePicks.length===n) b.className="on";
+    b.onclick=function(){
+      while(sidePicks.length<n) sidePicks.push(Math.min(sidePicks.length,DOCS.length-1));
+      sidePicks.length=n; renderContent();
+    };
+    tools.appendChild(b);
+  });
+  var sl=el("label","chk"); var scb=el("input"); scb.type="checkbox"; scb.checked=syncScroll;
+  scb.onchange=function(){ syncScroll=scb.checked };
+  sl.appendChild(scb); sl.appendChild(el("span",null,"Sync scrolling"));
+  tools.appendChild(sl);
+  c.appendChild(tools);
+
+  var panes=el("div","panes");
+  var areas=[];
+  sidePicks.forEach(function(pi,slot){
+    var d=DOCS[Math.min(pi,DOCS.length-1)];
+    var p=el("div","pane"), h=el("div","paneHead");
+    var sel=el("select");
+    DOCS.forEach(function(x,i){ var o=new Option(x.name+(x===master?"  ★":""),i); sel.appendChild(o) });
+    sel.value=String(DOCS.indexOf(d));
+    sel.onchange=function(){ sidePicks[slot]=+sel.value; renderContent() };
+    h.appendChild(sel);
+    var bfmt=el("button","tiny","fmt"); bfmt.title="Format";
+    var bcopy=el("button","tiny","copy");
+    var bdl=el("button","tiny","↓"); bdl.title="Download";
+    h.appendChild(bfmt); h.appendChild(bcopy); h.appendChild(bdl);
+    p.appendChild(h);
+    var ta=el("textarea"); ta.value=d.text; ta.spellcheck=false;
+    p.appendChild(ta);
+    var foot=el("div","paneFoot");
+    p.appendChild(foot);
+    function status(){
+      foot.textContent = d.ok ? (Object.keys((d.obj&&d.obj.properties)||{}).length+" own props · "+
+        (d.dirty?"edited":"clean")) : ("⚠ "+d.err);
+      foot.style.color = d.ok?"var(--ink-3)":"var(--err)";
+    }
+    status();
+    ta.addEventListener("input",function(){
+      d.text=ta.value; d.dirty=true; parseDoc(d); status(); persist(); renderRail(); refreshStatus();
+    });
+    bfmt.onclick=function(){ if(!d.ok){alert("Fix the JSON first.");return}
+      d.text=JSON.stringify(d.obj,null,2); ta.value=d.text; d.dirty=true; persist(); status() };
+    bcopy.onclick=function(){ copyText(d.text,bcopy) };
+    bdl.onclick=function(){ download(d.name,d.text) };
+    areas.push(ta);
+    panes.appendChild(p);
+  });
+  areas.forEach(function(a){
+    a.addEventListener("scroll",function(){
+      if(!syncScroll)return;
+      areas.forEach(function(b){ if(b!==a) b.scrollTop=a.scrollTop });
+    });
+  });
+  c.appendChild(panes);
+  c.appendChild(el("p","hint","Edits are held in the page. Use Download, or Save to disk where the browser allows it."));
+}
+
+/* -------------------------------------------------------------------- diff */
+var diffA=0,diffB=1;
+function flatPaths(o,pre,out){
+  out=out||{}; pre=pre||"";
+  if(o===null||typeof o!=="object"){ out[pre]=o; return out }
+  var ks=Array.isArray(o)?o.map(function(_,i){return i}):Object.keys(o);
+  if(!ks.length){ out[pre]=Array.isArray(o)?"[]":"{}"; return out }
+  ks.forEach(function(k){ flatPaths(o[k], pre?pre+"."+k:String(k), out) });
+  return out;
+}
+function renderDiff(c){
+  if(DOCS.length<2){ c.appendChild(msg("info","Load at least two schemas to diff.")); return }
+  var tools=el("div","rowflex");
+  function picker(cur,fn){
+    var s=el("select");
+    DOCS.forEach(function(x,i){ s.appendChild(new Option(x.name+(x===master?"  ★":""),i)) });
+    s.value=String(Math.min(cur,DOCS.length-1)); s.onchange=function(){ fn(+s.value); renderContent() };
+    return s;
+  }
+  tools.appendChild(el("span","hint","A"));
+  tools.appendChild(picker(diffA,function(v){diffA=v}));
+  tools.appendChild(el("span","hint","B"));
+  tools.appendChild(picker(diffB,function(v){diffB=v}));
+  c.appendChild(tools);
+
+  var a=DOCS[Math.min(diffA,DOCS.length-1)], b=DOCS[Math.min(diffB,DOCS.length-1)];
+  if(!a.ok||!b.ok){ c.appendChild(msg("err","Both files must be valid JSON to diff.")); return }
+  var fa=flatPaths(a.obj), fb=flatPaths(b.obj);
+  var keys={}; Object.keys(fa).forEach(function(k){keys[k]=1}); Object.keys(fb).forEach(function(k){keys[k]=1});
+  var rows=Object.keys(keys).sort().filter(function(k){ return JSON.stringify(fa[k])!==JSON.stringify(fb[k]) });
+
+  var counts={onlyA:0,onlyB:0,changed:0};
+  rows.forEach(function(k){
+    if(!(k in fb)) counts.onlyA++; else if(!(k in fa)) counts.onlyB++; else counts.changed++;
+  });
+  var cards=el("div","cards");
+  [["Differences",rows.length],["Only in A",counts.onlyA],["Only in B",counts.onlyB],["Changed",counts.changed]]
+    .forEach(function(x){ var d2=el("div","card"); d2.appendChild(el("b",null,String(x[1])));
+      d2.appendChild(el("span",null,x[0])); cards.appendChild(d2) });
+  c.appendChild(cards);
+
+  if(!rows.length){ c.appendChild(msg("ok","These two files are identical.")); return }
+  var t=el("table");
+  t.innerHTML="<thead><tr><th>path</th><th>"+esc(a.name)+"</th><th>"+esc(b.name)+"</th></tr></thead>";
+  var tb=el("tbody"); t.appendChild(tb);
+  rows.slice(0,800).forEach(function(k){
+    var tr=el("tr");
+    tr.appendChild(el("td","mono",k));
+    var va=el("td","mono"), vb=el("td","mono");
+    va.textContent = k in fa ? short(fa[k]) : "—";
+    vb.textContent = k in fb ? short(fb[k]) : "—";
+    if(!(k in fb)) va.className="mono diffA";
+    else if(!(k in fa)) vb.className="mono diffB";
+    else { va.className="mono diffA"; vb.className="mono diffB" }
+    tr.appendChild(va); tr.appendChild(vb); tb.appendChild(tr);
+  });
+  var w=el("div","scrollx"); w.style.maxHeight="62vh"; w.appendChild(t); c.appendChild(w);
+  if(rows.length>800) c.appendChild(el("p","hint","Showing the first 800 of "+rows.length+"."));
+}
+function short(v){ var s=typeof v==="string"?v:JSON.stringify(v); return s&&s.length>90?s.slice(0,90)+"…":String(s) }
+
+/* -------------------------------------------------------------------- defs */
+function renderDefs(c){
+  var docs=selected();
+  if(!docs.length){ c.appendChild(msg("info","Tick some schemas in the sidebar.")); return }
+  var names=[],seen={};
+  docs.forEach(function(d){
+    var defs=d.obj.$defs||d.obj.definitions||{};
+    Object.keys(defs).forEach(function(k){ if(!seen[k]){seen[k]=1;names.push(k)} });
+  });
+  if(!names.length){ c.appendChild(msg("info","None of the selected schemas declare $defs.")); return }
+
+  var refCount={};
+  DOCS.forEach(function(d){
+    if(!d.ok)return;
+    JSON.stringify(d.obj).replace(/"\$ref"\s*:\s*"([^"]*#\/\$?defs\/([^"\/]+))"/g,function(_,full,nm){
+      refCount[nm]=(refCount[nm]||0)+1; return "";
+    });
+  });
+
+  var t=el("table","matrix");
+  var head="<thead><tr><th>$def</th><th>refs</th>";
+  docs.forEach(function(d){ head+="<th class='mono'>"+esc(d.name.replace(/\.schema\.json$/,""))+"</th>" });
+  t.innerHTML=head+"</tr></thead>";
+  var tb=el("tbody"); t.appendChild(tb);
+  names.sort().forEach(function(n){
+    var tr=el("tr");
+    tr.appendChild(el("td",null,n));
+    var rc=el("td","mono",String(refCount[n]||0));
+    if(!refCount[n]) rc.className="mono diffA";
+    tr.appendChild(rc);
+    docs.forEach(function(d){
+      var defs=d.obj.$defs||d.obj.definitions||{};
+      var td=el("td");
+      if(!(n in defs)){ td.className="cell miss"; td.textContent="—" }
+      else {
+        td.className="cell own"; td.textContent=descr(defs[n],idOf(d));
+        td.onclick=function(){ editDef(d,n) };
+      }
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+  var w=el("div","scrollx"); w.style.maxHeight="70vh"; w.appendChild(t); c.appendChild(w);
+  c.appendChild(el("p","hint","A ref count of 0 means nothing in the loaded set points at that $def."));
+}
+function editDef(d,name){
+  var defs=d.obj.$defs||d.obj.definitions;
+  var body=el("div");
+  var ta=el("textarea"); ta.style.minHeight="300px"; ta.value=JSON.stringify(defs[name],null,2);
+  body.appendChild(ta);
+  dialog({title:"$defs / "+name,sub:d.name,body:body,extra:[
+    {label:"Copy JSON",fn:function(b){ copyText(ta.value,b); return false }}
+  ]},function(ok){
+    if(!ok)return;
+    var v; try{ v=JSON.parse(ta.value) }catch(e){ alert("Not valid JSON: "+e.message); return }
+    defs[name]=v; writeBack(d); renderAll();
+  });
+}
+
+/* ------------------------------------------------------------------- check */
+function renderCheck(c){
+  var docs=DOCS.filter(function(d){return d.sel});
+  if(!docs.length){ c.appendChild(msg("info","Tick some schemas in the sidebar.")); return }
+  var out=[];
+  function add(sev,title,where){ out.push({sev:sev,title:title,where:where}) }
+
+  var ids={};
+  docs.forEach(function(d){
+    if(!d.ok){ add("err","Invalid JSON — "+d.err,d.name); return }
+    var id=idOf(d);
+    if(ids[id]) add("err","Duplicate $id, so $ref targets are ambiguous",d.name+" and "+ids[id]);
+    ids[id]=d.name;
+    if(!d.obj.$schema) add("warn","No $schema declared, so the dialect is implicit",d.name);
+    if(!d.obj.$id) add("warn","No $id, so other files cannot $ref this one by URI",d.name);
+  });
+
+  // dangling refs
+  docs.forEach(function(d){
+    if(!d.ok)return;
+    var base=idOf(d);
+    (function walk(s,path){
+      if(!s||typeof s!=="object")return;
+      if(typeof s.$ref==="string"){
+        var r=resolveRef(s.$ref,base);
+        if(!r) add("err","$ref points at a file that is not loaded: "+s.$ref,d.name+" · "+path);
+        else if(!r.found) add("err","$ref does not resolve: "+s.$ref,d.name+" · "+path);
+      }
+      Object.keys(s).forEach(function(k){
+        var v=s[k];
+        if(v&&typeof v==="object") walk(v,path?path+"."+k:k);
+      });
+    })(d.obj,"");
+  });
+
+  // coordination against the master
+  if(master&&master.ok){
+    var mAn=analyze(master);
+    var mProps=Object.assign({},mAn.inh,mAn.own);
+    var strict = master.obj.additionalProperties===false;
+    docs.forEach(function(d){
+      if(!d.ok||d===master)return;
+      var a=analyze(d);
+      var linked = a.chain.indexOf(idOf(master))>=0;
+      if(!linked){
+        // A wrapper or standalone document is a legitimate design, so this is a
+        // note, not a fault. Every check below only applies to schemas that
+        // actually extend the master.
+        add("info","Standalone — does not extend the master, so it is not checked against it",d.name);
+        return;
+      }
+      Object.keys(a.own).forEach(function(k){
+        if(!(k in mProps)){
+          add(strict?"err":"warn",
+            strict ? "Declares “"+k+"”, which the master does not allow (master sets additionalProperties:false)"
+                   : "Declares “"+k+"”, which the master does not define",
+            d.name);
+        }
+      });
+      Object.keys(a.req).forEach(function(k){
+        if(!(k in a.own)&&!(k in a.inh))
+          add("err","Requires “"+k+"” but neither declares nor inherits it",d.name);
+      });
+    });
+
+    // Narrowing a property the master already defines is the whole point of a
+    // subtype, so that is never reported. What matters is a property the master
+    // does NOT define that several subtypes have each invented for themselves.
+    var byProp={};
+    docs.forEach(function(d){
+      if(!d.ok||d===master)return;
+      var a=analyze(d);
+      if(a.chain.indexOf(idOf(master))<0)return;
+      Object.keys(a.own).forEach(function(k){
+        if(k in mProps)return;
+        (byProp[k]=byProp[k]||[]).push({d:d,sc:a.own[k].sc});
+      });
+    });
+    Object.keys(byProp).forEach(function(k){
+      var v=byProp[k];
+      if(v.length<2)return;
+      var sigs={};
+      v.forEach(function(x){ sigs[JSON.stringify(x.sc)]=1 });
+      var who=v.map(function(x){return x.d.name}).join(", ");
+      if(Object.keys(sigs).length===1)
+        add("info","“"+k+"” is defined identically in "+v.length+" subtypes but not in the master — consider promoting it",who);
+      else
+        add("warn","“"+k+"” is defined differently across "+v.length+" subtypes and the master does not define it",who);
+    });
+  } else add("warn","No master selected — pick one with the star in the sidebar","");
+
+  var counts={err:0,warn:0,info:0};
+  out.forEach(function(o){ counts[o.sev]++ });
+  var cards=el("div","cards");
+  [["Errors",counts.err],["Warnings",counts.warn],["Notes",counts.info],["Files",docs.length]]
+    .forEach(function(x){ var d2=el("div","card"); d2.appendChild(el("b",null,String(x[1])));
+      d2.appendChild(el("span",null,x[0])); cards.appendChild(d2) });
+  c.appendChild(cards);
+
+  if(!out.length){ c.appendChild(msg("ok","Everything lines up — no findings.")); return }
+  var order={err:0,warn:1,info:2};
+  out.sort(function(a,b){ return order[a.sev]-order[b.sev] });
+  out.forEach(function(o){
+    var f=el("div","finding "+o.sev);
+    f.appendChild(el("b",null,o.title));
+    if(o.where) f.appendChild(el("div","where",o.where));
+    c.appendChild(f);
+  });
+}
+
+/* -------------------------------------------------------------------- help */
+function renderHelp(c){
+  c.innerHTML =
+   "<h4>What this is for</h4>"+
+   "<p class='hint'>Keeping a set of schemas coordinated with one master. The star in the sidebar marks the master; everything else is read against it.</p>"+
+   "<h4>Matrix</h4>"+
+   "<p class='hint'>One row per property, one column per schema, resolved through <span class='tag'>allOf</span> and <span class='tag'>$ref</span> so inherited properties show up too. A green edge means the schema declares that property itself; amber means it declares one the master does not define; grey means inherited. <span class='req'>*</span> marks required. Click any cell to edit that property, and tick other schemas in the dialog to write the same definition into them at once.</p>"+
+   "<h4>Side by side</h4>"+
+   "<p class='hint'>Two to four raw editors with optional synced scrolling. Parse status is live under each pane.</p>"+
+   "<h4>Diff</h4>"+
+   "<p class='hint'>Path-level comparison of any two files — what only A has, what only B has, and what changed.</p>"+
+   "<h4>Defs</h4>"+
+   "<p class='hint'>Which <span class='tag'>$defs</span> each schema declares, with a reference count across everything loaded. Zero means nothing points at it.</p>"+
+   "<h4>Check</h4>"+
+   "<p class='hint'>Coordination problems: dangling <span class='tag'>$ref</span>s, duplicate <span class='tag'>$id</span>s, a type schema that never reaches the master, properties required but never declared, the same property defined differently in different files, and — when the master sets <span class='tag'>additionalProperties:false</span> — any property a subtype declares that the master would reject.</p>"+
+   "<h4>Saving</h4>"+
+   "<p class='hint'>Edits live in the page and survive a reload via localStorage. Download writes a copy. In Chromium browsers over https or a local server, <b>Open folder</b> and <b>Save to disk</b> write back to the original files in place; that API is unavailable on <span class='tag'>file://</span>, where Download is the way out.</p>";
+}
+
+/* ----------------------------------------------------------------- dialog */
+var dlg=$("#dlg"), dlgCb=null;
+function dialog(spec,cb){
+  $("#dlgTitle").textContent=spec.title||"";
+  $("#dlgSub").textContent=spec.sub||"";
+  var b=$("#dlgBody"); b.textContent=""; b.appendChild(spec.body);
+  var foot=$("#dlgFoot");
+  $$(".extra",foot).forEach(function(x){ x.remove() });
+  (spec.extra||[]).forEach(function(x){
+    var btn=el("button","extra",x.label);
+    btn.onclick=function(){ if(x.fn(btn)!==false) finish(false) };
+    foot.insertBefore(btn,foot.firstChild);
+  });
+  dlgCb=cb;
+  if(dlg.showModal) dlg.showModal(); else dlg.setAttribute("open","");
+}
+// Explicit handlers rather than the dialog close event, which does not fire in
+// every renderer.
+function finish(ok){
+  var cb=dlgCb; dlgCb=null;
+  try{ dlg.close() }catch(e){ dlg.removeAttribute("open") }
+  if(cb) cb(ok);
+}
+$("#dlgOk").onclick=function(){ finish(true) };
+$("#dlgCancel").onclick=function(){ finish(false) };
+dlg.addEventListener("cancel",function(e){ e.preventDefault(); finish(false) });
+function msg(kind,text){ var d=el("div","msg "+kind); d.textContent=text; return d }
+
+/* ------------------------------------------------------------------ files */
+$("#bOpen").onclick=function(){ $("#fInput").click() };
+$("#fInput").onchange=function(e){ readFiles(e.target.files); e.target.value="" };
+function readFiles(files){
+  Array.prototype.forEach.call(files,function(f){
+    var r=new FileReader();
+    r.onload=function(){ addDoc(f.name,String(r.result)) };
+    r.readAsText(f);
+  });
+}
+var canFS = typeof window.showOpenFilePicker==="function";
+if(canFS){
+  $("#bOpenDir").hidden=false; $("#bWriteAll").hidden=false;
+  $("#fsNote").textContent="in-place saving available";
+} else {
+  $("#fsNote").textContent="download to save (file:// cannot write back)";
+}
+$("#bOpenDir").onclick=async function(){
+  try{
+    var dir=await window.showDirectoryPicker();
+    await (async function walkDir(handle,prefix){
+      for await(var entry of handle.values()){
+        if(entry.kind==="file"&&/\.json$/i.test(entry.name)){
+          var f=await entry.getFile();
+          addDoc(prefix+entry.name,await f.text(),entry);
+        } else if(entry.kind==="directory"){
+          await walkDir(entry,prefix+entry.name+"/");
+        }
+      }
+    })(dir,"");
+  }catch(e){ if(e.name!=="AbortError") alert("Could not open folder: "+e.message) }
+};
+$("#bWriteAll").onclick=async function(){
+  var todo=DOCS.filter(function(d){ return d.dirty&&d.handle });
+  if(!todo.length){ alert("Nothing to write — either no edits, or the files were not opened through Open folder."); return }
+  var done=0;
+  for(var i=0;i<todo.length;i++){
+    var d=todo[i];
+    try{
+      var perm=await d.handle.requestPermission({mode:"readwrite"});
+      if(perm!=="granted") continue;
+      var w=await d.handle.createWritable();
+      await w.write(d.text); await w.close();
+      d.dirty=false; done++;
+    }catch(e){ alert("Could not write "+d.name+": "+e.message) }
+  }
+  persist(); renderAll();
+  $("#stHint").textContent=done+" file"+(done===1?"":"s")+" written";
+};
+$("#bSaveAll").onclick=function(){
+  var docs=DOCS.filter(function(d){return d.sel});
+  if(!docs.length){ alert("Nothing selected."); return }
+  docs.forEach(function(d,i){ setTimeout(function(){ download(d.name.split("/").pop(),d.text) },i*180) });
+};
+$("#bPaste").onclick=function(){
+  var body=el("div");
+  var nm=el("input"); nm.type="text"; nm.placeholder="filename.schema.json"; nm.style.width="100%";
+  body.appendChild(el("h4",null,"Name")); body.appendChild(nm);
+  var ta=el("textarea"); body.appendChild(el("h4",null,"JSON")); body.appendChild(ta);
+  dialog({title:"Paste a schema",body:body},function(ok){
+    if(!ok||!ta.value.trim())return;
+    var n=nm.value.trim();
+    if(!n){ try{ var o=JSON.parse(ta.value); n=(o.title||"pasted").replace(/\s+/g,"-").toLowerCase()+".schema.json" }
+            catch(e){ n="pasted.schema.json" } }
+    addDoc(n,ta.value);
+  });
+};
+$("#bNewSchema").onclick=function(){
+  var n="new-"+(DOCS.length+1)+".schema.json";
+  addDoc(n,JSON.stringify({
+    "$schema":"https://json-schema.org/draft/2020-12/schema",
+    "$id":"https://example.com/schema/"+n,
+    "title":"New schema",
+    "type":"object",
+    "properties":{},
+    "required":[]
+  },null,2));
+};
+$("#bSelAll").onclick=function(){ DOCS.forEach(function(d){d.sel=true}); persist(); renderAll() };
+$("#bSelNone").onclick=function(){ DOCS.forEach(function(d){d.sel=false}); persist(); renderAll() };
+$("#bTheme").onclick=function(){
+  var cur=document.documentElement.dataset.theme;
+  var next=cur==="auto"?"light":cur==="light"?"dark":"auto";
+  document.documentElement.dataset.theme=next; store("ss.theme",next); flash($("#bTheme"),next);
+};
+
+var dropEl=$("#drop"),dragN=0;
+window.addEventListener("dragenter",function(e){ e.preventDefault(); dragN++; dropEl.classList.add("on") });
+window.addEventListener("dragover",function(e){ e.preventDefault() });
+window.addEventListener("dragleave",function(){ if(--dragN<=0){dragN=0;dropEl.classList.remove("on")} });
+window.addEventListener("drop",function(e){
+  e.preventDefault(); dragN=0; dropEl.classList.remove("on");
+  if(e.dataTransfer.files.length) readFiles(e.dataTransfer.files);
+});
+
+/* ------------------------------------------------------------------ render */
+$$("#tabs button").forEach(function(b){
+  b.onclick=function(){ tabName=b.dataset.tab;
+    $$("#tabs button").forEach(function(x){ x.classList.toggle("on",x===b) });
+    renderContent();
+  };
+});
+function renderContent(){
+  var c=$("#content"); c.textContent="";
+  if(!DOCS.length&&tabName!=="help"){
+    c.appendChild(msg("info","No schemas loaded. Use Open files, Open folder, Paste, or drop files anywhere on the page."));
+    return;
+  }
+  if(tabName==="matrix") renderMatrix(c);
+  else if(tabName==="side") renderSide(c);
+  else if(tabName==="diff") renderDiff(c);
+  else if(tabName==="defs") renderDefs(c);
+  else if(tabName==="check") renderCheck(c);
+  else renderHelp(c);
+}
+function refreshStatus(){
+  var bad=DOCS.filter(function(d){return !d.ok}).length;
+  var dirty=DOCS.filter(function(d){return d.dirty}).length;
+  var st=$("#stStatus");
+  if(!DOCS.length){ st.className="pill ok"; st.textContent="no schemas loaded" }
+  else if(bad){ st.className="pill err"; st.textContent=bad+" file"+(bad===1?"":"s")+" will not parse" }
+  else { st.className="pill ok"; st.textContent=DOCS.length+" schemas loaded" }
+  $("#stMaster").textContent="master: "+(master?master.name:"—");
+  $("#stDirty").textContent=dirty?(dirty+" edited"):"";
+}
+function renderAll(){ renderRail(); renderContent(); refreshStatus() }
+
+/* -------------------------------------------------------------------- boot */
+(function(){
+  var th=recall("ss.theme"); if(th) document.documentElement.dataset.theme=th;
+  restore();
+  renderAll();
+})();
+
+})();
+</script>
+</body>
+</html>

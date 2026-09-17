@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/types/person.schema.json",
+  "title": "Person Record",
+  "description": "A human being. Payload field names follow schema.org Person, snake-cased, matching the original mdm.person shape. Relationships that were fields on the old record (primary_location, parents, manager) are now `relations` entries; employment is its own record type.",
+
+  "allOf": [{ "$ref": "../record.schema.json" }],
+
+  "properties": {
+    "type": { "const": "person" },
+    "pii": {
+      "const": true,
+      "description": "Person records always contain personal information. Required AND fixed to true, so retention and subject-access sweeps cannot miss one - a const alone would let an author omit the field entirely."
+    },
+    "data": { "$ref": "#/$defs/person_data" }
+  },
+  "required": ["pii"],
+
+  "$defs": {
+    "person_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Additional properties are permitted so a source system can round-trip extra fields; promote anything durable into a named property here.",
+      "properties": {
+        "honorific_prefix": { "type": "string", "maxLength": 64, "examples": ["Dr.", "Chief"] },
+        "given_name": { "type": "string", "maxLength": 128 },
+        "additional_name": { "type": "string", "maxLength": 128, "description": "Middle name or names." },
+        "family_name": { "type": "string", "maxLength": 128 },
+        "honorific_suffix": { "type": "string", "maxLength": 64, "examples": ["Jr.", "PE", "PhD"] },
+        "full_name": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Complete name as normally written. Keep it even when derivable from the parts - name order is not universal, and the envelope `label` may be styled differently (e.g. 'Dietz, Cameron')."
+        },
+        "birth_date": {
+          "type": ["string", "null"],
+          "format": "date",
+          "description": "YYYY-MM-DD. Sensitive: consider visibility=restricted, or omit entirely for records that feed public directories."
+        },
+        "roles": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 128 },
+          "default": [],
+          "description": "Functional roles independent of any employer, e.g. 'incident commander', 'notary'. Job titles belong on the employment record."
+        },
+        "skills": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 128 },
+          "default": [],
+          "description": "Capabilities and qualifications. Certifications with expiry dates deserve their own record type rather than a bare string here."
+        },
+        "contact": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Personal contact methods. Work contact belongs on the employment record, because it changes when the job does.",
+          "properties": {
+            "email": { "type": "string", "format": "email", "maxLength": 256 },
+            "phone": { "type": "string", "maxLength": 64 },
+            "preferred": { "enum": ["email", "phone", "none"] }
+          }
+        },
+        "pronouns": { "type": "string", "maxLength": 64, "examples": ["they/them", "she/her", "he/him"] }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "id": "378ae13a-f609-45f5-92e0-2755e41cd5de",
+      "type": "person",
+      "label": "Cameron Dietz",
+      "pii": true,
+      "data": { "given_name": "Cameron", "family_name": "Dietz", "full_name": "Cameron Dietz" }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/types/organization.schema.json",
+  "title": "Organization Record",
+  "description": "A company, agency, department, NGO or other body. Most of the original mdm.organizations fields moved onto the envelope: org_type -> category.kind, parent -> parent_id, website -> url, domains -> identifiers.domain, primary_location and locations -> relations. `name` is dropped when identical to `label`; only a genuinely different legal name survives in the payload.",
+
+  "allOf": [{ "$ref": "../record.schema.json" }],
+
+  "properties": {
+    "type": { "const": "organization" },
+    "data": { "$ref": "#/$defs/organization_data" }
+  },
+
+  "$defs": {
+    "organization_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "legal_name": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Registered legal name when it differs from the common name in `label`, e.g. 'Applied Industrial Technologies, Inc.'"
+        },
+        "ownership": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Ownership and corporate-structure facts that are not themselves records. A parent company that exists in the system belongs in parent_id or relations instead.",
+          "properties": {
+            "structure": { "type": "string", "examples": ["public", "private", "subsidiary", "cooperative", "government", "nonprofit"] },
+            "ticker": { "type": "string", "maxLength": 16 },
+            "exchange": { "type": "string", "maxLength": 32 }
+          }
+        },
+        "founded": { "type": ["string", "null"], "format": "date" },
+        "contact": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Main switchboard contact, not a person's contact.",
+          "properties": {
+            "phone": { "type": "string", "maxLength": 64 },
+            "email": { "type": "string", "format": "email", "maxLength": 256 },
+            "hours": { "type": "string", "maxLength": 256, "examples": ["Mo-Fr 08:00-17:00"] }
+          }
+        },
+        "naics": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[0-9]{2,6}$" },
+          "default": [],
+          "description": "NAICS industry codes. Kept here rather than in identifiers because these classify the org, they do not identify it."
+        }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "id": "83621ca5-3a81-4c57-b4f1-b7ff1e5f2f8f",
+      "type": "organization",
+      "label": "Applied Industrial Technologies",
+      "category": { "primary": "supplier", "kind": "corporation" },
+      "url": "https://www.applied.com",
+      "identifiers": { "domain": ["applied.com"] }
+    }
+  ]
+}

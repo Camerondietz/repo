@@ -142,6 +142,26 @@ dialog input[type=text]{width:100%}
 .tag{display:inline-block;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;
   padding:0 5px;font-family:var(--mono);font-size:11px;margin:0 3px 3px 0}
 .rowflex{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+/* schema-generated form */
+.form{border:1px solid var(--line-2);border-radius:8px;padding:12px;background:var(--panel-2);margin:10px 0}
+.formHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;
+  padding-bottom:8px;border-bottom:1px solid var(--line)}
+.formHead b{font-size:13px}
+.ffield{margin-bottom:11px}
+.flabel{display:flex;gap:6px;align-items:baseline;margin-bottom:3px;flex-wrap:wrap}
+.fname{font-weight:600;font-family:var(--mono);font-size:12px}
+.freq{color:var(--err);font-weight:700}
+.ftype{color:var(--ink-3);font-size:10.5px;font-family:var(--mono)}
+.fdesc{color:var(--ink-3);font-size:11px;margin:0 0 4px;line-height:1.45}
+.ffield>input[type=text],.ffield>input[type=number],.ffield>input[type=date],
+.ffield>select,.ffield>textarea{width:100%}
+.ffield textarea{min-height:60px;font:12px/1.55 var(--mono);resize:vertical}
+.ffield input[readonly]{background:var(--panel-2);color:var(--ink-3)}
+.fgroup{border-left:2px solid var(--line-2);padding-left:11px;margin:4px 0 2px}
+.fitem{border:1px solid var(--line);border-radius:6px;padding:9px;margin:6px 0;background:var(--panel)}
+.fitemHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;
+  font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.fempty{color:var(--ink-3);font-size:11.5px;font-style:italic}
 </style>
 </head>
 <body>
@@ -174,12 +194,12 @@ dialog input[type=text]{width:100%}
           <button data-view="text" class="on">Text</button>
           <button data-view="tree">Tree</button>
         </div>
-        <span id="treeTools" style="display:none;gap:6px;align-items:center">
+        <span id="treeTools" style="display:none;gap:4px;align-items:center">
           <span class="muted">Depth</span>
-          <button data-lvl="1">1</button><button data-lvl="2">2</button>
-          <button data-lvl="3">3</button><button data-lvl="4">4</button>
-          <button data-lvl="99">All</button>
-          <button data-lvl="0">None</button>
+          <button id="bDepthMinus" title="Collapse one level">&#8722;</button>
+          <span id="depthLbl" class="muted" style="min-width:34px;text-align:center;font-family:var(--mono)">2</span>
+          <button id="bDepthPlus" title="Expand one level">+</button>
+          <button id="bDepthAll" title="Expand everything">All</button>
         </span>
         <div class="grow"></div>
         <input type="search" id="findBox" placeholder="Find key or value" style="width:150px">
@@ -274,11 +294,18 @@ dialog input[type=text]{width:100%}
 
         <div class="tabPanel" data-panel="records">
           <div class="rowflex">
-            <label>Array at</label><input type="text" id="recPath" value="auto" style="width:120px">
+            <label>Array at</label><input type="text" id="recPath" value="auto" style="width:110px">
             <button id="bRecLoad">Load</button>
-            <button id="bRecAdd" class="primary">Add record</button>
-            <input type="search" id="recFilter" placeholder="Filter" style="flex:1 1 130px">
+            <input type="search" id="recFilter" placeholder="Filter" style="flex:1 1 120px">
+            <label><input type="checkbox" id="recDeep"> Flatten nested</label>
           </div>
+          <div class="rowflex">
+            <label>Form from</label>
+            <select id="recSchema" style="flex:1 1 200px"><option value="">Infer from existing records</option></select>
+            <button id="bRecForm" class="primary">New record&#8230;</button>
+            <button id="bRecAdd">New as raw JSON&#8230;</button>
+          </div>
+          <div id="recFormArea"></div>
           <div id="recordsOut"><p class="hint">Point at any array and manage its entries: view, clone, delete, or add a blank modelled on the existing ones.</p></div>
         </div>
 
@@ -294,6 +321,9 @@ dialog input[type=text]{width:100%}
             <tr><td class="mono">[?(@.a=='x')]</td><td>filter; ops == != &lt; &lt;= &gt; &gt;= =~</td></tr>
             <tr><td class="mono">[?(@.a)]</td><td>field exists and is truthy</td></tr>
           </table>
+          <h4>Records &amp; forms</h4>
+          <p class="hint">The Records tab lists every distinct field across <em>all</em> entries, not a sample &#8212; heterogeneous records are the normal case, so a field only one record carries still gets a column. <span class="mono">Flatten nested</span> switches the columns to dotted paths.</p>
+          <p class="hint">Pick a loaded schema under <span class="mono">Form from</span> and the <span class="mono">Form</span> button on any row builds a field-by-field editor from it: required fields lead and are marked, enums become dropdowns, booleans checkboxes, arrays of scalars one-value-per-line, arrays of objects repeatable cards, and <span class="mono">const</span> values are filled in read-only. Nested objects become groups; anything deeper than three levels falls back to a JSON box. Saving validates first and lets you fix or override. With no schema selected the form is built from the shape of the existing records instead, so it works on any JSON. Fields the schema does not describe are carried through untouched rather than dropped.</p>
           <h4>Shortcuts</h4>
           <table>
             <tr><td class="mono">Ctrl+S</td><td>download</td></tr>
@@ -355,7 +385,7 @@ function recall(k){ try{ return localStorage.getItem(k) }catch(e){ return null }
 
 /* ------------------------------------------------------------------ state */
 var S={ text:"", doc:undefined, ok:false, err:null, view:"text", name:"untitled.json",
-        undo:[], redo:[], schemas:[], sel:null, hits:[] };
+        undo:[], redo:[], schemas:[], sel:null, hits:[], depth:2 };
 
 var editor=$("#editor"), treeEl=$("#tree");
 
@@ -444,7 +474,9 @@ function buildNode(key,val,path,depth){
   var t=typeOf(val), container=t==="object"||t==="array";
   var wrap=el("div","node"), row=el("div","row");
   var pk=keyOf(path);
-  var open=container && (openSet[pk]===undefined ? depth<2 : openSet[pk]);
+  // Nodes follow the global depth level unless the user has toggled that
+  // particular caret. Level 0 therefore collapses the root itself.
+  var open=container && (openSet[pk]===undefined ? depth<S.depth : openSet[pk]);
 
   var caret=el("button","caret"+(container?"":" leaf"));
   caret.textContent=container?(open?"▾":"▸"):"•";
@@ -473,9 +505,10 @@ function buildNode(key,val,path,depth){
   if(container){
     acts.appendChild(btn("+","Add child",function(){ addChild(path) }));
   }
+  acts.appendChild(btn("copy","Copy this value as JSON",function(b){ copyNode(path,b) }));
   acts.appendChild(btn("✎","Edit as JSON",function(){ editJson(path) }));
   if(path.length){
-    acts.appendChild(btn("⧉","Duplicate",function(){ dup(path) }));
+    acts.appendChild(btn("dup","Duplicate",function(){ dup(path) }));
     acts.appendChild(btn("↑","Move up",function(){ move(path,-1) }));
     acts.appendChild(btn("↓","Move down",function(){ move(path,1) }));
     acts.appendChild(btn("×","Delete",function(){ pushUndo(); delAt(path); commit() }));
@@ -495,7 +528,33 @@ function buildNode(key,val,path,depth){
   }
   return wrap;
 }
-function btn(txt,title,fn){ var b=el("button",null,txt); b.title=title; b.onclick=function(e){e.stopPropagation();fn()}; return b }
+function btn(txt,title,fn){ var b=el("button",null,txt); b.title=title; b.onclick=function(e){e.stopPropagation();fn(b)}; return b }
+// The async clipboard rejects when the document is unfocused or the page is not
+// on a secure origin, so every call needs the execCommand fallback behind it.
+function copyText(txt,b){
+  function fallback(){
+    var ta=el("textarea"); ta.value=txt;
+    ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    var ok=false; try{ ok=document.execCommand("copy") }catch(e){}
+    ta.remove();
+    if(b) flash(b, ok?"✓":"press Ctrl+C");
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ if(b) flash(b,"✓") }, fallback);
+  } else fallback();
+}
+function copyNode(path,b){
+  var v=getAt(path);
+  copyText(typeof v==="string" ? v : JSON.stringify(v,null,2), b);
+}
+function setDepth(n){
+  var max=stats(S.doc).depth+1;
+  S.depth=clamp(n,0,max);
+  openSet=Object.create(null);
+  $("#depthLbl").textContent = S.depth>=max ? "all" : String(S.depth);
+  renderTree();
+}
 function fillChildren(wrap,val,path,depth){
   var kids=wrap.querySelector(":scope > .children");
   if(!kids || kids.dataset.filled==="1") return;
@@ -511,11 +570,6 @@ function toggle(wrap,path,open){
   wrap.querySelector(":scope > .row > .caret").textContent=open?"▾":"▸";
   if(open){ fillChildren(wrap,getAt(path),path,path.length); kids.style.display="" }
   else kids.style.display="none";
-}
-function expandTo(level){
-  openSet=Object.create(null);
-  if(level>0) walk(S.doc,function(v,p,d){ if(v&&typeof v==="object"&&d<level) openSet[keyOf(p)]=true });
-  renderTree();
 }
 function reveal(path){
   if(S.view!=="tree") setView("tree");
@@ -647,6 +701,13 @@ function addSchema(obj,name){
   refreshSchemaPick();
 }
 function refreshSchemaPick(){
+  var rs=$("#recSchema");
+  if(rs){
+    var rcur=rs.value; rs.textContent="";
+    rs.appendChild(new Option("Infer from existing records",""));
+    SCHEMAS.list.forEach(function(s){ rs.appendChild(new Option("Schema: "+s.name,s.id)) });
+    rs.value=rcur||"";
+  }
   var sel=$("#schemaPick"), cur=sel.value; sel.textContent="";
   if(!SCHEMAS.list.length){ sel.appendChild(new Option("(none loaded)","")); return }
   SCHEMAS.list.forEach(function(s){ sel.appendChild(new Option(s.name+"  —  "+s.id,s.id)) });
@@ -1127,7 +1188,8 @@ function setView(v){
   editor.style.display = v==="text"?"":"none";
   treeEl.style.display = v==="tree"?"":"none";
   $("#treeTools").style.display = v==="tree"?"inline-flex":"none";
-  if(v==="tree") renderTree();
+  if(v==="tree"){ var max=stats(S.doc).depth+1;
+                  $("#depthLbl").textContent = S.depth>=max ? "all" : String(S.depth); renderTree() }
   else editor.value=S.text;
 }
 function tab(name){
@@ -1139,15 +1201,14 @@ function tab(name){
 editor.addEventListener("input",function(){ setText(editor.value,{fromEditor:true}) });
 $$("#viewSeg button").forEach(function(b){ b.onclick=function(){ setView(b.dataset.view) } });
 $$("#tabs button").forEach(function(b){ b.onclick=function(){ tab(b.dataset.tab) } });
-$$("#treeTools button").forEach(function(b){ b.onclick=function(){ expandTo(+b.dataset.lvl) } });
+$("#bDepthMinus").onclick=function(){ setDepth(S.depth-1) };
+$("#bDepthPlus").onclick=function(){ setDepth(S.depth+1) };
+$("#bDepthAll").onclick=function(){ setDepth(999) };
 
 $("#bOpen").onclick=function(){ $("#fInput").click() };
 $("#fInput").onchange=function(e){ openFiles(e.target.files); e.target.value="" };
 $("#bSave").onclick=function(){ download(S.name,S.text,"application/json") };
-$("#bCopy").onclick=function(){
-  navigator.clipboard&&navigator.clipboard.writeText(S.text);
-  flash($("#bCopy"),"Copied");
-};
+$("#bCopy").onclick=function(){ copyText(S.text,$("#bCopy")) };
 $("#bNew").onclick=function(){ S.name="untitled.json"; pushUndo(); setText("{\n  \n}") };
 $("#bSample").onclick=function(){ S.name="sample.json"; pushUndo(); setText(SAMPLE) };
 $("#bFormat").onclick=function(){ if(S.ok&&S.doc!==undefined){ pushUndo(); setText(JSON.stringify(S.doc,null,2)) } };
@@ -1361,7 +1422,7 @@ $("#bFromXml").onclick=function(){
        $("#convertActions").style.display="none" }
   catch(e){ alert("XML parse failed: "+e.message) }
 };
-$("#bConvCopy").onclick=function(){ navigator.clipboard&&navigator.clipboard.writeText(convOut); flash($("#bConvCopy"),"Copied") };
+$("#bConvCopy").onclick=function(){ copyText(convOut,$("#bConvCopy")) };
 $("#bConvSave").onclick=function(){ download(convName,convOut,convMime) };
 
 /* ------------------------------------------------------------ Metrics tab */
@@ -1436,6 +1497,330 @@ $("#bMetrics").onclick=function(){
   }
 };
 
+/* ------------------------------------------------- schema-generated forms */
+
+// Collapses $ref and allOf chains into one effective schema. Own keywords are
+// absorbed BEFORE the chain is followed, so a subtype's narrowing (type: {const:
+// "person"}) wins over the base envelope's looser definition of the same field.
+function mergeSchema(sc,base,seen){
+  seen=seen||{};
+  var out={properties:{},propBase:{},required:[],type:null,enum:null,base:base};
+  (function absorb(s,b){
+    if(!s||typeof s!=="object")return;
+    if(s.properties) Object.keys(s.properties).forEach(function(k){
+      if(!(k in out.properties)){ out.properties[k]=s.properties[k]; out.propBase[k]=b }
+    });
+    if(s.required) s.required.forEach(function(k){ if(out.required.indexOf(k)<0) out.required.push(k) });
+    ["type","enum","format","description","examples","items","prefixItems",
+     "additionalProperties","minimum","maximum","maxLength","pattern"].forEach(function(kw){
+      if(s[kw]!==undefined && out[kw]===undefined || (out[kw]===null&&s[kw]!==undefined)) out[kw]=s[kw];
+    });
+    if(s.items!==undefined&&out.itemsBase===undefined){ out.items=s.items; out.itemsBase=b }
+    if(s.const!==undefined&&out.const===undefined) out.const=s.const;
+    if(s["default"]!==undefined&&out.dflt===undefined) out.dflt=s["default"];
+    if(s.$ref){
+      var key=b+"|"+s.$ref;
+      if(!seen[key]){ seen[key]=1; var r=resolveRef(s.$ref,b); if(r&&r.schema) absorb(r.schema,r.base) }
+    }
+    if(s.allOf) s.allOf.forEach(function(x){ absorb(x,b) });
+    // {oneOf:[{$ref:X},{type:"null"}]} is just "X or absent" - form the X branch.
+    var alt=s.oneOf||s.anyOf;
+    if(alt){
+      var live=alt.filter(function(x){ return !(x&&x.type==="null") });
+      if(live.length===1) absorb(live[0],b);
+    }
+  })(sc,base);
+  return out;
+}
+
+// When nothing is loaded, derive a shape from the records themselves so the
+// form still works on arbitrary JSON.
+function inferSchema(arr){
+  var props={};
+  arr.forEach(function(r){
+    if(!r||typeof r!=="object"||Array.isArray(r))return;
+    Object.keys(r).forEach(function(k){
+      var t=typeOf(r[k]); if(t==="null")return;
+      if(!props[k]){ props[k]={type:t} }
+      else if(props[k].type&&props[k].type!==t){ props[k]={} }
+      if(t==="array"&&r[k].length&&props[k].items===undefined)
+        props[k].items = typeOf(r[k][0])==="object" ? inferSchema(r[k]) : {type:typeOf(r[k][0])};
+      if(t==="object"&&props[k].properties===undefined){
+        var sub=inferSchema([r[k]]);
+        if(Object.keys(sub.properties).length) props[k].properties=sub.properties;
+      }
+    });
+  });
+  return {type:"object",properties:props};
+}
+
+var MAX_OBJ_DEPTH=3, MAX_ITEM_DEPTH=2;
+
+function formFor(container,schema,base,value,depth){
+  var m=mergeSchema(schema,base);
+  var keys=Object.keys(m.properties);
+  if(!keys.length){
+    var ta=el("textarea");
+    ta.value=value===undefined?"{}":JSON.stringify(value,null,2);
+    container.appendChild(ta);
+    return function(){ try{ return JSON.parse(ta.value) }catch(e){ return undefined } };
+  }
+  // Required fields lead. Merge order puts a subtype's own narrowings first,
+  // which would otherwise bury id/label below a nested payload group.
+  keys=keys.filter(function(k){ return k!=="$schema" });
+  keys.sort(function(a,b){
+    var ra=m.required.indexOf(a)>=0, rb=m.required.indexOf(b)>=0;
+    return ra===rb ? 0 : (ra?-1:1);
+  });
+  var readers=keys.map(function(k){
+    return buildField(container,k,m.properties[k],m.propBase[k]||base,
+                      value?value[k]:undefined, m.required.indexOf(k)>=0, depth);
+  });
+  return function(){
+    var out={};
+    readers.forEach(function(r){ var kv=r(); if(kv&&kv.v!==undefined) out[kv.k]=kv.v });
+    return out;
+  };
+}
+
+function buildField(parent,key,sc,base,val,req,depth){
+  var m=mergeSchema(sc,base);
+  var t=m.type;
+  if(Array.isArray(t)) t=t.filter(function(x){return x!=="null"})[0];
+  if(!t&&m.enum) t="string";
+  if(!t&&m.const!==undefined) t=typeOf(m.const);
+  if(!t) t=Object.keys(m.properties).length?"object":(m.items?"array":"string");
+
+  var wrap=el("div","ffield"), lab=el("div","flabel");
+  lab.appendChild(el("span","fname",key));
+  if(req) lab.appendChild(el("span","freq","*"));
+  lab.appendChild(el("span","ftype",t+(m.format?" · "+m.format:"")));
+  wrap.appendChild(lab);
+  if(m.description) wrap.appendChild(el("div","fdesc",
+    m.description.length>230?m.description.slice(0,230)+"…":m.description));
+  parent.appendChild(wrap);
+
+  var read;
+
+  if(m.const!==undefined){
+    var ci=el("input"); ci.type="text"; ci.readOnly=true;
+    ci.value=typeof m.const==="string"?m.const:JSON.stringify(m.const);
+    wrap.appendChild(ci);
+    read=function(){ return {k:key,v:m.const} };
+  }
+  else if(m.enum){
+    var se=el("select");
+    if(!req) se.appendChild(new Option("— not set —",""));
+    m.enum.forEach(function(x){ se.appendChild(new Option(String(x),JSON.stringify(x))) });
+    se.value = val!==undefined ? JSON.stringify(val) : (m.dflt!==undefined?JSON.stringify(m.dflt):"");
+    wrap.appendChild(se);
+    read=function(){ return {k:key, v: se.value===""?undefined:JSON.parse(se.value)} };
+  }
+  else if(t==="boolean"){
+    var cb=el("input"); cb.type="checkbox";
+    cb.checked = val===true || (val===undefined&&m.dflt===true);
+    var had = val!==undefined;
+    var cw=el("label"); cw.style.display="flex"; cw.style.gap="6px"; cw.style.alignItems="center";
+    cw.appendChild(cb); cw.appendChild(el("span","fdesc",""));
+    wrap.appendChild(cw);
+    read=function(){ return {k:key, v:(cb.checked||req||had)?cb.checked:undefined} };
+  }
+  else if(t==="number"||t==="integer"){
+    var ni=el("input"); ni.type="number";
+    if(t==="integer") ni.step="1";
+    if(m.minimum!==undefined) ni.min=m.minimum;
+    if(m.maximum!==undefined) ni.max=m.maximum;
+    ni.value = val!==undefined&&val!==null ? val : (m.dflt!==undefined?m.dflt:"");
+    wrap.appendChild(ni);
+    read=function(){ return {k:key, v: ni.value===""?undefined:Number(ni.value)} };
+  }
+  else if(t==="object"){
+    var known=Object.keys(m.properties).length;
+    if(known&&depth<MAX_OBJ_DEPTH){
+      var grp=el("div","fgroup"); wrap.appendChild(grp);
+      var sub=formFor(grp,sc,base,val,depth+1);
+      read=function(){
+        var o=sub();
+        if(o&&Object.keys(o).length===0&&!req) return {k:key,v:undefined};
+        return {k:key,v:o};
+      };
+    } else {
+      var to=el("textarea");
+      to.value = val===undefined ? "" : JSON.stringify(val,null,2);
+      to.placeholder=known?"{ }":"Free-form object — JSON";
+      wrap.appendChild(to);
+      read=function(){
+        if(!to.value.trim()) return {k:key,v:undefined};
+        try{ return {k:key,v:JSON.parse(to.value)} }catch(e){ return {k:key,v:to.value} }
+      };
+    }
+  }
+  else if(t==="array"){
+    var im=m.items?mergeSchema(m.items,m.itemsBase||base):{properties:{},type:"string"};
+    var it=Array.isArray(im.type)?im.type[0]:im.type;
+    var itemsAreObjects = it==="object" || Object.keys(im.properties).length>0;
+
+    if(itemsAreObjects&&depth<MAX_ITEM_DEPTH){
+      var list=el("div"); wrap.appendChild(list);
+      var itemReaders=[];
+      function addItem(v){
+        var card=el("div","fitem"), head=el("div","fitemHead");
+        head.appendChild(el("span",null,key+"["+itemReaders.length+"]"));
+        var rm=el("button",null,"remove"); rm.type="button";
+        head.appendChild(rm); card.appendChild(head);
+        var body=el("div"); card.appendChild(body);
+        var r=formFor(body,m.items,m.itemsBase||base,v,depth+1);
+        var entry={read:r,dead:false};
+        rm.onclick=function(){ entry.dead=true; card.remove() };
+        itemReaders.push(entry); list.appendChild(card);
+      }
+      (Array.isArray(val)?val:[]).forEach(addItem);
+      var addBtn=el("button",null,"+ add "+key.replace(/s$/,"")); addBtn.type="button";
+      addBtn.onclick=function(){ addItem(undefined) };
+      wrap.appendChild(addBtn);
+      read=function(){
+        var arr=[];
+        itemReaders.forEach(function(e){ if(e.dead)return; var o=e.read();
+          if(o&&Object.keys(o).length) arr.push(o) });
+        return {k:key, v:(arr.length||req)?arr:undefined};
+      };
+    } else {
+      var tl=el("textarea");
+      var scalarList = !itemsAreObjects;
+      tl.value = !Array.isArray(val) ? "" :
+        (scalarList ? val.join("\n") : JSON.stringify(val,null,2));
+      tl.placeholder = scalarList ? "One value per line" : "JSON array";
+      wrap.appendChild(tl);
+      if(scalarList) wrap.appendChild(el("div","fdesc","One value per line."));
+      read=function(){
+        var raw=tl.value.trim();
+        if(!raw) return {k:key, v: req?[]:undefined};
+        if(scalarList){
+          var arr=tl.value.split("\n").map(function(s){return s.trim()}).filter(function(s){return s!==""});
+          if(it==="number"||it==="integer") arr=arr.map(Number);
+          return {k:key,v:arr};
+        }
+        try{ var p=JSON.parse(raw); return {k:key,v:Array.isArray(p)?p:[p]} }
+        catch(e){ return {k:key,v:undefined} }
+      };
+    }
+  }
+  else {
+    var long = (m.maxLength&&m.maxLength>1000) || (typeof val==="string"&&val.length>90);
+    var si = long ? el("textarea") : el("input");
+    if(!long){
+      si.type = m.format==="date" ? "date" : "text";
+      if(m.pattern) si.title="Pattern: "+m.pattern;
+    }
+    si.value = val===undefined||val===null ? (m.dflt!==undefined?m.dflt:"") : String(val);
+    if(m.examples&&m.examples.length&&typeof m.examples[0]!=="object")
+      si.placeholder="e.g. "+m.examples[0];
+    else if(m.format) si.placeholder=m.format;
+    wrap.appendChild(si);
+    read=function(){ return {k:key, v: si.value===""?undefined:si.value} };
+  }
+  return read;
+}
+
+var formOpen=null;
+function openForm(rec,index){
+  var area=$("#recFormArea"); area.textContent="";
+  var id=$("#recSchema").value;
+  var schema, base;
+  if(id&&SCHEMAS.byId[id]){ schema=SCHEMAS.byId[id]; base=id }
+  else { schema=inferSchema(rec.arr); base="urn:local:inferred" }
+
+  var original = index==null ? undefined : deep(rec.arr[index]);
+  var box=el("div","form"), head=el("div","formHead");
+  head.appendChild(el("b",null,index==null?"New record":"Editing record "+index));
+  var hr=el("span");
+  hr.appendChild(el("span","ftype", id?id.split("/").pop():"shape inferred from existing records"));
+  head.appendChild(hr);
+  box.appendChild(head);
+  var body=el("div"); box.appendChild(body);
+  var read=formFor(body,schema,base,original,0);
+
+  // A full envelope schema is 80-odd fields; on a sparse record almost all of
+  // them are blank, so make it possible to see only what is actually set.
+  var toggleWrap=el("label","fdesc");
+  toggleWrap.style.cssText="display:flex;gap:6px;align-items:center;margin:0 0 10px";
+  var only=el("input"); only.type="checkbox";
+  toggleWrap.appendChild(only); toggleWrap.appendChild(el("span",null,"Hide empty optional fields"));
+  box.insertBefore(toggleWrap,body);
+  only.onchange=function(){
+    $$(".ffield",body).forEach(function(f){
+      var c=f.querySelector(":scope > input, :scope > select, :scope > textarea");
+      if(!c) return;                                   // group wrappers keep their children
+      if(f.querySelector(":scope > .flabel > .freq")) return;   // never hide a required field
+      var empty = c.type==="checkbox" ? !c.checked : !String(c.value).trim();
+      f.hidden = only.checked && empty;
+    });
+  };
+
+  var errBox=el("div"); box.appendChild(errBox);
+  var acts=el("div","rowflex"); acts.style.margin="12px 0 0";
+  var bSave=el("button",null,index==null?"Add record":"Save changes"); bSave.className="primary";
+  var bCancel=el("button",null,"Cancel");
+  acts.appendChild(bSave); acts.appendChild(bCancel);
+  if(index!=null){
+    var bDel=el("button",null,"Delete record");
+    bDel.onclick=function(){
+      if(!confirm("Delete record "+index+"?"))return;
+      pushUndo(); delAt(rec.path.concat(index)); commit(); area.textContent=""; renderRecords();
+    };
+    acts.appendChild(bDel);
+  }
+  box.appendChild(acts);
+  area.appendChild(box);
+  box.scrollIntoView({block:"nearest",behavior:"smooth"});
+
+  bCancel.onclick=function(){ area.textContent=""; formOpen=null };
+  bSave.onclick=function(){
+    var v=read();
+    // Fields the schema does not describe would otherwise be silently dropped.
+    if(original) Object.keys(original).forEach(function(k){ if(!(k in v)) {
+      var m=mergeSchema(schema,base);
+      if(!(k in m.properties)) v[k]=original[k];
+    }});
+    errBox.textContent="";
+    if(id&&SCHEMAS.byId[id]){
+      var errs=[];
+      try{ errs=validate(schema,v) }catch(e){}
+      if(errs.length){
+        errBox.appendChild(msg("err",errs.length+" problem"+(errs.length===1?"":"s")+" — fix, or save anyway."));
+        var lst=el("div","errlist");
+        errs.slice(0,40).forEach(function(e){
+          var d=el("div","e"); d.innerHTML="<code>"+esc(pathStr(e.path))+"</code><br>"+esc(e.msg); lst.appendChild(d);
+        });
+        errBox.appendChild(lst);
+        var anyway=el("button",null,"Save anyway");
+        anyway.onclick=function(){ commitForm(rec,index,orderLike(v,original)); };
+        errBox.appendChild(anyway);
+        return;
+      }
+    }
+    commitForm(rec,index,orderLike(v,original));
+  };
+  formOpen={rec:rec,index:index};
+}
+// The form emits fields required-first, which would silently reshuffle the keys
+// of an existing record and produce a noisy diff in version control for an edit
+// that changed one value. Keep the record's own order; append genuinely new keys.
+function orderLike(obj,original){
+  if(!original||typeof original!=="object") return obj;
+  var out={},seen={};
+  Object.keys(original).forEach(function(k){ if(k in obj){ out[k]=obj[k]; seen[k]=1 } });
+  Object.keys(obj).forEach(function(k){ if(!seen[k]) out[k]=obj[k] });
+  return out;
+}
+function commitForm(rec,index,v){
+  pushUndo();
+  if(index==null) rec.arr.push(v); else rec.arr[index]=v;
+  commit();
+  $("#recFormArea").textContent=""; formOpen=null;
+  renderRecords();
+}
+
 /* ------------------------------------------------------------ Records tab */
 function renderRecords(){
   var out=$("#recordsOut"); out.textContent="";
@@ -1445,31 +1830,42 @@ function renderRecords(){
   var q=$("#recFilter").value.trim().toLowerCase();
   out.appendChild(el("p","hint",rec.arr.length+" record"+(rec.arr.length===1?"":"s")+" at "+pathStr(rec.path)));
 
-  var cols=[];
-  rec.arr.slice(0,40).forEach(function(r){
-    if(r&&typeof r==="object"&&!Array.isArray(r))
-      Object.keys(r).forEach(function(k){ if(cols.indexOf(k)<0&&cols.length<6&&typeof r[k]!=="object") cols.push(k) });
+  // Union of every field across EVERY record, not a capped sample: records in
+  // one array are routinely heterogeneous and a truncated column set hides that.
+  var deepCols=$("#recDeep").checked, cols=[], seen={};
+  rec.arr.forEach(function(r){
+    if(!r||typeof r!=="object"||Array.isArray(r))return;
+    var keys = deepCols ? Object.keys(flatten(r,"",{},true)) : Object.keys(r);
+    keys.forEach(function(k){ if(!seen[k]){ seen[k]=1; cols.push(k) } });
   });
+  out.appendChild(el("p","hint",cols.length+" distinct field"+(cols.length===1?"":"s")+
+    (deepCols?" (flattened)":" at the top level")+" — scroll sideways for the rest."));
+
   var t=el("table"), head="<tr><th>#</th>";
   cols.forEach(function(c){ head+="<th class='mono'>"+esc(c)+"</th>" });
-  t.innerHTML=head+"<th></th></tr>";
+  t.innerHTML="<thead>"+head+"<th></th></tr></thead>";
   var tb=el("tbody"); t.appendChild(tb);
 
   rec.arr.forEach(function(r,i){
     var blob=JSON.stringify(r).toLowerCase();
     if(q&&blob.indexOf(q)<0)return;
+    var flat = (deepCols&&r&&typeof r==="object"&&!Array.isArray(r)) ? flatten(r,"",{},true) : null;
     var tr=el("tr");
     tr.appendChild(el("td",null,String(i)));
     cols.forEach(function(c){
-      var v=(r&&typeof r==="object")?r[c]:undefined;
-      var s=v===undefined?"":(typeof v==="object"?JSON.stringify(v):String(v));
-      if(s.length>44) s=s.slice(0,44)+"…";
-      tr.appendChild(el("td","mono",s));
+      var v = flat ? flat[c] : ((r&&typeof r==="object")?r[c]:undefined);
+      var s = v===undefined ? "" : (typeof v==="object"&&v!==null ? JSON.stringify(v) : String(v));
+      var td=el("td","mono", s.length>60 ? s.slice(0,60)+"…" : s);
+      if(s.length>60) td.title=s;
+      if(v===undefined) td.className="mono muted";
+      tr.appendChild(td);
     });
     var td=el("td"); td.style.whiteSpace="nowrap";
+    td.appendChild(btn("Form","Open in the schema form",function(){ openForm(rec,i) }));
     td.appendChild(btn("View","Reveal in tree",function(){ reveal(rec.path.concat(i)) }));
-    td.appendChild(btn("Edit","Edit as JSON",function(){ editJson(rec.path.concat(i)) }));
-    td.appendChild(btn("⧉","Duplicate",function(){ dup(rec.path.concat(i)); renderRecords() }));
+    td.appendChild(btn("JSON","Edit as JSON",function(){ editJson(rec.path.concat(i)) }));
+    td.appendChild(btn("copy","Copy this record",function(b){ copyNode(rec.path.concat(i),b) }));
+    td.appendChild(btn("dup","Duplicate",function(){ dup(rec.path.concat(i)); renderRecords() }));
     td.appendChild(btn("×","Delete",function(){
       if(!confirm("Delete record "+i+"?"))return;
       pushUndo(); delAt(rec.path.concat(i)); commit(); renderRecords();
@@ -1480,6 +1876,13 @@ function renderRecords(){
 }
 $("#bRecLoad").onclick=renderRecords;
 $("#recFilter").addEventListener("input",renderRecords);
+$("#recDeep").addEventListener("change",renderRecords);
+$("#bRecForm").onclick=function(){
+  var rec=findRecordsArray($("#recPath").value.trim());
+  if(!rec){ alert("No array found to add to."); return }
+  if(!$("#recordsOut").querySelector("table")) renderRecords();
+  openForm(rec,null);
+};
 $("#bRecAdd").onclick=function(){
   var rec=findRecordsArray($("#recPath").value.trim());
   if(!rec){ alert("No array found to add to."); return }

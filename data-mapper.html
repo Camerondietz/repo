@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Mapper</title>
+<style>
+:root{
+  --bg:#f7f7f5; --panel:#fff; --panel-2:#fbfbfa; --ink:#1b1b19; --ink-2:#5c5c57;
+  --ink-3:#8a8a83; --line:#e2e2dd; --line-2:#cfcfc8; --accent:#2f6f4f; --accent-ink:#fff;
+  --warn:#8a5a00; --warn-bg:#fdf3e0; --err:#a3241f; --err-bg:#fdecea; --ok:#1f6b3f; --ok-bg:#e9f5ee;
+  --info:#1b4f8a; --info-bg:#e8f0fa;
+  --s-str:#2a6e4f; --s-num:#9a5b00; --s-bool:#6b3fa0; --s-null:#8a8a83; --s-key:#1b4f8a;
+  --sel:#dceadf; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.06);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  html[data-theme="auto"]{
+    --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+    --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+    --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+    --info:#8ab7e8; --info-bg:#1a2433;
+    --s-str:#8fd0a8; --s-num:#e0b064; --s-bool:#c4a2ef; --s-null:#77776f; --s-key:#8ab7e8;
+    --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+  }
+}
+html[data-theme="dark"]{
+  --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+  --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+  --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+  --info:#8ab7e8; --info-bg:#1a2433;
+  --s-str:#8fd0a8; --s-num:#e0b064; --s-bool:#c4a2ef; --s-null:#77776f; --s-key:#8ab7e8;
+  --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.5 var(--sans);overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:var(--panel);border:1px solid var(--line-2);border-radius:6px;padding:4px 9px;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--panel-2);border-color:var(--ink-3)}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button.primary:hover{filter:brightness(1.08)}
+button.on{background:var(--sel);border-color:var(--accent)}
+button.tiny{padding:1px 6px;font-size:11px;line-height:17px}
+input[type=text],input[type=search],input[type=number],select,textarea{
+  background:var(--panel);border:1px solid var(--line-2);border-radius:6px;padding:4px 7px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.app{display:flex;flex-direction:column;height:100%}
+header{border-bottom:1px solid var(--line);background:var(--panel);flex:0 0 auto}
+.bar{display:flex;align-items:center;gap:6px;padding:6px 10px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:-.01em;margin-right:6px;white-space:nowrap}
+.brand span{color:var(--accent)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 2px}
+.grow{flex:1 1 auto}
+.tabs{display:flex;gap:2px;padding:5px 10px 0;background:var(--panel-2);border-top:1px solid var(--line)}
+.tabs button{border-radius:6px 6px 0 0;border-color:transparent;background:transparent}
+.tabs button.on{background:var(--panel);border-color:var(--line);border-bottom-color:var(--panel);margin-bottom:-1px;font-weight:600}
+main{flex:1 1 auto;overflow:auto;min-height:0;padding:12px 14px 40px}
+footer{flex:0 0 auto;border-top:1px solid var(--line);background:var(--panel);padding:4px 10px;
+  display:flex;gap:14px;align-items:center;font:11.5px/1.4 var(--mono);color:var(--ink-2);flex-wrap:wrap}
+.pill{border-radius:999px;padding:1px 9px;font-weight:600;font-family:var(--sans);font-size:11px}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.err{background:var(--err-bg);color:var(--err)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px}
+th,td{text-align:left;padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{position:sticky;top:0;background:var(--panel-2);font-weight:600;z-index:2;border-bottom:1px solid var(--line-2)}
+td.mono,th.mono{font-family:var(--mono);font-size:11.5px}
+tbody tr:hover td{background:var(--panel-2)}
+.scrollx{overflow:auto;border:1px solid var(--line);border-radius:8px;max-height:64vh}
+.rowflex{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.hint{color:var(--ink-3);font-size:11.5px;margin:6px 0}
+h4{margin:16px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}
+h4:first-child{margin-top:0}
+.msg{border-radius:6px;padding:7px 10px;margin:8px 0;font-size:12px}
+.msg.err{background:var(--err-bg);color:var(--err)}
+.msg.ok{background:var(--ok-bg);color:var(--ok)}
+.msg.warn{background:var(--warn-bg);color:var(--warn)}
+.msg.info{background:var(--info-bg);color:var(--info)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:8px;margin:0 0 14px}
+.card{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.card b{display:block;font-size:19px;font-weight:700;letter-spacing:-.02em}
+.card span{color:var(--ink-3);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.out{font-family:var(--mono);font-size:11.5px;white-space:pre-wrap;word-break:break-word;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:9px;max-height:52vh;overflow:auto}
+.bar-meter{height:6px;background:var(--line);border-radius:3px;overflow:hidden;min-width:54px}
+.bar-meter i{display:block;height:100%;background:var(--accent)}
+/* mapping rows */
+.maprow td{vertical-align:top}
+.tname{font-family:var(--mono);font-size:11.5px;font-weight:600;white-space:nowrap}
+.treq{color:var(--err);font-weight:700}
+.ttype{color:var(--ink-3);font-size:10.5px;font-family:var(--mono);display:block}
+.ops{display:flex;flex-direction:column;gap:3px}
+.op{display:flex;gap:3px;align-items:center;flex-wrap:wrap;background:var(--panel-2);
+  border:1px solid var(--line);border-radius:5px;padding:2px 4px}
+.op select{padding:1px 4px;font-size:11px}
+.op input{padding:1px 4px;font-size:11px;width:84px}
+.prev{font-family:var(--mono);font-size:11px;color:var(--s-str);word-break:break-word;max-width:220px;display:block}
+.prev.empty{color:var(--ink-3);font-style:italic}
+.unmapped{background:var(--warn-bg)}
+.pillrow{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0}
+.fchip{border:1px solid var(--line-2);border-radius:4px;padding:1px 6px;font-family:var(--mono);
+  font-size:11px;background:var(--panel-2);cursor:pointer}
+.fchip:hover{border-color:var(--accent);background:var(--sel)}
+.fchip.used{opacity:.42}
+dialog{border:1px solid var(--line-2);border-radius:10px;background:var(--panel);color:var(--ink);
+  padding:0;box-shadow:var(--shadow);max-width:min(680px,94vw);width:100%}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+dialog .dh{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700}
+dialog .db{padding:14px;max-height:62vh;overflow:auto}
+dialog .df{padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end}
+dialog textarea{width:100%;min-height:180px;font:12px/1.6 var(--mono);resize:vertical}
+dialog input[type=text]{width:100%}
+.drop{position:fixed;inset:0;background:rgba(47,111,79,.14);border:3px dashed var(--accent);
+  z-index:99;display:none;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent)}
+.drop.on{display:flex}
+.libitem{border:1px solid var(--line);border-radius:8px;padding:9px 11px;margin-bottom:7px;
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.libitem b{font-size:12.5px}
+.libitem .meta{color:var(--ink-3);font-size:11px;font-family:var(--mono)}
+.spec{font-size:12px;line-height:1.6}
+.spec code{font-family:var(--mono);font-size:11.5px;background:var(--panel-2);
+  border:1px solid var(--line);border-radius:3px;padding:0 4px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="bar">
+      <div class="brand">Data<span>&#9679;</span>Mapper</div>
+      <button id="bSrc">Load source&#8230;</button>
+      <input type="file" id="fSrc" accept=".csv,.tsv,.json,.ndjson,.jsonl,.sql,.txt" hidden>
+      <button id="bSrcPaste">Paste source</button>
+      <div class="sep"></div>
+      <button id="bSchema">Load target schema&#8230;</button>
+      <input type="file" id="fSchema" multiple accept=".json" hidden>
+      <button id="bSchemaPaste">Paste schema</button>
+      <div class="sep"></div>
+      <input type="text" id="mapName" placeholder="mapping name" style="width:168px">
+      <button id="bSaveMap" class="primary">Save mapping</button>
+      <button id="bExportMap">Export</button>
+      <div class="grow"></div>
+      <button id="bTheme" title="Theme">&#9681;</button>
+    </div>
+    <div class="tabs" id="tabs">
+      <button data-tab="source" class="on">Source</button>
+      <button data-tab="map">Map</button>
+      <button data-tab="preview">Preview</button>
+      <button data-tab="spec">Spec</button>
+      <button data-tab="library">Library</button>
+      <button data-tab="help">Help</button>
+    </div>
+  </header>
+  <main id="content"></main>
+  <footer>
+    <span id="stSrc" class="pill warn">no source</span>
+    <span id="stTgt">target: &#8212;</span>
+    <span id="stRules">0 rules</span>
+    <span class="grow"></span>
+    <span id="stHint" class="hint" style="margin:0"></span>
+  </footer>
+</div>
+<div class="drop" id="drop">Drop a source or schema file</div>
+
+<dialog id="dlg">
+  <div class="dh" id="dlgTitle">Edit</div>
+  <div class="db" id="dlgBody"></div>
+  <div class="df">
+    <button type="button" id="dlgCancel">Cancel</button>
+    <button type="button" id="dlgOk" class="primary">OK</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function el(t,c,x){var e=document.createElement(t); if(c)e.className=c; if(x!=null)e.textContent=x; return e}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function typeOf(v){ if(v===null)return "null"; if(Array.isArray(v))return "array"; return typeof v }
+function deep(v){ return v===undefined?undefined:JSON.parse(JSON.stringify(v)) }
+function store(k,v){ try{ v===undefined?localStorage.removeItem(k):localStorage.setItem(k,v) }catch(e){} }
+function recall(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+function download(name,text,mime){
+  var b=new Blob([text],{type:mime||"application/json"}),u=URL.createObjectURL(b),a=el("a");
+  a.href=u; a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(u);a.remove()},0);
+}
+function copyText(txt,b){
+  function fb(){ var ta=el("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select(); var ok=false;
+    try{ ok=document.execCommand("copy") }catch(e){} ta.remove(); if(b) flash(b,ok?"✓":"Ctrl+C") }
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    navigator.clipboard.writeText(txt).then(function(){ if(b) flash(b,"✓") },fb);
+  else fb();
+}
+function flash(b,m){ var o=b.textContent; b.textContent=m; setTimeout(function(){b.textContent=o},900) }
+function msg(kind,text){ var d=el("div","msg "+kind); d.textContent=text; return d }
+function uuid(){
+  if(crypto&&crypto.randomUUID) return crypto.randomUUID();
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c){
+    var r=Math.random()*16|0, v=c==="x"?r:(r&0x3|0x8); return v.toString(16) });
+}
+
+/* ------------------------------------------------------------------ state */
+var SRC={ name:"", format:"", rows:[], fields:[], raw:"", tables:[], table:"" };
+var SCHEMAS={ list:[], byId:{} };
+var MAP={ id:uuid(), name:"", target:{schemaId:"",type:""}, rules:[],
+          options:{coerce:true,dropEmpty:true,unmapped:"drop"} };
+var OUT=[], OUTERR=[];
+var tabName="source";
+
+/* ----------------------------------------------------------- source import */
+function parseCSV(text,d){
+  var rows=[],row=[],cur="",q=false,i=0;
+  while(i<text.length){
+    var c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur+='"';i+=2;continue} q=false;i++;continue } cur+=c;i++;continue }
+    if(c==='"'){q=true;i++;continue}
+    if(c===d){row.push(cur);cur="";i++;continue}
+    if(c==="\r"){i++;continue}
+    if(c==="\n"){row.push(cur);rows.push(row);row=[];cur="";i++;continue}
+    cur+=c;i++;
+  }
+  if(cur!==""||row.length){row.push(cur);rows.push(row)}
+  return rows.filter(function(r){ return r.length>1||r[0]!=="" });
+}
+function sniffDelim(text){
+  var line=text.split(/\r?\n/)[0]||"";
+  var best=",",n=-1;
+  [",",";","\t","|"].forEach(function(d){
+    var c=line.split(d).length; if(c>n){n=c;best=d}
+  });
+  return best;
+}
+function coerce(s){
+  if(typeof s!=="string") return s;
+  var t=s.trim();
+  if(t==="")return "";
+  if(t==="true")return true; if(t==="false")return false;
+  if(t==="null"||t==="NULL")return null;
+  // A leading zero carries meaning in identifiers - DUNS, ZIP, phone, account
+  // numbers - and turning "004966533" into 4966533 destroys it irreversibly.
+  if(/^-?0\d/.test(t)) return s;
+  if(/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(t)) return Number(t);
+  return s;
+}
+// A pragmatic reader for SQL dumps: CREATE TABLE for column names, INSERT for rows.
+function parseSQL(text){
+  var tables={};
+  text.replace(/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[`"\[]?([\w.]+)[`"\]]?\s*\(([\s\S]*?)\)\s*;/gi,
+  function(_,name,body){
+    var cols=[],depth=0,cur="";
+    for(var i=0;i<body.length;i++){
+      var ch=body[i];
+      if(ch==="(")depth++;
+      if(ch===")")depth--;
+      if(ch===","&&depth===0){ cols.push(cur); cur=""; continue }
+      cur+=ch;
+    }
+    if(cur.trim())cols.push(cur);
+    var names=[];
+    cols.forEach(function(c){
+      var m=/^\s*[`"\[]?([\w]+)[`"\]]?\s+/.exec(c);
+      if(m&&!/^(primary|foreign|unique|key|constraint|index|check)$/i.test(m[1])) names.push(m[1]);
+    });
+    tables[name.split(".").pop()]={cols:names,rows:[]};
+    return "";
+  });
+  var insRe=/INSERT\s+(?:OR\s+\w+\s+)?INTO\s+[`"\[]?([\w.]+)[`"\]]?\s*(\(([^)]*)\))?\s*VALUES\s*([\s\S]*?);\s*(?=INSERT|CREATE|$)/gi;
+  var m;
+  while((m=insRe.exec(text))!==null){
+    var tname=m[1].split(".").pop();
+    var cols=m[3]?m[3].split(",").map(function(s){return s.trim().replace(/^[`"\[]|[`"\]]$/g,"")}):null;
+    var t=tables[tname]||(tables[tname]={cols:cols||[],rows:[]});
+    if(cols&&!t.cols.length) t.cols=cols;
+    splitTuples(m[4]).forEach(function(vals){
+      var use=cols||t.cols;
+      var o={};
+      vals.forEach(function(v,i){ o[use[i]!==undefined?use[i]:("col"+(i+1))]=v });
+      t.rows.push(o);
+    });
+  }
+  return tables;
+}
+function splitTuples(s){
+  var out=[],i=0;
+  while(i<s.length){
+    while(i<s.length&&s[i]!=="(") i++;
+    if(i>=s.length)break;
+    i++;
+    var vals=[],cur="",q=null,depth=0,quoted=false;
+    function push(){ vals.push({v:cur,quoted:quoted}); cur=""; quoted=false }
+    for(;i<s.length;i++){
+      var c=s[i];
+      if(q){
+        if(c==="\\"){ cur+=s[i+1]; i++; continue }
+        if(c===q){ if(s[i+1]===q){cur+=q;i++;continue} q=null; continue }
+        cur+=c; continue;
+      }
+      if(c==="'"||c==='"'){ q=c; quoted=true; continue }
+      if(c==="(")depth++;
+      if(c===")"&&depth===0){ push(); i++; break }
+      if(c===")")depth--;
+      if(c===","&&depth===0){ push(); continue }
+      cur+=c;
+    }
+    out.push(vals.map(function(x){
+      // A quoted literal is a string by declaration. Numifying '004966533'
+      // because it looks numeric throws away both the type the dump stated and
+      // the leading zeros.
+      if(x.quoted) return x.v;
+      var t=x.v.trim();
+      if(/^NULL$/i.test(t)) return null;
+      if(/^-?\d+(\.\d+)?$/.test(t)) return Number(t);
+      return t;
+    }));
+  }
+  return out;
+}
+function flatten(v,pre,out){
+  out=out||{}; pre=pre||"";
+  if(v===null||typeof v!=="object"){ out[pre]=v; return out }
+  if(Array.isArray(v)){
+    if(!v.length){ out[pre]=[]; return out }
+    if(v.every(function(x){return x===null||typeof x!=="object"})){ out[pre]=v; return out }
+    v.forEach(function(x,i){ flatten(x,pre?pre+"."+i:String(i),out) });
+    return out;
+  }
+  var ks=Object.keys(v);
+  if(!ks.length){ out[pre]={}; return out }
+  ks.forEach(function(k){ flatten(v[k],pre?pre+"."+k:k,out) });
+  return out;
+}
+function loadSource(name,text){
+  SRC.name=name; SRC.raw=text; SRC.tables=[]; SRC.table="";
+  var ext=(name.split(".").pop()||"").toLowerCase();
+  var t=text.replace(/^﻿/,"").trim();
+  try{
+    if(ext==="sql"||/^\s*(--|\/\*|CREATE|INSERT)/i.test(t)){
+      var tabs=parseSQL(text);
+      var names=Object.keys(tabs).filter(function(n){ return tabs[n].rows.length });
+      if(!names.length) throw new Error("no INSERT rows found");
+      SRC.format="sql"; SRC.tables=names.map(function(n){ return {name:n,rows:tabs[n].rows} });
+      SRC.table=names[0];
+      SRC.rows=tabs[names[0]].rows;
+    } else if(ext==="ndjson"||ext==="jsonl"||(t.indexOf("\n")>0&&t[0]==="{"&&t.indexOf("\n{")>0&&!/^\s*\[/.test(t))){
+      SRC.format="ndjson";
+      SRC.rows=t.split(/\r?\n/).filter(function(l){return l.trim()}).map(function(l){ return flatten(JSON.parse(l)) });
+    } else if(t[0]==="["||t[0]==="{"){
+      SRC.format="json";
+      var o=JSON.parse(t);
+      var arr=Array.isArray(o)?o:pickArray(o);
+      if(!arr) throw new Error("no array of records found in the JSON");
+      SRC.rows=arr.map(function(r){ return (r&&typeof r==="object")?flatten(r):{value:r} });
+    } else {
+      var d=ext==="tsv"?"\t":sniffDelim(text);
+      SRC.format="csv"+(d==="\t"?" (tab)":" ("+d+")");
+      var rows=parseCSV(text,d);
+      if(!rows.length) throw new Error("no rows");
+      var head=rows[0].map(function(h,i){ return h.trim()||("col"+(i+1)) });
+      SRC.rows=rows.slice(1).map(function(r){
+        var o={}; head.forEach(function(h,i){ o[h]=coerce(r[i]===undefined?"":r[i]) }); return o;
+      });
+    }
+  }catch(e){
+    SRC.format=""; SRC.rows=[]; SRC.fields=[];
+    alert("Could not read "+name+": "+e.message);
+    renderAll(); return;
+  }
+  profile(); renderAll(); go("source");
+}
+function pickArray(o){
+  var names=["items","records","rows","data","results","features","documents","entries"];
+  for(var i=0;i<names.length;i++) if(Array.isArray(o[names[i]])) return o[names[i]];
+  var best=null;
+  Object.keys(o).forEach(function(k){ if(Array.isArray(o[k])&&(!best||o[k].length>best.length)) best=o[k] });
+  return best;
+}
+function profile(){
+  var names=[],seen={};
+  SRC.rows.forEach(function(r){ Object.keys(r).forEach(function(k){ if(!seen[k]){seen[k]=1;names.push(k)} }) });
+  SRC.fields=names.map(function(n){
+    var filled=0,types={},samples=[];
+    SRC.rows.forEach(function(r){
+      var v=r[n];
+      if(v===undefined) return;
+      var empty = v===null||v==="";
+      if(!empty){ filled++; if(samples.length<3&&samples.indexOf(String(v))<0) samples.push(String(v)) }
+      types[typeOf(v)]=1;
+    });
+    return {name:n,filled:filled,total:SRC.rows.length,types:Object.keys(types),samples:samples};
+  });
+}
+
+/* --------------------------------------------------- target schema handling */
+function addSchema(obj,name){
+  var id=obj.$id||("urn:local:"+name);
+  SCHEMAS.byId[id]=obj;
+  SCHEMAS.list=SCHEMAS.list.filter(function(s){return s.id!==id});
+  SCHEMAS.list.push({id:id,name:name,schema:obj});
+  if(!MAP.target.schemaId) MAP.target.schemaId=id;
+}
+function ptr(doc,frag){
+  if(!frag)return doc;
+  var parts=frag.replace(/^\//,"").split("/"),c=doc;
+  for(var i=0;i<parts.length;i++){ if(c==null)return undefined;
+    c=c[decodeURIComponent(parts[i]).replace(/~1/g,"/").replace(/~0/g,"~")] }
+  return c;
+}
+function resolveRef(ref,base){
+  var hi=ref.indexOf("#");
+  var head=hi<0?ref:ref.slice(0,hi), hash=hi<0?"":ref.slice(hi+1);
+  var docId=base;
+  if(head){ try{ docId=new URL(head,base||"urn:local:root").href }catch(e){ docId=head } }
+  var doc=SCHEMAS.byId[docId];
+  if(!doc){ var tail=docId.split("/").pop();
+    for(var k in SCHEMAS.byId) if(k.split("/").pop()===tail){ doc=SCHEMAS.byId[k]; docId=k; break } }
+  if(!doc) return null;
+  return {schema:ptr(doc,decodeURIComponent(hash)),base:docId};
+}
+function mergeSchema(sc,base,seen){
+  seen=seen||{};
+  var out={properties:{},propBase:{},required:[],base:base};
+  (function absorb(s,b){
+    if(!s||typeof s!=="object")return;
+    if(s.properties) Object.keys(s.properties).forEach(function(k){
+      if(!(k in out.properties)){ out.properties[k]=s.properties[k]; out.propBase[k]=b }});
+    if(Array.isArray(s.required)) s.required.forEach(function(k){ if(out.required.indexOf(k)<0) out.required.push(k) });
+    ["type","enum","format","description","items","additionalProperties"].forEach(function(kw){
+      if(s[kw]!==undefined&&out[kw]===undefined) out[kw]=s[kw] });
+    if(s.items!==undefined&&out.itemsBase===undefined){ out.items=s.items; out.itemsBase=b }
+    if(s.const!==undefined&&out.const===undefined) out.const=s.const;
+    if(s["default"]!==undefined&&out.dflt===undefined) out.dflt=s["default"];
+    if(s.$ref){ var key=b+"|"+s.$ref;
+      if(!seen[key]){ seen[key]=1; var r=resolveRef(s.$ref,b); if(r&&r.schema) absorb(r.schema,r.base) } }
+    if(s.allOf) s.allOf.forEach(function(x){ absorb(x,b) });
+    var alt=s.oneOf||s.anyOf;
+    if(alt){ var live=alt.filter(function(x){ return !(x&&x.type==="null") });
+      if(live.length===1) absorb(live[0],b) }
+  })(sc,base);
+  return out;
+}
+// Flatten the target schema into dotted leaf paths, because sources are flat
+// and the envelope is not.
+function targetFields(){
+  var id=MAP.target.schemaId, sc=SCHEMAS.byId[id];
+  if(!sc) return [];
+  var out=[];
+  (function walk(s,base,prefix,depth,reqHere){
+    var m=mergeSchema(s,base);
+    var keys=Object.keys(m.properties).filter(function(k){ return k!=="$schema" });
+    keys.forEach(function(k){
+      var path=prefix?prefix+"."+k:k;
+      var ps=m.properties[k], pb=m.propBase[k]||base;
+      var pm=mergeSchema(ps,pb);
+      var t=pm.type; if(Array.isArray(t)) t=t.filter(function(x){return x!=="null"})[0];
+      var req=m.required.indexOf(k)>=0;
+      var nested=Object.keys(pm.properties).length;
+      if(t==="object"&&nested&&depth<2){
+        walk(ps,pb,path,depth+1);
+        return;
+      }
+      out.push({path:path, type:t||(nested?"object":"string"), required:req&&!prefix,
+        format:pm.format, enumv:pm.enum, constv:pm.const, dflt:pm.dflt,
+        items:pm.items, desc:pm.description, open:pm.additionalProperties&&pm.additionalProperties!==false&&!nested});
+    });
+  })(sc,id,"",0);
+  return out;
+}
+
+/* -------------------------------------------------------------- transforms */
+var OPS={
+  trim:{label:"trim",fn:function(v){ return typeof v==="string"?v.trim():v }},
+  lower:{label:"lowercase",fn:function(v){ return typeof v==="string"?v.toLowerCase():v }},
+  upper:{label:"UPPERCASE",fn:function(v){ return typeof v==="string"?v.toUpperCase():v }},
+  title:{label:"Title Case",fn:function(v){ return typeof v==="string"
+    ? v.replace(/\w\S*/g,function(w){return w[0].toUpperCase()+w.slice(1).toLowerCase()}) : v }},
+  slug:{label:"slugify",fn:function(v){ return String(v==null?"":v).toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"") }},
+  prefix:{label:"prefix",args:[{k:"text",ph:"text"}],fn:function(v,r,a){ return (a.text||"")+String(v==null?"":v) }},
+  suffix:{label:"suffix",args:[{k:"text",ph:"text"}],fn:function(v,r,a){ return String(v==null?"":v)+(a.text||"") }},
+  replace:{label:"replace",args:[{k:"find",ph:"find"},{k:"with",ph:"with"},{k:"re",ph:"regex? y/n"}],
+    fn:function(v,r,a){ if(typeof v!=="string")return v;
+      if(String(a.re).toLowerCase()==="y"){ try{ return v.replace(new RegExp(a.find,"g"),a["with"]||"") }catch(e){ return v } }
+      return v.split(a.find||"").join(a["with"]||"") }},
+  split:{label:"split to array",args:[{k:"sep",ph:"sep"}],fn:function(v,r,a){
+    if(Array.isArray(v))return v; if(v==null||v==="")return [];
+    return String(v).split(a.sep||",").map(function(s){return s.trim()}).filter(function(s){return s!==""}) }},
+  join:{label:"join array",args:[{k:"sep",ph:"sep"}],fn:function(v,r,a){
+    return Array.isArray(v)?v.join(a.sep||", "):v }},
+  number:{label:"to number",fn:function(v){ if(v===null||v==="")return undefined;
+    var n=Number(String(v).replace(/[,$\s]/g,"")); return isNaN(n)?undefined:n }},
+  integer:{label:"to integer",fn:function(v){ if(v===null||v==="")return undefined;
+    var n=parseInt(String(v).replace(/[,$\s]/g,""),10); return isNaN(n)?undefined:n }},
+  boolean:{label:"to boolean",fn:function(v){
+    if(typeof v==="boolean")return v;
+    var s=String(v).trim().toLowerCase();
+    if(["true","yes","y","1","t"].indexOf(s)>=0)return true;
+    if(["false","no","n","0","f",""].indexOf(s)>=0)return false;
+    return undefined }},
+  date:{label:"to ISO date-time",args:[{k:"mode",ph:"auto|date"}],fn:function(v,r,a){
+    if(v==null||v==="")return undefined;
+    var s=String(v).trim(), d=null;
+    // Date-only strings must be pinned to UTC. Letting the engine parse
+    // "3/14/2019" treats it as local midnight, so the stored instant drifts by
+    // the reader's offset and the calendar date can land a day out.
+    var iso=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    var us=/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/.exec(s);
+    if(iso) d=new Date(Date.UTC(+iso[1],+iso[2]-1,+iso[3]));
+    else if(us) d=new Date(Date.UTC(+us[3],+us[1]-1,+us[2]));
+    else d=new Date(s);
+    if(!d||isNaN(d.getTime()))return undefined;
+    return a.mode==="date" ? d.toISOString().slice(0,10) : d.toISOString().replace(/\.\d{3}Z$/,"Z") }},
+  "default":{label:"default if empty",args:[{k:"value",ph:"value"}],fn:function(v,r,a){
+    var empty = v===undefined||v===null||v===""||(Array.isArray(v)&&!v.length);
+    return empty ? coerce(a.value) : v }},
+  lookup:{label:"lookup table",args:[{k:"table",ph:"a=b,c=d",wide:true}],fn:function(v,r,a){
+    var map={}; String(a.table||"").split(/[,\n]/).forEach(function(p){
+      var i=p.indexOf("="); if(i>0) map[p.slice(0,i).trim()]=p.slice(i+1).trim() });
+    var k=String(v==null?"":v).trim();
+    return (k in map) ? coerce(map[k]) : v }},
+  template:{label:"template",args:[{k:"pattern",ph:"{a} {b}",wide:true}],fn:function(v,r,a){
+    return String(a.pattern||"").replace(/\{([^}]+)\}/g,function(_,k){
+      var x=r[k.trim()]; return x==null?"":String(x) }).trim() }},
+  coalesce:{label:"first non-empty of",args:[{k:"fields",ph:"a,b,c",wide:true}],fn:function(v,r,a){
+    var list=String(a.fields||"").split(",").map(function(s){return s.trim()});
+    for(var i=0;i<list.length;i++){ var x=r[list[i]]; if(x!==undefined&&x!==null&&x!=="") return x }
+    return v }},
+  point:{label:"[lon,lat] from fields",args:[{k:"lon",ph:"lon field"},{k:"lat",ph:"lat field"}],
+    fn:function(v,r,a){
+      var lo=Number(r[a.lon]), la=Number(r[a.lat]);
+      if(isNaN(lo)||isNaN(la))return undefined;
+      return [lo,la] }},
+  uuid:{label:"generate uuid",fn:function(){ return uuid() }},
+  now:{label:"timestamp now",fn:function(){ return new Date().toISOString().replace(/\.\d{3}Z$/,"Z") }},
+  jsonparse:{label:"parse JSON",fn:function(v){ if(typeof v!=="string")return v;
+    try{ return JSON.parse(v) }catch(e){ return v } }}
+};
+
+/* ------------------------------------------------------------ apply mapping */
+function setPath(obj,path,val){
+  var parts=path.split("."),c=obj;
+  for(var i=0;i<parts.length-1;i++){
+    var k=parts[i];
+    if(c[k]===undefined||typeof c[k]!=="object"||c[k]===null) c[k]={};
+    c=c[k];
+  }
+  c[parts[parts.length-1]]=val;
+}
+function coerceToType(v,f){
+  if(v===undefined||v===null) return v;
+  if(!f||!f.type) return v;
+  switch(f.type){
+    case "string": return Array.isArray(v)?v.join(", "):(typeof v==="object"?JSON.stringify(v):String(v));
+    case "number": { var n=Number(v); return isNaN(n)?undefined:n }
+    case "integer": { var i=parseInt(v,10); return isNaN(i)?undefined:i }
+    case "boolean": return OPS.boolean.fn(v);
+    case "array": return Array.isArray(v)?v:(v===""?[]:[v]);
+    default: return v;
+  }
+}
+function runMapping(limit){
+  var fields={}; targetFields().forEach(function(f){ fields[f.path]=f });
+  var rows = limit ? SRC.rows.slice(0,limit) : SRC.rows;
+  var used={};
+  MAP.rules.forEach(function(r){ if(r.mode==="field"&&r.from) used[r.from]=1;
+    (r.ops||[]).forEach(function(o){ ["lon","lat"].forEach(function(k){ if(o.args&&o.args[k]) used[o.args[k]]=1 }) }) });
+  return rows.map(function(row){
+    var rec={};
+    MAP.rules.forEach(function(rule){
+      if(rule.mode==="skip") return;
+      var v;
+      if(rule.mode==="const") v=coerce(rule.value);
+      else if(rule.mode==="field") v=row[rule.from];
+      else v=undefined;
+      (rule.ops||[]).forEach(function(o){
+        var spec=OPS[o.op]; if(!spec)return;
+        try{ v=spec.fn(v,row,o.args||{}) }catch(e){ v=undefined }
+      });
+      var f=fields[rule.target];
+      if(MAP.options.coerce) v=coerceToType(v,f);
+      if(MAP.options.dropEmpty){
+        var empty = v===undefined||v===null||v===""||(Array.isArray(v)&&!v.length);
+        if(empty) return;
+      }
+      if(v!==undefined) setPath(rec,rule.target,v);
+    });
+    if(MAP.options.unmapped!=="drop"){
+      var leftovers={};
+      Object.keys(row).forEach(function(k){
+        if(used[k])return;
+        var v=row[k];
+        if(v===undefined||v===null||v==="")return;
+        leftovers[k]=v;
+      });
+      if(Object.keys(leftovers).length)
+        setPath(rec, MAP.options.unmapped==="metadata"?"metadata.source_fields":"data",
+          Object.assign(getPath(rec,MAP.options.unmapped==="metadata"?"metadata.source_fields":"data")||{},leftovers));
+    }
+    return rec;
+  });
+}
+function getPath(o,p){ var c=o; p.split(".").forEach(function(k){ c=(c==null)?undefined:c[k] }); return c }
+
+/* --------------------------------------------------------------- validator */
+var FORMATS={
+  "date-time":/^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}(\.\d+)?([Zz]|[+-]\d{2}:\d{2})$/,
+  "date":/^\d{4}-\d{2}-\d{2}$/,"email":/^[^@\s]+@[^@\s.]+\.[^@\s]+$/,
+  "uuid":/^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/,
+  "uri":/^[a-zA-Z][a-zA-Z0-9+.-]*:\S*$/,"uri-reference":/^\S*$/
+};
+function validate(schema,data){
+  var errors=[], root=schema.$id||"urn:local:root";
+  check(schema,data,[],root); return errors;
+  function add(p,m){ if(errors.length<300) errors.push({path:p.slice(),msg:m}) }
+  function check(sc,v,path,base){
+    if(sc===true||sc===undefined)return true;
+    if(sc===false){ add(path,"no value allowed here"); return false }
+    var ok=true;
+    if(sc.$ref){ var r=resolveRef(sc.$ref,base);
+      if(r&&r.schema!==undefined&&!check(r.schema,v,path,r.base)) ok=false }
+    var t=typeOf(v);
+    if(sc.type){
+      var types=Array.isArray(sc.type)?sc.type:[sc.type];
+      if(!types.some(function(x){return x===t||(x==="integer"&&t==="number"&&Number.isInteger(v))})){
+        add(path,"expected "+types.join(" or ")+", found "+t); return false }
+    }
+    if("const" in sc && JSON.stringify(v)!==JSON.stringify(sc.const)){ add(path,"must equal "+JSON.stringify(sc.const)); ok=false }
+    if(sc.enum&&!sc.enum.some(function(x){return JSON.stringify(x)===JSON.stringify(v)})){
+      add(path,"must be one of "+sc.enum.map(function(x){return JSON.stringify(x)}).join(", ")); ok=false }
+    if(sc.allOf) sc.allOf.forEach(function(s){ if(!check(s,v,path,base)) ok=false });
+    if(sc.oneOf||sc.anyOf){
+      var alts=sc.oneOf||sc.anyOf;
+      var any=alts.some(function(s){ var save=errors; errors=[]; var r2=check(s,v,path,base);
+        var had=errors.length; errors=save; return r2&&!had });
+      if(!any){ add(path,"does not match any allowed form"); ok=false }
+    }
+    if(t==="string"){
+      if(sc.minLength!=null&&v.length<sc.minLength){ add(path,"shorter than "+sc.minLength); ok=false }
+      if(sc.maxLength!=null&&v.length>sc.maxLength){ add(path,"longer than "+sc.maxLength); ok=false }
+      if(sc.pattern){ var re; try{re=new RegExp(sc.pattern)}catch(e){re=null}
+        if(re&&!re.test(v)){ add(path,"does not match "+sc.pattern); ok=false } }
+      if(sc.format&&FORMATS[sc.format]&&!FORMATS[sc.format].test(v)){ add(path,"not a valid "+sc.format); ok=false }
+    }
+    if(t==="number"){
+      if(sc.minimum!=null&&v<sc.minimum){ add(path,"below minimum "+sc.minimum); ok=false }
+      if(sc.maximum!=null&&v>sc.maximum){ add(path,"above maximum "+sc.maximum); ok=false }
+    }
+    if(t==="array"){
+      if(sc.minItems!=null&&v.length<sc.minItems){ add(path,"fewer than "+sc.minItems+" items"); ok=false }
+      var pre=sc.prefixItems||[];
+      pre.forEach(function(s,i){ if(i<v.length&&!check(s,v[i],path.concat(i),base)) ok=false });
+      if(sc.items&&sc.items!==false) for(var i=pre.length;i<v.length;i++)
+        if(!check(sc.items,v[i],path.concat(i),base)) ok=false;
+    }
+    if(t==="object"){
+      (sc.required||[]).forEach(function(k){
+        if(!Object.prototype.hasOwnProperty.call(v,k)){ add(path,"missing required “"+k+"”"); ok=false } });
+      var matched={};
+      if(sc.properties) Object.keys(v).forEach(function(k){
+        if(k in sc.properties){ matched[k]=1; if(!check(sc.properties[k],v[k],path.concat(k),base)) ok=false } });
+      if(sc.patternProperties) Object.keys(sc.patternProperties).forEach(function(p){
+        var re; try{re=new RegExp(p)}catch(e){return}
+        Object.keys(v).forEach(function(k){ if(re.test(k)){ matched[k]=1;
+          if(!check(sc.patternProperties[p],v[k],path.concat(k),base)) ok=false } }) });
+      if(sc.propertyNames) Object.keys(v).forEach(function(k){
+        if(!check(sc.propertyNames,k,path.concat(k),base)) ok=false });
+      if(sc.additionalProperties!==undefined) Object.keys(v).forEach(function(k){
+        if(matched[k])return;
+        if(sc.additionalProperties===false){ add(path.concat(k),"property “"+k+"” not allowed"); ok=false }
+        else if(!check(sc.additionalProperties,v[k],path.concat(k),base)) ok=false });
+    }
+    return ok;
+  }
+}
+function pathStr(p){ return "$"+p.map(function(k){
+  return typeof k==="number"?"["+k+"]":(/^[A-Za-z_$][\w$]*$/.test(k)?"."+k:"['"+k+"']") }).join("") }
+
+/* ------------------------------------------------------------- auto mapping */
+var SYN={
+  label:["name","title","company","companyname","company_name","fullname","displayname","orgname","business"],
+  summary:["description","desc","notes","note","about","summary","comment"],
+  id:["id","uuid","guid","key","pk","recordid","rowid"],
+  slug:["slug","handle","permalink"],
+  url:["url","website","link","homepage","web"],
+  // "state" is deliberately absent: in migration data it nearly always means a
+  // geographic region, and it belongs to geo.address.address_region below.
+  status:["status","recordstatus","lifecycle"],
+  tags:["tags","keywords","labels"],
+  created_at:["created","createdat","created_at","createdon","datecreated","created_date"],
+  updated_at:["updated","updatedat","updated_at","modified","lastmodified","updated_date"],
+  "geo.address.street_address":["address","address1","addressline1","street","streetaddress","addr"],
+  "geo.address.address_locality":["city","town","locality"],
+  "geo.address.address_region":["state","province","region","stateprovince"],
+  "geo.address.postal_code":["zip","zipcode","postal","postalcode","postcode"],
+  "geo.address.country_code":["country","countrycode","iso_country"],
+  "geo.timezone":["timezone","tz"],
+  "category.primary":["category","kind","classification","segment"]
+};
+// Source names whose obvious reading collides with an envelope field of the
+// same name. A column called "state" holds "TX", not a lifecycle value, so it
+// is pinned to the address field and kept away from the top-level `state`.
+var AMBIG={ state:"geo.address.address_region", region:"geo.address.address_region",
+            province:"geo.address.address_region", name:"label", type:null };
+function norm(s){ return String(s).toLowerCase().replace(/[^a-z0-9]/g,"") }
+function ambigOk(f,srcName){
+  var pin=AMBIG[norm(srcName)];
+  if(pin===undefined) return true;
+  return pin===f.path;
+}
+function fieldInfo(n){ return SRC.fields.filter(function(f){return f.name===n})[0] }
+// Guess the separator a multi-value column actually uses rather than assuming
+// a comma; ";" and "|" are at least as common in exports.
+function sniffListSep(name){
+  var f=fieldInfo(name); if(!f) return ",";
+  var counts={";":0,"|":0,",":0};
+  f.samples.forEach(function(s){ Object.keys(counts).forEach(function(d){
+    counts[d]+=(String(s).split(d).length-1) }) });
+  var best=",",n=0;
+  Object.keys(counts).forEach(function(d){ if(counts[d]>n){n=counts[d];best=d} });
+  return n?best:",";
+}
+// Never auto-map into an enum field unless the source values actually look like
+// members of that enum - that is what let a US state column land on `status`.
+function enumFits(f,name){
+  if(!f.enumv) return true;
+  var fi=fieldInfo(name); if(!fi||!fi.samples.length) return false;
+  var allowed={}; f.enumv.forEach(function(x){ allowed[String(x).toLowerCase()]=1 });
+  var hits=fi.samples.filter(function(s){ return allowed[String(s).toLowerCase()] }).length;
+  return hits>=Math.ceil(fi.samples.length/2);
+}
+// No transform turns a legacy integer primary key into a UUID, so a uuid-format
+// target only accepts source values that already are UUIDs; otherwise it is
+// left for the generator. Other formats have transforms that can fix them.
+var UUID_RE=/^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/;
+function formatFits(f,name){
+  if(f.format!=="uuid") return true;
+  var fi=fieldInfo(name); if(!fi||!fi.samples.length) return false;
+  return fi.samples.every(function(s){ return UUID_RE.test(String(s).trim()) });
+}
+function autoMap(){
+  var tf=targetFields(), srcNames=SRC.fields.map(function(f){return f.name});
+  var taken={};
+  var rules=[];
+  function claim(n){ taken[n]=1 }
+  tf.forEach(function(f){
+    if(f.constv!==undefined){ rules.push({target:f.path,mode:"const",value:f.constv,ops:[]}); return }
+    var nt=norm(f.path.split(".").pop()), nfull=norm(f.path);
+    var hit=null;
+    // exact on the full dotted path, then on the leaf, then synonyms
+    srcNames.forEach(function(s){
+      if(!hit&&!taken[s]&&(norm(s)===nfull||norm(s)===nt)&&enumFits(f,s)&&formatFits(f,s)&&ambigOk(f,s)) hit=s });
+    if(!hit&&SYN[f.path]) srcNames.forEach(function(s){
+      if(!hit&&!taken[s]&&SYN[f.path].indexOf(norm(s))>=0&&enumFits(f,s)&&formatFits(f,s)&&ambigOk(f,s)) hit=s });
+    // Last pass: whole-word tokens, so vendor_name / customer_name / org_name
+    // all reach `label`. Tokens only - substring matching produces nonsense.
+    if(!hit&&SYN[f.path]) srcNames.forEach(function(s){
+      if(hit||taken[s])return;
+      var toks=String(s).split(/[^A-Za-z0-9]+/).map(norm).filter(Boolean);
+      if(toks.length<2)return;
+      if(toks.some(function(t){ return SYN[f.path].indexOf(t)>=0 })&&enumFits(f,s)&&formatFits(f,s)&&ambigOk(f,s)) hit=s;
+    });
+    if(!hit) return;
+    claim(hit);
+    var ops=[];
+    if(f.type==="array") ops.push({op:"split",args:{sep:sniffListSep(hit)}});
+    if(f.format==="date-time") ops.push({op:"date",args:{mode:"auto"}});
+    else if(f.format==="date") ops.push({op:"date",args:{mode:"date"}});
+    rules.push({target:f.path,mode:"field",from:hit,ops:ops});
+  });
+  // lat/lon pair -> geo.point
+  var lonF=srcNames.filter(function(s){ return /^(lon|lng|long|longitude|x)$/.test(norm(s)) })[0];
+  var latF=srcNames.filter(function(s){ return /^(lat|latitude|y)$/.test(norm(s)) })[0];
+  if(lonF&&latF&&tf.some(function(f){return f.path==="geo.point"}))
+    rules.push({target:"geo.point",mode:"expr",ops:[{op:"point",args:{lon:lonF,lat:latF}}]});
+  // required fields with nothing to fill them
+  tf.forEach(function(f){
+    if(!f.required)return;
+    if(rules.some(function(r){return r.target===f.path}))return;
+    if(f.format==="uuid") rules.push({target:f.path,mode:"expr",ops:[{op:"uuid",args:{}}]});
+  });
+  MAP.rules=rules;
+  renderAll();
+  $("#stHint").textContent=rules.length+" rules generated";
+}
+
+/* -------------------------------------------------------------------- tabs */
+function go(t){ tabName=t;
+  $$("#tabs button").forEach(function(b){ b.classList.toggle("on",b.dataset.tab===t) });
+  renderContent();
+}
+$$("#tabs button").forEach(function(b){ b.onclick=function(){ go(b.dataset.tab) } });
+
+function renderContent(){
+  var c=$("#content"); c.textContent="";
+  if(tabName==="source") renderSource(c);
+  else if(tabName==="map") renderMap(c);
+  else if(tabName==="preview") renderPreview(c);
+  else if(tabName==="spec") renderSpec(c);
+  else if(tabName==="library") renderLibrary(c);
+  else renderHelp(c);
+}
+
+/* ------------------------------------------------------------- Source tab */
+function renderSource(c){
+  if(!SRC.rows.length){
+    c.appendChild(msg("info","Load a source file — CSV, TSV, JSON, NDJSON, or a SQL dump with INSERT statements. You can also drop one anywhere on the page."));
+    return;
+  }
+  if(SRC.tables.length>1){
+    var tr=el("div","rowflex");
+    tr.appendChild(el("span","hint","Table"));
+    var sel=el("select");
+    SRC.tables.forEach(function(t){ sel.appendChild(new Option(t.name+"  ("+t.rows.length+" rows)",t.name)) });
+    sel.value=SRC.table;
+    sel.onchange=function(){
+      SRC.table=sel.value;
+      SRC.rows=SRC.tables.filter(function(t){return t.name===sel.value})[0].rows;
+      profile(); renderAll();
+    };
+    tr.appendChild(sel); c.appendChild(tr);
+  }
+  var cards=el("div","cards");
+  [["Rows",SRC.rows.length],["Fields",SRC.fields.length],["Format",SRC.format]].forEach(function(x){
+    var d=el("div","card"); d.appendChild(el("b",null,String(x[1]))); d.appendChild(el("span",null,x[0])); cards.appendChild(d) });
+  c.appendChild(cards);
+
+  var t=el("table");
+  t.innerHTML="<thead><tr><th>field</th><th>types</th><th>fill</th><th>samples</th></tr></thead>";
+  var tb=el("tbody"); t.appendChild(tb);
+  SRC.fields.forEach(function(f){
+    var pct=f.total?f.filled/f.total*100:0;
+    var tr2=el("tr");
+    tr2.appendChild(el("td","mono",f.name));
+    tr2.appendChild(el("td","mono",f.types.join(", ")));
+    var td=el("td");
+    var m=el("div","bar-meter"); var i=el("i"); i.style.width=pct.toFixed(1)+"%"; m.appendChild(i);
+    td.appendChild(m); td.appendChild(el("div","hint",f.filled+" / "+f.total));
+    tr2.appendChild(td);
+    tr2.appendChild(el("td","mono",f.samples.join("  ·  ").slice(0,90)));
+    tb.appendChild(tr2);
+  });
+  var w=el("div","scrollx"); w.appendChild(t); c.appendChild(w);
+}
+
+/* ---------------------------------------------------------------- Map tab */
+function renderMap(c){
+  if(!SRC.rows.length){ c.appendChild(msg("info","Load a source first.")); return }
+  var tf=targetFields();
+  if(!tf.length){
+    c.appendChild(msg("warn","Load a target schema to get its field list — or add target paths by hand below."));
+  }
+  var tools=el("div","rowflex");
+  var selS=el("select");
+  SCHEMAS.list.forEach(function(s){ selS.appendChild(new Option(s.name,s.id)) });
+  if(!SCHEMAS.list.length) selS.appendChild(new Option("(no schema loaded)",""));
+  selS.value=MAP.target.schemaId;
+  selS.onchange=function(){ MAP.target.schemaId=selS.value; renderAll() };
+  tools.appendChild(el("span","hint","Target"));
+  tools.appendChild(selS);
+  var bAuto=el("button",null,"Auto-map"); bAuto.className="primary"; bAuto.onclick=autoMap;
+  tools.appendChild(bAuto);
+  var bClear=el("button",null,"Clear rules");
+  bClear.onclick=function(){ if(confirm("Remove all rules?")){ MAP.rules=[]; renderAll() } };
+  tools.appendChild(bClear);
+  var bAdd=el("button",null,"Add target path…");
+  bAdd.onclick=function(){ addCustomTarget() };
+  tools.appendChild(bAdd);
+  c.appendChild(tools);
+
+  var opts=el("div","rowflex");
+  [["coerce","Coerce to schema types"],["dropEmpty","Drop empty values"]].forEach(function(o){
+    var l=el("label"); l.style.cssText="display:flex;gap:5px;align-items:center;font-size:12px";
+    var cb=el("input"); cb.type="checkbox"; cb.checked=!!MAP.options[o[0]];
+    cb.onchange=function(){ MAP.options[o[0]]=cb.checked; renderAll() };
+    l.appendChild(cb); l.appendChild(el("span",null,o[1])); opts.appendChild(l);
+  });
+  opts.appendChild(el("span","hint","Unmapped source fields"));
+  var us=el("select");
+  [["drop","discard"],["metadata","keep in metadata.source_fields"],["data","keep in data"]]
+    .forEach(function(o){ us.appendChild(new Option(o[1],o[0])) });
+  us.value=MAP.options.unmapped;
+  us.onchange=function(){ MAP.options.unmapped=us.value; renderAll() };
+  opts.appendChild(us);
+  c.appendChild(opts);
+
+  // unused source fields
+  var used={};
+  MAP.rules.forEach(function(r){ if(r.mode==="field"&&r.from) used[r.from]=1;
+    (r.ops||[]).forEach(function(o){ ["lon","lat"].forEach(function(k){ if(o.args&&o.args[k]) used[o.args[k]]=1 }) }) });
+  var unused=SRC.fields.filter(function(f){ return !used[f.name] });
+  if(unused.length){
+    c.appendChild(el("h4",null,"Source fields not yet mapped ("+unused.length+")"));
+    var pr=el("div","pillrow");
+    unused.forEach(function(f){
+      var ch=el("span","fchip",f.name);
+      ch.title="Click to map this field";
+      ch.onclick=function(){ addRuleFor(f.name) };
+      pr.appendChild(ch);
+    });
+    c.appendChild(pr);
+  }
+
+  var known={}; tf.forEach(function(f){ known[f.path]=f });
+  var rows=MAP.rules.slice();
+  // show unmapped schema fields too, so nothing is invisible
+  tf.forEach(function(f){
+    if(!rows.some(function(r){return r.target===f.path}))
+      rows.push({target:f.path,mode:"skip",ops:[],_ghost:true});
+  });
+
+  var t=el("table");
+  t.innerHTML="<thead><tr><th style='width:210px'>target field</th><th style='width:170px'>source</th>"+
+    "<th>transforms</th><th style='width:190px'>row 1 result</th><th style='width:34px'></th></tr></thead>";
+  var tb=el("tbody"); t.appendChild(tb);
+  var row0=SRC.rows[0]||{};
+
+  rows.forEach(function(rule){
+    var f=known[rule.target];
+    var tr2=el("tr","maprow"+(rule._ghost?"":""));
+    // target
+    var td1=el("td");
+    var nm=el("span","tname",rule.target);
+    td1.appendChild(nm);
+    if(f&&f.required) td1.appendChild(el("span","treq"," *"));
+    if(f) td1.appendChild(el("span","ttype",(f.type||"")+(f.format?" · "+f.format:"")+
+      (f.enumv?" enum("+f.enumv.length+")":"")));
+    else td1.appendChild(el("span","ttype","custom path"));
+    tr2.appendChild(td1);
+    // source
+    var td2=el("td");
+    var sel=el("select");
+    sel.appendChild(new Option("— not mapped —","skip"));
+    sel.appendChild(new Option("(constant)","const"));
+    sel.appendChild(new Option("(generated)","expr"));
+    SRC.fields.forEach(function(sf){ sel.appendChild(new Option(sf.name,"f:"+sf.name)) });
+    sel.value = rule.mode==="field" ? ("f:"+rule.from)
+              : rule.mode==="const" ? "const"
+              : rule.mode==="expr" ? "expr" : "skip";
+    if(sel.selectedIndex<0) sel.value="skip";
+    sel.onchange=function(){
+      var v=sel.value;
+      var live=ensureRule(rule.target);
+      if(v==="skip"){ MAP.rules=MAP.rules.filter(function(r){return r.target!==rule.target}) }
+      else if(v==="const"){ live.mode="const"; live.value=live.value||"" }
+      else if(v==="expr"){ live.mode="expr"; live.ops=live.ops&&live.ops.length?live.ops:[{op:"uuid",args:{}}] }
+      else { live.mode="field"; live.from=v.slice(2) }
+      renderAll();
+    };
+    td2.appendChild(sel);
+    if(rule.mode==="const"){
+      var ci=el("input"); ci.type="text"; ci.value=rule.value==null?"":String(rule.value);
+      ci.style.width="100%"; ci.style.marginTop="3px"; ci.placeholder="constant value";
+      ci.oninput=function(){ ensureRule(rule.target).value=ci.value };
+      ci.onchange=function(){ renderAll() };
+      td2.appendChild(ci);
+    }
+    tr2.appendChild(td2);
+    // ops
+    var td3=el("td");
+    if(rule.mode!=="skip"){
+      var box=el("div","ops");
+      (rule.ops||[]).forEach(function(o,oi){ box.appendChild(opRow(rule,o,oi)) });
+      var add=el("button","tiny","+ transform");
+      add.onclick=function(){ var live=ensureRule(rule.target);
+        live.ops=live.ops||[]; live.ops.push({op:"trim",args:{}}); renderAll() };
+      box.appendChild(add);
+      td3.appendChild(box);
+    }
+    tr2.appendChild(td3);
+    // preview
+    var td4=el("td");
+    var pv=el("span","prev");
+    if(rule.mode==="skip"){ pv.className="prev empty"; pv.textContent="—" }
+    else {
+      var v = rule.mode==="const" ? coerce(rule.value)
+            : rule.mode==="expr" ? undefined : row0[rule.from];
+      (rule.ops||[]).forEach(function(o){ var s=OPS[o.op]; if(!s)return;
+        try{ v=s.fn(v,row0,o.args||{}) }catch(e){ v=undefined } });
+      if(MAP.options.coerce) v=coerceToType(v,f);
+      if(v===undefined||v===null||v===""){ pv.className="prev empty"; pv.textContent="(empty)" }
+      else pv.textContent = typeof v==="object" ? JSON.stringify(v) : String(v);
+    }
+    td4.appendChild(pv);
+    tr2.appendChild(td4);
+    // remove
+    var td5=el("td");
+    if(!rule._ghost){
+      var rm=el("button","tiny","×"); rm.title="Remove rule";
+      rm.onclick=function(){ MAP.rules=MAP.rules.filter(function(r){return r.target!==rule.target}); renderAll() };
+      td5.appendChild(rm);
+    }
+    tr2.appendChild(td5);
+    tb.appendChild(tr2);
+  });
+  var w=el("div","scrollx"); w.style.maxHeight="62vh"; w.appendChild(t); c.appendChild(w);
+}
+function ensureRule(target){
+  var r=MAP.rules.filter(function(x){return x.target===target})[0];
+  if(!r){ r={target:target,mode:"skip",ops:[]}; MAP.rules.push(r) }
+  return r;
+}
+function opRow(rule,o,oi){
+  var d=el("div","op");
+  var sel=el("select");
+  Object.keys(OPS).forEach(function(k){ sel.appendChild(new Option(OPS[k].label,k)) });
+  sel.value=o.op;
+  sel.onchange=function(){ var live=ensureRule(rule.target); live.ops[oi]={op:sel.value,args:{}}; renderAll() };
+  d.appendChild(sel);
+  (OPS[o.op].args||[]).forEach(function(a){
+    var inp=el("input"); inp.type="text"; inp.placeholder=a.ph; inp.value=(o.args&&o.args[a.k])||"";
+    if(a.wide) inp.style.width="150px";
+    inp.oninput=function(){ var live=ensureRule(rule.target);
+      live.ops[oi].args=live.ops[oi].args||{}; live.ops[oi].args[a.k]=inp.value };
+    inp.onchange=function(){ renderAll() };
+    d.appendChild(inp);
+  });
+  var up=el("button","tiny","↑");
+  up.onclick=function(){ var live=ensureRule(rule.target); if(oi<=0)return;
+    var t=live.ops[oi-1]; live.ops[oi-1]=live.ops[oi]; live.ops[oi]=t; renderAll() };
+  var rm=el("button","tiny","×");
+  rm.onclick=function(){ var live=ensureRule(rule.target); live.ops.splice(oi,1); renderAll() };
+  d.appendChild(up); d.appendChild(rm);
+  return d;
+}
+function addRuleFor(sourceField){
+  var tf=targetFields();
+  var body=el("div");
+  body.appendChild(el("p","hint","Map source field “"+sourceField+"” to which target path?"));
+  var sel=el("select"); sel.style.width="100%";
+  tf.forEach(function(f){ sel.appendChild(new Option(f.path+(f.required?"  *":""),f.path)) });
+  sel.appendChild(new Option("— custom path —","__custom"));
+  body.appendChild(sel);
+  var ci=el("input"); ci.type="text"; ci.placeholder="e.g. data.legacy_id"; ci.style.marginTop="8px";
+  ci.style.display="none"; body.appendChild(ci);
+  sel.onchange=function(){ ci.style.display = sel.value==="__custom"?"block":"none" };
+  dialog({title:"Map a source field",body:body},function(ok){
+    if(!ok)return;
+    var target = sel.value==="__custom" ? ci.value.trim() : sel.value;
+    if(!target)return;
+    var r=ensureRule(target); r.mode="field"; r.from=sourceField; r.ops=r.ops||[];
+    renderAll();
+  });
+}
+function addCustomTarget(){
+  var body=el("div");
+  var inp=el("input"); inp.type="text"; inp.placeholder="e.g. identifiers.legacy_id or data.region";
+  body.appendChild(el("p","hint","Dotted path into the output record. Useful for open maps such as identifiers, category and metadata."));
+  body.appendChild(inp);
+  dialog({title:"Add target path",body:body},function(ok){
+    if(!ok||!inp.value.trim())return;
+    ensureRule(inp.value.trim()); renderAll();
+  });
+}
+
+/* ------------------------------------------------------------ Preview tab */
+function renderPreview(c){
+  if(!SRC.rows.length){ c.appendChild(msg("info","Load a source first.")); return }
+  if(!MAP.rules.length){ c.appendChild(msg("warn","No mapping rules yet — run Auto-map or add rules in the Map tab.")); return }
+  var tools=el("div","rowflex");
+  var bRun=el("button",null,"Run on all "+SRC.rows.length+" rows"); bRun.className="primary";
+  bRun.onclick=function(){ doRun(false); renderAll() };
+  tools.appendChild(bRun);
+  var bDl=el("button",null,"Download JSON");
+  bDl.onclick=function(){ doRun(false);
+    download((MAP.name||"migrated").replace(/\s+/g,"-").toLowerCase()+".json",JSON.stringify(OUT,null,2)) };
+  var bNd=el("button",null,"Download NDJSON");
+  bNd.onclick=function(){ doRun(false);
+    download((MAP.name||"migrated").replace(/\s+/g,"-").toLowerCase()+".ndjson",
+      OUT.map(function(r){return JSON.stringify(r)}).join("\n"),"application/x-ndjson") };
+  var bColl=el("button",null,"Download as collection");
+  bColl.onclick=function(){ doRun(false);
+    download((MAP.name||"migrated").replace(/\s+/g,"-").toLowerCase()+".collection.json",
+      JSON.stringify({meta:{generated:new Date().toISOString(),count:OUT.length,
+        tool:"data-mapper",source:SRC.name},items:OUT},null,2)) };
+  tools.appendChild(bDl); tools.appendChild(bNd); tools.appendChild(bColl);
+  c.appendChild(tools);
+
+  doRun(true);
+  var cards=el("div","cards");
+  [["Preview rows",OUT.length],["Problems",OUTERR.length],
+   ["Rules",MAP.rules.filter(function(r){return r.mode!=="skip"}).length]].forEach(function(x){
+    var d=el("div","card"); d.appendChild(el("b",null,String(x[1]))); d.appendChild(el("span",null,x[0])); cards.appendChild(d) });
+  c.appendChild(cards);
+
+  if(OUTERR.length){
+    c.appendChild(msg("err",OUTERR.length+" validation problem"+(OUTERR.length===1?"":"s")+" in the previewed rows."));
+    var t=el("table");
+    t.innerHTML="<thead><tr><th style='width:60px'>row</th><th style='width:210px'>path</th><th>problem</th></tr></thead>";
+    var tb=el("tbody"); t.appendChild(tb);
+    OUTERR.slice(0,120).forEach(function(e){
+      var tr=el("tr");
+      tr.appendChild(el("td",null,String(e.row)));
+      tr.appendChild(el("td","mono",pathStr(e.path)));
+      tr.appendChild(el("td",null,e.msg));
+      tb.appendChild(tr);
+    });
+    var w=el("div","scrollx"); w.style.maxHeight="34vh"; w.appendChild(t); c.appendChild(w);
+  } else if(MAP.target.schemaId) c.appendChild(msg("ok","Previewed rows validate against the target schema."));
+
+  c.appendChild(el("h4",null,"Output"));
+  var pre=el("div","out");
+  pre.textContent=JSON.stringify(OUT.slice(0,25),null,2);
+  c.appendChild(pre);
+  if(OUT.length>25) c.appendChild(el("p","hint","Showing the first 25 of "+OUT.length+"."));
+}
+function doRun(preview){
+  OUT=runMapping(preview?25:0);
+  OUTERR=[];
+  var sc=SCHEMAS.byId[MAP.target.schemaId];
+  if(sc) OUT.slice(0,200).forEach(function(rec,i){
+    validate(sc,rec).forEach(function(e){ OUTERR.push({row:i,path:e.path,msg:e.msg}) });
+  });
+}
+
+/* --------------------------------------------------------------- Spec tab */
+function renderSpec(c){
+  if(!MAP.rules.length){ c.appendChild(msg("info","Build a mapping first.")); return }
+  var tools=el("div","rowflex");
+  var bCopy=el("button",null,"Copy Markdown");
+  var bDl=el("button",null,"Download Markdown");
+  var bJson=el("button",null,"Download mapping JSON");
+  tools.appendChild(bCopy); tools.appendChild(bDl); tools.appendChild(bJson);
+  c.appendChild(tools);
+
+  var md=specMarkdown();
+  bCopy.onclick=function(){ copyText(md,bCopy) };
+  bDl.onclick=function(){ download((MAP.name||"mapping").replace(/\s+/g,"-").toLowerCase()+".md",md,"text/markdown") };
+  bJson.onclick=function(){ exportMapping() };
+
+  var d=el("div","spec");
+  d.appendChild(el("h4",null,"Mapping — "+(MAP.name||"untitled")));
+  var meta=el("p","hint");
+  meta.textContent="Source: "+(SRC.name||"—")+" ("+(SRC.format||"?")+")  ·  Target: "+
+    (MAP.target.schemaId||"none")+"  ·  "+MAP.rules.filter(function(r){return r.mode!=="skip"}).length+" rules";
+  d.appendChild(meta);
+  var t=el("table");
+  t.innerHTML="<thead><tr><th>target</th><th>source</th><th>transforms</th></tr></thead>";
+  var tb=el("tbody"); t.appendChild(tb);
+  MAP.rules.filter(function(r){return r.mode!=="skip"}).forEach(function(r){
+    var tr=el("tr");
+    tr.appendChild(el("td","mono",r.target));
+    tr.appendChild(el("td","mono", r.mode==="const"?("constant "+JSON.stringify(r.value))
+      : r.mode==="expr"?"(generated)" : r.from||"—"));
+    tr.appendChild(el("td","mono",(r.ops||[]).map(opText).join("  →  ")||"—"));
+    tb.appendChild(tr);
+  });
+  var w=el("div","scrollx"); w.appendChild(t); d.appendChild(w);
+  d.appendChild(el("p","hint","Unmapped source fields: "+
+    (MAP.options.unmapped==="drop"?"discarded":"kept in "+(MAP.options.unmapped==="metadata"?"metadata.source_fields":"data"))+
+    ". Type coercion "+(MAP.options.coerce?"on":"off")+", empty values "+(MAP.options.dropEmpty?"dropped":"kept")+"."));
+  c.appendChild(d);
+}
+function opText(o){
+  var spec=OPS[o.op]; if(!spec) return o.op;
+  var args=(spec.args||[]).map(function(a){ return (o.args&&o.args[a.k])?a.k+"="+o.args[a.k]:null })
+    .filter(Boolean).join(", ");
+  return spec.label+(args?"("+args+")":"");
+}
+function specMarkdown(){
+  var lines=[];
+  lines.push("# Mapping — "+(MAP.name||"untitled"));
+  lines.push("");
+  lines.push("- **Source:** "+(SRC.name||"—")+" ("+(SRC.format||"?")+")");
+  lines.push("- **Target schema:** "+(MAP.target.schemaId||"none"));
+  lines.push("- **Rules:** "+MAP.rules.filter(function(r){return r.mode!=="skip"}).length);
+  lines.push("- **Unmapped source fields:** "+(MAP.options.unmapped==="drop"?"discarded":
+    "kept in "+(MAP.options.unmapped==="metadata"?"`metadata.source_fields`":"`data`")));
+  lines.push("- **Type coercion:** "+(MAP.options.coerce?"on":"off")+
+    "  ·  **Empty values:** "+(MAP.options.dropEmpty?"dropped":"kept"));
+  lines.push("");
+  lines.push("| Target field | Source | Transforms |");
+  lines.push("|---|---|---|");
+  MAP.rules.filter(function(r){return r.mode!=="skip"}).forEach(function(r){
+    lines.push("| `"+r.target+"` | "+(r.mode==="const"?"constant `"+JSON.stringify(r.value)+"`":
+      r.mode==="expr"?"_generated_":(r.from?"`"+r.from+"`":"—"))+
+      " | "+((r.ops||[]).map(opText).join(" → ")||"—")+" |");
+  });
+  return lines.join("\n");
+}
+
+/* ------------------------------------------------------------ Library tab */
+function lib(){ try{ return JSON.parse(recall("dm.lib")||"[]") }catch(e){ return [] } }
+function saveLib(a){ store("dm.lib",JSON.stringify(a)) }
+function currentMapping(){
+  return { id:MAP.id, name:MAP.name||"untitled", updated:new Date().toISOString(),
+           source:{name:SRC.name,format:SRC.format}, target:deep(MAP.target),
+           options:deep(MAP.options), rules:deep(MAP.rules) };
+}
+function saveMapping(){
+  MAP.name=$("#mapName").value.trim()||MAP.name||"untitled";
+  var a=lib(), m=currentMapping();
+  var i=a.findIndex(function(x){return x.id===m.id});
+  if(i>=0) a[i]=m; else a.push(m);
+  saveLib(a); renderAll();
+  $("#stHint").textContent="saved “"+m.name+"”";
+}
+function loadMapping(m){
+  MAP.id=m.id; MAP.name=m.name; MAP.target=deep(m.target)||{schemaId:"",type:""};
+  MAP.options=Object.assign({coerce:true,dropEmpty:true,unmapped:"drop"},m.options||{});
+  MAP.rules=deep(m.rules)||[];
+  $("#mapName").value=MAP.name;
+  renderAll(); go("map");
+}
+function exportMapping(){
+  var m=currentMapping();
+  download((m.name||"mapping").replace(/\s+/g,"-").toLowerCase()+".mapping.json",JSON.stringify(m,null,2));
+}
+function renderLibrary(c){
+  var tools=el("div","rowflex");
+  var bImp=el("button",null,"Import mapping file…");
+  var fi=el("input"); fi.type="file"; fi.accept=".json"; fi.hidden=true;
+  bImp.onclick=function(){ fi.click() };
+  fi.onchange=function(e){
+    Array.prototype.forEach.call(e.target.files,function(f){
+      var r=new FileReader();
+      r.onload=function(){ try{
+        var m=JSON.parse(String(r.result));
+        if(!m.rules) throw new Error("not a mapping file");
+        m.id=m.id||uuid();
+        var a=lib(); var i=a.findIndex(function(x){return x.id===m.id});
+        if(i>=0)a[i]=m; else a.push(m);
+        saveLib(a); renderAll();
+      }catch(err){ alert(f.name+": "+err.message) } };
+      r.readAsText(f);
+    });
+    e.target.value="";
+  };
+  tools.appendChild(bImp); tools.appendChild(fi);
+  var bNew=el("button",null,"New mapping");
+  bNew.onclick=function(){ MAP={id:uuid(),name:"",target:{schemaId:MAP.target.schemaId,type:""},rules:[],
+    options:{coerce:true,dropEmpty:true,unmapped:"drop"}}; $("#mapName").value=""; renderAll() };
+  tools.appendChild(bNew);
+  c.appendChild(tools);
+
+  var a=lib();
+  if(!a.length){ c.appendChild(msg("info","No saved mappings yet. Build one, name it, then Save mapping.")); return }
+  a.slice().reverse().forEach(function(m){
+    var it=el("div","libitem");
+    var left=el("div"); left.style.flex="1 1 auto"; left.style.minWidth="0";
+    left.appendChild(el("b",null,m.name));
+    left.appendChild(el("div","meta",
+      (m.source&&m.source.name?m.source.name+"  →  ":"")+
+      (m.target&&m.target.schemaId?m.target.schemaId.split("/").pop():"no schema")+
+      "  ·  "+(m.rules?m.rules.length:0)+" rules  ·  "+(m.updated||"").slice(0,10)));
+    it.appendChild(left);
+    var bl=el("button",null,"Load"); bl.className="primary"; bl.onclick=function(){ loadMapping(m) };
+    var bd=el("button",null,"Export"); bd.onclick=function(){
+      download((m.name||"mapping").replace(/\s+/g,"-").toLowerCase()+".mapping.json",JSON.stringify(m,null,2)) };
+    var bc=el("button",null,"Duplicate"); bc.onclick=function(){
+      var n=deep(m); n.id=uuid(); n.name=m.name+" copy"; var arr=lib(); arr.push(n); saveLib(arr); renderAll() };
+    var bx=el("button",null,"×"); bx.onclick=function(){
+      if(!confirm("Delete mapping “"+m.name+"”?"))return;
+      saveLib(lib().filter(function(x){return x.id!==m.id})); renderAll() };
+    it.appendChild(bl); it.appendChild(bd); it.appendChild(bc); it.appendChild(bx);
+    c.appendChild(it);
+  });
+}
+
+/* -------------------------------------------------------------- Help tab */
+function renderHelp(c){
+  c.innerHTML =
+   "<h4>What this does</h4>"+
+   "<p class='hint'>Takes records in whatever shape a source system hands you and rewrites them into the target schema, using a mapping you can name, save, export and reuse. The mapping is the deliverable — it is a file you can commit next to the schemas.</p>"+
+   "<h4>Sources</h4>"+
+   "<p class='hint'>CSV and TSV (delimiter sniffed), JSON (an array, or an object with one — items, records, rows, data, results, features…), NDJSON, and SQL dumps. For SQL the reader takes column names from <code>CREATE TABLE</code> and rows from <code>INSERT</code>; several tables in one file give you a table picker. Nested JSON is flattened to dotted field names so it maps like anything else.</p>"+
+   "<h4>Mapping</h4>"+
+   "<p class='hint'>Each row is one target field. Pick a source field, a constant, or leave it unmapped, then stack transforms. The right-hand column shows what row 1 actually produces, so you can see the result as you build. <b>Auto-map</b> matches on exact names, then on a synonym table (name/company → label, zip → postal_code, and so on), pairs lat/lon fields into <code>geo.point</code>, adds date parsing for date-time targets, splits into arrays for array targets, and generates UUIDs for required uuid fields.</p>"+
+   "<p class='hint'>Source fields nobody has mapped are listed above the table — click one to map it. Anything still unmapped at run time is discarded, or kept under <code>metadata.source_fields</code> or <code>data</code>, whichever you choose. Nothing disappears silently unless you say so.</p>"+
+   "<h4>Transforms</h4>"+
+   "<p class='hint'>trim, case, slugify, prefix/suffix, replace (literal or regex), split/join, number/integer/boolean, ISO date parsing, default-if-empty, lookup tables for code translation, templates like <code>{first} {last}</code>, coalesce across several fields, <code>[lon,lat]</code> from a lat/lon pair, uuid and now(). They run in order, top to bottom, and the arrows reorder them.</p>"+
+   "<h4>Preview and Spec</h4>"+
+   "<p class='hint'>Preview runs the mapping and validates the output against the target schema, listing problems by row and path. Spec renders the mapping as a readable table you can copy as Markdown — the formal record of how a source was migrated.</p>"+
+   "<h4>Saving</h4>"+
+   "<p class='hint'>Mappings live in the Library (browser storage) and export as <code>.mapping.json</code> files. Import one on another machine and it restores rules, transforms and options. It does not store the source data, only the mapping.</p>";
+}
+
+/* ----------------------------------------------------------------- dialog */
+var dlg=$("#dlg"),dlgCb=null;
+function dialog(spec,cb){
+  $("#dlgTitle").textContent=spec.title||"";
+  var b=$("#dlgBody"); b.textContent=""; b.appendChild(spec.body);
+  dlgCb=cb;
+  if(dlg.showModal) dlg.showModal(); else dlg.setAttribute("open","");
+}
+function finish(ok){ var cb=dlgCb; dlgCb=null;
+  try{ dlg.close() }catch(e){ dlg.removeAttribute("open") } if(cb) cb(ok) }
+$("#dlgOk").onclick=function(){ finish(true) };
+$("#dlgCancel").onclick=function(){ finish(false) };
+dlg.addEventListener("cancel",function(e){ e.preventDefault(); finish(false) });
+
+/* ------------------------------------------------------------------ wiring */
+$("#bSrc").onclick=function(){ $("#fSrc").click() };
+$("#fSrc").onchange=function(e){
+  var f=e.target.files[0]; if(!f)return;
+  var r=new FileReader(); r.onload=function(){ loadSource(f.name,String(r.result)) }; r.readAsText(f);
+  e.target.value="";
+};
+$("#bSrcPaste").onclick=function(){
+  var body=el("div");
+  var nm=el("input"); nm.type="text"; nm.placeholder="source.csv"; body.appendChild(el("h4",null,"Name")); body.appendChild(nm);
+  var ta=el("textarea"); body.appendChild(el("h4",null,"Content")); body.appendChild(ta);
+  dialog({title:"Paste source data",body:body},function(ok){
+    if(!ok||!ta.value.trim())return;
+    loadSource(nm.value.trim()||"pasted.csv",ta.value);
+  });
+};
+$("#bSchema").onclick=function(){ $("#fSchema").click() };
+$("#fSchema").onchange=function(e){
+  Array.prototype.forEach.call(e.target.files,function(f){
+    var r=new FileReader();
+    r.onload=function(){ try{ addSchema(JSON.parse(String(r.result)),f.name); renderAll() }
+      catch(err){ alert(f.name+": "+err.message) } };
+    r.readAsText(f);
+  });
+  e.target.value="";
+};
+$("#bSchemaPaste").onclick=function(){
+  var body=el("div");
+  var nm=el("input"); nm.type="text"; nm.placeholder="record.schema.json";
+  body.appendChild(el("h4",null,"Name")); body.appendChild(nm);
+  var ta=el("textarea"); body.appendChild(el("h4",null,"JSON Schema")); body.appendChild(ta);
+  dialog({title:"Paste a target schema",body:body},function(ok){
+    if(!ok||!ta.value.trim())return;
+    try{ var o=JSON.parse(ta.value); addSchema(o,nm.value.trim()||((o.title||"schema")+".json")); renderAll() }
+    catch(e){ alert("Not valid JSON: "+e.message) }
+  });
+};
+$("#bSaveMap").onclick=saveMapping;
+$("#bExportMap").onclick=exportMapping;
+$("#mapName").oninput=function(){ MAP.name=$("#mapName").value };
+$("#bTheme").onclick=function(){
+  var cur=document.documentElement.dataset.theme;
+  var next=cur==="auto"?"light":cur==="light"?"dark":"auto";
+  document.documentElement.dataset.theme=next; store("dm.theme",next); flash($("#bTheme"),next);
+};
+var dropEl=$("#drop"),dragN=0;
+window.addEventListener("dragenter",function(e){ e.preventDefault(); dragN++; dropEl.classList.add("on") });
+window.addEventListener("dragover",function(e){ e.preventDefault() });
+window.addEventListener("dragleave",function(){ if(--dragN<=0){dragN=0;dropEl.classList.remove("on")} });
+window.addEventListener("drop",function(e){
+  e.preventDefault(); dragN=0; dropEl.classList.remove("on");
+  Array.prototype.forEach.call(e.dataTransfer.files,function(f){
+    var r=new FileReader();
+    r.onload=function(){
+      var txt=String(r.result);
+      // A .json file that looks like a schema goes to the target list; anything
+      // else is source data.
+      var looksSchema=false;
+      try{ var o=JSON.parse(txt); looksSchema=!!(o.$schema||o.$defs||(o.properties&&o.type==="object")) }catch(err){}
+      if(looksSchema){ addSchema(JSON.parse(txt),f.name); renderAll() }
+      else loadSource(f.name,txt);
+    };
+    r.readAsText(f);
+  });
+});
+
+function refreshStatus(){
+  var s=$("#stSrc");
+  if(!SRC.rows.length){ s.className="pill warn"; s.textContent="no source" }
+  else { s.className="pill ok"; s.textContent=SRC.rows.length+" rows · "+SRC.fields.length+" fields" }
+  $("#stTgt").textContent="target: "+(MAP.target.schemaId?MAP.target.schemaId.split("/").pop():"—");
+  $("#stRules").textContent=MAP.rules.filter(function(r){return r.mode!=="skip"}).length+" rules";
+}
+function renderAll(){ renderContent(); refreshStatus() }
+
+(function(){
+  var th=recall("dm.theme"); if(th) document.documentElement.dataset.theme=th;
+  renderAll();
+})();
+
+})();
+</script>
+</body>
+</html>

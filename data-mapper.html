@@ -335,6 +335,12 @@ function flatten(v,pre,out){
   ks.forEach(function(k){ flatten(v[k],pre?pre+"."+k:k,out) });
   return out;
 }
+// Keep the untouched record beside the flattened one, non-enumerable so it
+// never shows up as a source field, in the profile, or in leftover handling.
+function keepRaw(flat,original){
+  try{ Object.defineProperty(flat,"__src",{value:original,enumerable:false,configurable:true}) }catch(e){}
+  return flat;
+}
 function loadSource(name,text){
   SRC.name=name; SRC.raw=text; SRC.tables=[]; SRC.table="";
   var ext=(name.split(".").pop()||"").toLowerCase();
@@ -349,13 +355,14 @@ function loadSource(name,text){
       SRC.rows=tabs[names[0]].rows;
     } else if(ext==="ndjson"||ext==="jsonl"||(t.indexOf("\n")>0&&t[0]==="{"&&t.indexOf("\n{")>0&&!/^\s*\[/.test(t))){
       SRC.format="ndjson";
-      SRC.rows=t.split(/\r?\n/).filter(function(l){return l.trim()}).map(function(l){ return flatten(JSON.parse(l)) });
+      SRC.rows=t.split(/\r?\n/).filter(function(l){return l.trim()})
+        .map(function(l){ var o=JSON.parse(l); return keepRaw(flatten(o),o) });
     } else if(t[0]==="["||t[0]==="{"){
       SRC.format="json";
       var o=JSON.parse(t);
       var arr=Array.isArray(o)?o:pickArray(o);
       if(!arr) throw new Error("no array of records found in the JSON");
-      SRC.rows=arr.map(function(r){ return (r&&typeof r==="object")?flatten(r):{value:r} });
+      SRC.rows=arr.map(function(r){ return (r&&typeof r==="object")?keepRaw(flatten(r),r):{value:r} });
     } else {
       var d=ext==="tsv"?"\t":sniffDelim(text);
       SRC.format="csv"+(d==="\t"?" (tab)":" ("+d+")");
@@ -518,11 +525,17 @@ var OPS={
   "default":{label:"default if empty",args:[{k:"value",ph:"value"}],fn:function(v,r,a){
     var empty = v===undefined||v===null||v===""||(Array.isArray(v)&&!v.length);
     return empty ? coerce(a.value) : v }},
-  lookup:{label:"lookup table",args:[{k:"table",ph:"a=b,c=d",wide:true}],fn:function(v,r,a){
-    var map={}; String(a.table||"").split(/[,\n]/).forEach(function(p){
-      var i=p.indexOf("="); if(i>0) map[p.slice(0,i).trim()]=p.slice(i+1).trim() });
-    var k=String(v==null?"":v).trim();
-    return (k in map) ? coerce(map[k]) : v }},
+  lookup:{label:"lookup table",args:[{k:"table",ph:"a=b,c=d",wide:true},{k:"else",ph:"if no match"}],
+    fn:function(v,r,a){
+      var map={}; String(a.table||"").split(/[,\n]/).forEach(function(p){
+        var i=p.indexOf("="); if(i>0) map[p.slice(0,i).trim()]=p.slice(i+1).trim() });
+      var k=String(v==null?"":v).trim();
+      if(k in map) return coerce(map[k]);
+      // Passing an unrecognised code straight through is usually wrong - it
+      // yields a value in the target's vocabulary that is not in the vocabulary.
+      // `else` gives it somewhere to go; empty means drop it.
+      return ("else" in a && a["else"]!=="") ? coerce(a["else"])
+           : ("else" in a) ? undefined : v }},
   template:{label:"template",args:[{k:"pattern",ph:"{a} {b}",wide:true}],fn:function(v,r,a){
     return String(a.pattern||"").replace(/\{([^}]+)\}/g,function(_,k){
       var x=r[k.trim()]; return x==null?"":String(x) }).trim() }},
@@ -538,7 +551,20 @@ var OPS={
   uuid:{label:"generate uuid",fn:function(){ return uuid() }},
   now:{label:"timestamp now",fn:function(){ return new Date().toISOString().replace(/\.\d{3}Z$/,"Z") }},
   jsonparse:{label:"parse JSON",fn:function(v){ if(typeof v!=="string")return v;
-    try{ return JSON.parse(v) }catch(e){ return v } }}
+    try{ return JSON.parse(v) }catch(e){ return v } }},
+  // Flattening turns a nested object into dotted leaf fields, which is right for
+  // mapping scalars but destroys anything that has to travel whole - a GeoJSON
+  // geometry above all. These read from the untouched original record.
+  raw:{label:"raw value at path",args:[{k:"path",ph:"geometry",wide:true}],fn:function(v,r,a){
+    var src=r.__src||r; return deep(getPath(src,a.path||"")) }},
+  shape:{label:"wrap as geo.shapes",args:[{k:"role",ph:"boundary"}],fn:function(v,r,a){
+    if(v==null)return undefined;
+    return [{role:a.role||"boundary",geometry:v}] }},
+  onlyIf:{label:"only if field equals",args:[{k:"field",ph:"field"},{k:"equals",ph:"value"}],
+    fn:function(v,r,a){
+      var src=r.__src||r;
+      var actual = (a.field in r) ? r[a.field] : getPath(src,a.field||"");
+      return String(actual)===String(a.equals) ? v : undefined }}
 };
 
 /* ------------------------------------------------------------ apply mapping */
@@ -546,7 +572,11 @@ function setPath(obj,path,val){
   var parts=path.split("."),c=obj;
   for(var i=0;i<parts.length-1;i++){
     var k=parts[i];
-    if(c[k]===undefined||typeof c[k]!=="object"||c[k]===null) c[k]={};
+    // A numeric next segment means this level is an array, not an object.
+    // Without this, a target path like attachments.0.path silently produces
+    // {"0": {...}} where the schema demands a list.
+    var nextNum=/^\d+$/.test(parts[i+1]);
+    if(c[k]===undefined||typeof c[k]!=="object"||c[k]===null) c[k]= nextNum?[]:{};
     c=c[k];
   }
   c[parts[parts.length-1]]=val;
@@ -1273,6 +1303,7 @@ function renderHelp(c){
    "<p class='hint'>Source fields nobody has mapped are listed above the table — click one to map it. Anything still unmapped at run time is discarded, or kept under <code>metadata.source_fields</code> or <code>data</code>, whichever you choose. Nothing disappears silently unless you say so.</p>"+
    "<h4>Transforms</h4>"+
    "<p class='hint'>trim, case, slugify, prefix/suffix, replace (literal or regex), split/join, number/integer/boolean, ISO date parsing, default-if-empty, lookup tables for code translation, templates like <code>{first} {last}</code>, coalesce across several fields, <code>[lon,lat]</code> from a lat/lon pair, uuid and now(). They run in order, top to bottom, and the arrows reorder them.</p>"+
+   "<p class='hint'>Three work on the original nested record rather than the flattened fields. <b>raw value at path</b> pulls a whole subtree through untouched — a GeoJSON <code>geometry</code>, say, which flattening would otherwise shred into indexed leaves. <b>wrap as geo.shapes</b> turns a geometry into a <code>[{role, geometry}]</code> entry. <b>only if field equals</b> drops the value unless another field matches, which is how one mapping can send Points to <code>geo.point</code> and Polygons to <code>geo.shapes</code>.</p>"+
    "<h4>Preview and Spec</h4>"+
    "<p class='hint'>Preview runs the mapping and validates the output against the target schema, listing problems by row and path. Spec renders the mapping as a readable table you can copy as Markdown — the formal record of how a source was migrated.</p>"+
    "<h4>Saving</h4>"+

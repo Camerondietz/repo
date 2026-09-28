@@ -1,0 +1,131 @@
+{
+  "id": "2e5b71c4-98a0-4d36-b1f7-6c0a3e2947db",
+  "name": "Docs catalog to document",
+  "updated": "2026-09-28T00:00:00Z",
+  "source": {
+    "name": "index.json",
+    "format": "json",
+    "note": "A catalog file conforming to old/documents.schema.json: { repo_version, updated, count, documents[] }. The mapper picks up documents[] automatically; the three wrapper fields are handled separately - see wrapper below."
+  },
+  "target": {
+    "schemaId": "https://mdm.cameron-dietz.com/schema/types/document.schema.json",
+    "type": "document"
+  },
+  "options": {
+    "coerce": true,
+    "dropEmpty": true,
+    "unmapped": "drop"
+  },
+  "rules": [
+    { "target": "type", "mode": "const", "value": "document", "ops": [] },
+    {
+      "target": "id",
+      "mode": "expr",
+      "ops": [{ "op": "uuid", "args": {} }],
+      "note": "The old id is a kebab slug, not a UUID, so a new id is minted and the slug is preserved below."
+    },
+    {
+      "target": "slug",
+      "mode": "field",
+      "from": "id",
+      "ops": [{ "op": "trim", "args": {} }],
+      "note": "The old kebab id keeps its meaning here - same value, correct field."
+    },
+    { "target": "label", "mode": "field", "from": "title", "ops": [{ "op": "trim", "args": {} }] },
+    { "target": "summary", "mode": "field", "from": "description", "ops": [{ "op": "trim", "args": {} }] },
+    {
+      "target": "category.primary",
+      "mode": "field",
+      "from": "category",
+      "ops": [{ "op": "lower", "args": {} }],
+      "note": "Old category is the folder name under docs/ (fema, military, technical-references, other). Already kebab, so it satisfies the new value pattern unchanged."
+    },
+    { "target": "tags", "mode": "field", "from": "tags", "ops": [] },
+    { "target": "apps", "mode": "field", "from": "apps", "ops": [] },
+    {
+      "target": "status",
+      "mode": "field",
+      "from": "status",
+      "ops": [{ "op": "default", "args": { "value": "active" } }],
+      "note": "All four old values - active, superseded, deprecated, withdrawn - exist unchanged in the new enum, so this is an identity mapping."
+    },
+    { "target": "version", "mode": "field", "from": "version", "ops": [{ "op": "trim", "args": {} }] },
+    { "target": "source_url", "mode": "field", "from": "source_url", "ops": [{ "op": "trim", "args": {} }] },
+    { "target": "last_verified", "mode": "field", "from": "last_verified", "ops": [{ "op": "date", "args": { "mode": "date" } }] },
+    {
+      "target": "created_at",
+      "mode": "field",
+      "from": "date_added",
+      "ops": [{ "op": "date", "args": { "mode": "auto" } }],
+      "note": "date_added is a plain date; created_at is a date-time, so it becomes UTC midnight rather than drifting by the reader's offset."
+    },
+    { "target": "source_system", "mode": "const", "value": "docs_repo", "ops": [] },
+    {
+      "target": "source_record_id",
+      "mode": "field",
+      "from": "id",
+      "ops": [],
+      "note": "Unlike the ATLAS import, the old kebab id is a genuine stable key, so re-imports are idempotent on (source_system, source_record_id)."
+    },
+
+    { "target": "attachments.0.role", "mode": "const", "value": "primary", "ops": [] },
+    {
+      "target": "attachments.0.path",
+      "mode": "field",
+      "from": "path",
+      "ops": [{ "op": "trim", "args": {} }],
+      "note": "path is required by the old schema, so every entry produces exactly one attachment."
+    },
+    { "target": "attachments.0.file_type", "mode": "field", "from": "file_type", "ops": [{ "op": "lower", "args": {} }] },
+    { "target": "attachments.0.size_bytes", "mode": "field", "from": "size_bytes", "ops": [{ "op": "integer", "args": {} }] },
+    {
+      "target": "attachments.0.checksum_sha256",
+      "mode": "field",
+      "from": "checksum_sha256",
+      "ops": [{ "op": "lower", "args": {} }],
+      "note": "This hashes the FILE, so it belongs on the attachment. The envelope's own checksum_sha256 hashes the record and is deliberately left unset."
+    },
+    {
+      "target": "attachments.0.media_type",
+      "mode": "field",
+      "from": "file_type",
+      "ops": [
+        { "op": "lower", "args": {} },
+        { "op": "lookup", "args": { "table": "pdf=application/pdf,doc=application/msword,docx=application/vnd.openxmlformats-officedocument.wordprocessingml.document,xlsx=application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,csv=text/csv,txt=text/plain,md=text/markdown,html=text/html,zip=application/zip,png=image/png,jpg=image/jpeg", "else": "" } }
+      ],
+      "note": "Derived from the extension. An unrecognised extension yields no media_type at all rather than an invalid one - file_type still carries the raw value, so nothing is lost."
+    },
+
+    { "target": "data.publisher", "mode": "field", "from": "publisher", "ops": [{ "op": "trim", "args": {} }] },
+    {
+      "target": "data.publication_date",
+      "mode": "field",
+      "from": "publication_date",
+      "ops": [{ "op": "trim", "args": {} }],
+      "note": "Deliberately NOT date-parsed. The target accepts YYYY, YYYY-MM or YYYY-MM-DD, and parsing a bare year to a full date would invent precision the publisher never stated."
+    },
+
+    {
+      "target": "metadata.superseded_by_slug",
+      "mode": "field",
+      "from": "superseded_by",
+      "ops": [{ "op": "trim", "args": {} }],
+      "note": "NOT mapped to the envelope's superseded_by, which requires a UUID. The old value is a slug pointing at another entry whose new id does not exist until this run finishes. Parked here for a second pass - see followUp."
+    }
+  ],
+  "wrapper": {
+    "note": "The catalog's own three fields have no home on a record. Rebuild them with Preview > Download as collection, which emits { meta, items } per collection.schema.json.",
+    "repo_version": "meta.repo_version",
+    "updated": "meta.updated",
+    "count": "meta.count (recomputed from the output, not copied)"
+  },
+  "dropped": {
+    "$schema": "Points at the old catalog schema; the new file declares its own."
+  },
+  "followUp": [
+    "Resolve superseded_by. After the run, build a slug -> id index from the output, then for each record with metadata.superseded_by_slug set superseded_by to the matching UUID and delete the parked value. A slug with no match is a dangling reference in the source and should be reported, not silently dropped.",
+    "visibility is left unset so the schema default (internal) applies. If this catalog is public reference material, set it to public - as a constant rule here, not by hand afterwards.",
+    "url is unmapped: the old schema records a local path and an upstream source_url, but not a canonical web location for the document itself. Populate it where one exists.",
+    "Any row whose attachment has file_type but no media_type had an extension outside the lookup table. Add it to the table rather than leaving the field blank."
+  ]
+}

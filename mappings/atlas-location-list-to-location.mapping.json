@@ -1,0 +1,140 @@
+{
+  "id": "8c1d0f6a-3b47-4e92-9a05-2f7c4d18b6e3",
+  "name": "ATLAS location.list to location",
+  "updated": "2026-09-28T00:00:00Z",
+  "source": {
+    "name": "location.list.txt",
+    "format": "json",
+    "note": "RFC 7946 FeatureCollection emitted by ATLAS. The mapper picks up features[] automatically; each feature is flattened to dotted fields, and geometry is pulled whole with the raw op."
+  },
+  "target": {
+    "schemaId": "https://mdm.cameron-dietz.com/schema/types/location.schema.json",
+    "type": "location"
+  },
+  "options": {
+    "coerce": true,
+    "dropEmpty": true,
+    "unmapped": "drop"
+  },
+  "rules": [
+    {
+      "target": "type",
+      "mode": "const",
+      "value": "location",
+      "ops": [],
+      "note": "Fixed by the type schema. Feature 4 (Texas) is really a gazetteer place, not a location - see the notes below."
+    },
+    {
+      "target": "id",
+      "mode": "expr",
+      "ops": [{ "op": "uuid", "args": {} }],
+      "note": "ATLAS carries no stable identifier, so ids are minted here. Re-running produces new ids; use source_record_id to deduplicate."
+    },
+    {
+      "target": "label",
+      "mode": "field",
+      "from": "properties.name",
+      "ops": [{ "op": "trim", "args": {} }]
+    },
+    {
+      "target": "summary",
+      "mode": "field",
+      "from": "properties.notes",
+      "ops": [{ "op": "trim", "args": {} }]
+    },
+    {
+      "target": "slug",
+      "mode": "field",
+      "from": "properties.name",
+      "ops": [{ "op": "slug", "args": {} }]
+    },
+    {
+      "target": "category.primary",
+      "mode": "field",
+      "from": "properties.category",
+      "ops": [
+        { "op": "lower", "args": {} },
+        { "op": "lookup", "args": { "table": "custom=point_of_interest,hazard=hazard_area" } }
+      ],
+      "note": "category values must match ^[a-z0-9]+([._-][a-z0-9]+)*$, so ATLAS's Custom / Hazard are lowercased and given clearer names."
+    },
+    {
+      "target": "category.kind",
+      "mode": "field",
+      "from": "geometry.type",
+      "ops": [
+        { "op": "lookup", "args": { "table": "Point=site,Polygon=area" } },
+        { "op": "lower", "args": {} }
+      ]
+    },
+    {
+      "target": "geo.address.formatted",
+      "mode": "field",
+      "from": "properties.address",
+      "ops": [{ "op": "trim", "args": {} }],
+      "note": "ATLAS stores one address blob. The structured fields stay empty until the addresses are re-geocoded."
+    },
+    {
+      "target": "geo.point",
+      "mode": "expr",
+      "ops": [
+        { "op": "raw", "args": { "path": "geometry.coordinates" } },
+        { "op": "onlyIf", "args": { "field": "geometry.type", "equals": "Point" } }
+      ],
+      "note": "GeoJSON coordinates are already [lon, lat] in WGS84, which is exactly what geo.point wants - no reordering."
+    },
+    {
+      "target": "geo.precision",
+      "mode": "const",
+      "value": "unknown",
+      "ops": [],
+      "note": "ATLAS records how a point was placed nowhere, and source is 'manual' for every feature, so precision cannot be asserted."
+    },
+    {
+      "target": "geo.shapes",
+      "mode": "expr",
+      "ops": [
+        { "op": "raw", "args": { "path": "geometry" } },
+        { "op": "shape", "args": { "role": "boundary" } },
+        { "op": "onlyIf", "args": { "field": "geometry.type", "equals": "Polygon" } }
+      ],
+      "note": "Polygon features become a single boundary shape. Point features skip this rule and use geo.point instead."
+    },
+    {
+      "target": "source_system",
+      "mode": "const",
+      "value": "atlas",
+      "ops": []
+    },
+    {
+      "target": "source_record_id",
+      "mode": "field",
+      "from": "properties.name",
+      "ops": [{ "op": "slug", "args": {} }],
+      "note": "Weak natural key - ATLAS has no ids and three features share the name European Wax Center, so these collide. Replace with a real key before treating re-imports as idempotent."
+    },
+    {
+      "target": "status",
+      "mode": "const",
+      "value": "active",
+      "ops": []
+    },
+    {
+      "target": "visibility",
+      "mode": "const",
+      "value": "internal",
+      "ops": []
+    }
+  ],
+  "dropped": {
+    "properties._atlasType": "Restates geometry.type; deliberately discarded.",
+    "type": "The GeoJSON literal \"Feature\"; carries no record-level meaning.",
+    "properties.source": "Always the string 'manual' in this file; captured once as source_system instead."
+  },
+  "followUp": [
+    "Feature 4 is Texas stored as a bare Point. It is a gazetteer place, not a location - move it to a place record with a real boundary and drop it from this import.",
+    "The three European Wax Center features are separate sites of one brand. After import, create an organization record and link each location to it with relations[rel=operated_by].",
+    "geo.address.formatted is a single blob. Re-geocode to populate street_address / address_locality / address_region / postal_code / country_code, and to set geo.precision honestly.",
+    "geo.place_closure is left empty. Run the containment resolver once the gazetteer exists."
+  ]
+}

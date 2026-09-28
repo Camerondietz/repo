@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INTELCOM Data Tools</title>
+<style>
+:root{
+  --bg:#f7f7f5; --panel:#fff; --panel-2:#fbfbfa; --ink:#1b1b19; --ink-2:#5c5c57;
+  --ink-3:#8a8a83; --line:#e2e2dd; --line-2:#cfcfc8; --accent:#2f6f4f; --accent-ink:#fff;
+  --sel:#dceadf; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.06);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  html[data-theme="auto"]{
+    --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+    --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+    --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+  }
+}
+html[data-theme="dark"]{
+  --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+  --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+  --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 var(--sans);
+  padding:0 20px 60px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto}
+header{display:flex;align-items:center;gap:10px;padding:26px 0 6px;flex-wrap:wrap}
+h1{font-size:20px;margin:0;letter-spacing:-.02em}
+h1 span{color:var(--accent)}
+.grow{flex:1 1 auto}
+button{background:var(--panel);border:1px solid var(--line-2);border-radius:6px;
+  padding:4px 9px;cursor:pointer;font:inherit;color:inherit}
+button:hover{background:var(--panel-2);border-color:var(--ink-3)}
+.lede{color:var(--ink-2);margin:0 0 26px;max-width:66ch}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(288px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+  display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.card h2{font-size:15px;margin:0 0 2px;letter-spacing:-.01em}
+.card h2 span{color:var(--accent)}
+.card .one{color:var(--ink-2);font-size:13px;margin:0 0 12px}
+.card ul{margin:0 0 16px;padding-left:17px;font-size:13px;color:var(--ink-2)}
+.card li{margin-bottom:5px}
+.card li b{color:var(--ink);font-weight:600}
+.card .go{margin-top:auto}
+a.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);text-decoration:none;
+  font-weight:600;font-size:13px;border-radius:6px;padding:7px 13px}
+a.btn:hover{filter:brightness(1.08)}
+.when{font-size:12px;color:var(--ink-3);margin:0 0 12px;padding-top:10px;border-top:1px solid var(--line)}
+.flow{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
+  padding:14px 18px;margin:26px 0 0}
+.flow h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2);margin:0 0 8px}
+.flow ol{margin:0;padding-left:19px;font-size:13px;color:var(--ink-2)}
+.flow li{margin-bottom:5px}
+.flow code,.note code{font-family:var(--mono);font-size:12px;background:var(--panel);
+  border:1px solid var(--line);border-radius:3px;padding:0 4px}
+.note{margin:22px 0 0;font-size:12.5px;color:var(--ink-3);max-width:74ch}
+.note b{color:var(--ink-2)}
+footer{margin-top:30px;padding-top:14px;border-top:1px solid var(--line);
+  font-size:12px;color:var(--ink-3);font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>INTELCOM <span>&#9679;</span> Data Tools</h1>
+    <div class="grow"></div>
+    <button id="theme" title="Light / dark / system">&#9681;</button>
+  </header>
+
+  <p class="lede">Three browser tools for building and running the unified data standard.
+  Each is a single HTML file with no dependencies &#8212; they work opened straight from disk
+  and from a static host alike, and nothing you load ever leaves your machine.</p>
+
+  <div class="cards">
+
+    <div class="card">
+      <h2>JSON <span>&#9679;</span> Workbench</h2>
+      <p class="one">Edit, inspect and convert the records themselves.</p>
+      <ul>
+        <li><b>View &amp; edit</b> as text or as a collapsible tree, with inline editing, add/delete/reorder and undo</li>
+        <li><b>Verify</b> syntax with line and column, and validate against a JSON Schema &#8212; cross-file <code>$ref</code> included</li>
+        <li><b>Convert</b> to and from CSV and XML</li>
+        <li><b>Query</b> with JSONPath-lite, and read metrics: shape, type spread, per-field fill rates</li>
+        <li><b>Records</b> tab with a schema-generated form for adding, editing and deleting entries</li>
+      </ul>
+      <p class="when">Reach for this when the thing you are working on is the data.</p>
+      <div class="go"><a class="btn" href="json-workbench.html">Open Workbench &#8594;</a></div>
+    </div>
+
+    <div class="card">
+      <h2>Schema <span>&#9679;</span> Studio</h2>
+      <p class="one">Keep every schema coordinated with the master.</p>
+      <ul>
+        <li><b>Matrix</b> of properties against schemas, resolved through <code>allOf</code> and <code>$ref</code>, so inherited fields show up too</li>
+        <li><b>Edit</b> any property in place, and push the same definition into several schemas at once</li>
+        <li><b>Side by side</b> raw editors, two to four panes, with synced scrolling</li>
+        <li><b>Diff</b> any two files path by path</li>
+        <li><b>Check</b> for dangling <code>$ref</code>s, duplicate <code>$id</code>s, fields the master would reject, and properties worth promoting into it</li>
+      </ul>
+      <p class="when">Reach for this when the thing you are working on is the shape.</p>
+      <div class="go"><a class="btn" href="schema-studio.html">Open Studio &#8594;</a></div>
+    </div>
+
+    <div class="card">
+      <h2>Data <span>&#9679;</span> Mapper</h2>
+      <p class="one">Migrate a source system into the new standard.</p>
+      <ul>
+        <li><b>Read</b> CSV, TSV, JSON, NDJSON and SQL dumps &#8212; columns from <code>CREATE TABLE</code>, rows from <code>INSERT</code></li>
+        <li><b>Map</b> field to field, with auto-matching on names and synonyms, and a live result for row&nbsp;1</li>
+        <li><b>Transform</b> with dates, splits, lookups, templates, coalesce, lat/lon pairs, generated ids</li>
+        <li><b>Preview</b> the output validated against the target schema, problems listed by row and path</li>
+        <li><b>Save</b> mappings to a library and export them as files you can commit</li>
+      </ul>
+      <p class="when">Reach for this when the thing you are working on is the move.</p>
+      <div class="go"><a class="btn" href="data-mapper.html">Open Mapper &#8594;</a></div>
+    </div>
+
+  </div>
+
+  <div class="flow">
+    <h3>How they fit together</h3>
+    <ol>
+      <li><b>Studio</b> &#8212; settle the target shape, and keep the type schemas in step with <code>record.schema.json</code>.</li>
+      <li><b>Mapper</b> &#8212; point each legacy source at that shape, save the mapping, run the migration.</li>
+      <li><b>Workbench</b> &#8212; open the result, check it, fix what needs fixing, and maintain it from there.</li>
+    </ol>
+  </div>
+
+  <p class="note"><b>Schemas</b> live in <code>mdm-v1/</code> &#8212; the master envelope in <code>record.schema.json</code>,
+  the per-type schemas in <code>types/</code>, worked examples in <code>examples/</code>. All three tools load them
+  by file or drag-and-drop; the Studio can also open the whole folder at once.
+  Each tool keeps its working state in browser storage, so a reload does not lose anything,
+  and that storage is per-origin &#8212; a local copy and a hosted copy keep separate state.</p>
+
+  <footer>Single-file tools &#183; no build step &#183; no network calls</footer>
+</div>
+
+<script>
+(function(){
+  var b=document.getElementById("theme"), r=document.documentElement;
+  try{ var s=localStorage.getItem("tools.theme"); if(s) r.dataset.theme=s }catch(e){}
+  b.onclick=function(){
+    var cur=r.dataset.theme;
+    var next=cur==="auto"?"light":cur==="light"?"dark":"auto";
+    r.dataset.theme=next;
+    try{ localStorage.setItem("tools.theme",next) }catch(e){}
+    var old=b.textContent; b.textContent=next;
+    setTimeout(function(){ b.textContent=old },900);
+  };
+})();
+</script>
+</body>
+</html>

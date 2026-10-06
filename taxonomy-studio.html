@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taxonomy Studio</title>
+<style>
+:root{
+  --bg:#f7f7f5; --panel:#fff; --panel-2:#fbfbfa; --ink:#1b1b19; --ink-2:#5c5c57;
+  --ink-3:#8a8a83; --line:#e2e2dd; --line-2:#cfcfc8; --accent:#2f6f4f; --accent-ink:#fff;
+  --warn:#8a5a00; --warn-bg:#fdf3e0; --err:#a3241f; --err-bg:#fdecea; --ok:#1f6b3f; --ok-bg:#e9f5ee;
+  --info:#1b4f8a; --info-bg:#e8f0fa; --violet:#6b3fa0;
+  --sel:#dceadf; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.06);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --ng-node:#fff; --ng-line:#d8d8d2; --ng-edge:#b9b9b2; --ng-ink:#1b1b19; --ng-ink2:#5c5c57;
+  --ng-badge:#ecece7; --ng-accent:#2f6f4f; --ng-hit:#c08a2e; --ng-bad:#a3241f; --ng-xlink:#6b3fa0;
+  --ng-muted:#8a8a83; --ng-tone-b:#eef3fb; --ng-tone-g:#eaf5ee; --ng-tone-w:#fdf3e0;
+}
+@media (prefers-color-scheme:dark){
+  html[data-theme="auto"]{
+    --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+    --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+    --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+    --info:#8ab7e8; --info-bg:#1a2433; --violet:#c4a2ef;
+    --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+    --ng-node:#1e1e23; --ng-line:#41414c; --ng-edge:#4d4d57; --ng-ink:#e9e9e6; --ng-ink2:#a8a8a2;
+    --ng-badge:#2d2d36; --ng-accent:#4c9c72; --ng-hit:#e0b064; --ng-bad:#f0928c; --ng-xlink:#c4a2ef;
+    --ng-muted:#77776f; --ng-tone-b:#1d2634; --ng-tone-g:#17291f; --ng-tone-w:#2e2519;
+  }
+}
+html[data-theme="dark"]{
+  --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+  --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+  --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+  --info:#8ab7e8; --info-bg:#1a2433; --violet:#c4a2ef;
+  --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+  --ng-node:#1e1e23; --ng-line:#41414c; --ng-edge:#4d4d57; --ng-ink:#e9e9e6; --ng-ink2:#a8a8a2;
+  --ng-badge:#2d2d36; --ng-accent:#4c9c72; --ng-hit:#e0b064; --ng-bad:#f0928c; --ng-xlink:#c4a2ef;
+  --ng-muted:#77776f; --ng-tone-b:#1d2634; --ng-tone-g:#17291f; --ng-tone-w:#2e2519;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.5 var(--sans);overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:var(--panel);border:1px solid var(--line-2);border-radius:6px;padding:4px 9px;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--panel-2);border-color:var(--ink-3)}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button.primary:hover{filter:brightness(1.08)}
+button.on{background:var(--sel);border-color:var(--accent)}
+button.tiny{padding:1px 6px;font-size:11px;line-height:17px}
+input[type=text],input[type=search],select,textarea{background:var(--panel);border:1px solid var(--line-2);
+  border-radius:6px;padding:4px 7px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.app{display:flex;flex-direction:column;height:100%}
+header{border-bottom:1px solid var(--line);background:var(--panel);flex:0 0 auto}
+.bar{display:flex;align-items:center;gap:6px;padding:6px 10px;flex-wrap:wrap}
+.bar+.bar{border-top:1px solid var(--line)}
+.brand{font-weight:700;letter-spacing:-.01em;margin-right:6px;white-space:nowrap}
+.brand span{color:var(--accent)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 2px}
+.grow{flex:1 1 auto}
+main{flex:1 1 auto;display:flex;min-height:0}
+#graphWrap{flex:1 1 auto;min-width:0;position:relative;background:var(--panel-2)}
+#graph{position:absolute;inset:0}
+#side{flex:0 0 372px;border-left:1px solid var(--line);background:var(--panel);
+  display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;gap:2px;padding:5px 8px 0;border-bottom:1px solid var(--line);background:var(--panel-2);flex:0 0 auto}
+.tabs button{border-radius:6px 6px 0 0;border-color:transparent;background:transparent;font-size:12px}
+.tabs button.on{background:var(--panel);border-color:var(--line);border-bottom-color:var(--panel);margin-bottom:-1px;font-weight:600}
+#sideBody{flex:1 1 auto;overflow:auto;padding:12px}
+footer{flex:0 0 auto;border-top:1px solid var(--line);background:var(--panel);padding:4px 10px;
+  display:flex;gap:14px;align-items:center;font:11.5px/1.4 var(--mono);color:var(--ink-2);flex-wrap:wrap}
+.pill{border-radius:999px;padding:1px 9px;font-weight:600;font-family:var(--sans);font-size:11px}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.err{background:var(--err-bg);color:var(--err)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.fld{margin-bottom:11px}
+.fld label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--ink-2);margin-bottom:3px;font-weight:600}
+.fld input,.fld select,.fld textarea{width:100%}
+.fld textarea{min-height:58px;resize:vertical;font:12px/1.5 var(--sans)}
+.fld .help{font-size:11px;color:var(--ink-3);margin-top:3px}
+.rowflex{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:9px}
+.hint{color:var(--ink-3);font-size:11.5px;margin:6px 0}
+h4{margin:15px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}
+h4:first-child{margin-top:0}
+.msg{border-radius:6px;padding:7px 10px;margin:8px 0;font-size:12px}
+.msg.err{background:var(--err-bg);color:var(--err)}
+.msg.ok{background:var(--ok-bg);color:var(--ok)}
+.msg.warn{background:var(--warn-bg);color:var(--warn)}
+.msg.info{background:var(--info-bg);color:var(--info)}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{text-align:left;padding:4px 7px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--ink-2);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+td.mono{font-family:var(--mono);font-size:11px}
+.chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.chip{background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:1px 6px;
+  font-size:11px;font-family:var(--mono);display:flex;gap:4px;align-items:center}
+.chip b{cursor:pointer;color:var(--ink-3)}
+.chip b:hover{color:var(--err)}
+.mapline{border:1px solid var(--line);border-left:3px solid var(--violet);border-radius:6px;
+  padding:6px 9px;margin-bottom:6px;font-size:12px}
+.mapline .pred{font-family:var(--mono);font-size:11px;color:var(--violet);font-weight:600}
+.mapline .where{color:var(--ink-3);font-size:11px;font-family:var(--mono)}
+.finding{border:1px solid var(--line);border-left-width:3px;border-radius:6px;padding:6px 9px;
+  margin-bottom:5px;font-size:12px;cursor:pointer}
+.finding.err{border-left-color:var(--err)}
+.finding.warn{border-left-color:var(--warn)}
+.finding.info{border-left-color:var(--info)}
+.finding .where{color:var(--ink-3);font-size:11px;font-family:var(--mono)}
+dialog{border:1px solid var(--line-2);border-radius:10px;background:var(--panel);color:var(--ink);
+  padding:0;box-shadow:var(--shadow);max-width:min(700px,94vw);width:100%}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+dialog .dh{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700}
+dialog .db{padding:14px;max-height:64vh;overflow:auto}
+dialog .df{padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end}
+dialog textarea{width:100%;min-height:210px;font:12px/1.6 var(--mono);resize:vertical}
+dialog input[type=text]{width:100%}
+.drop{position:fixed;inset:0;background:rgba(47,111,79,.14);border:3px dashed var(--accent);
+  z-index:99;display:none;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent)}
+.drop.on{display:flex}
+.legend{position:absolute;left:10px;bottom:10px;background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:5px 9px;font-size:11px;color:var(--ink-3);display:flex;gap:12px;flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:0;border-top:2px solid;margin-right:4px;vertical-align:3px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="bar">
+      <div class="brand">Taxonomy<span>&#9679;</span>Studio</div>
+      <select id="schemeSel" style="min-width:190px"></select>
+      <button id="bNewScheme">New scheme</button>
+      <button id="bImport">Import&#8230;</button>
+      <input type="file" id="fImport" multiple accept=".json,.csv,.tsv,.txt,.jsonld" hidden>
+      <button id="bPaste">Paste</button>
+      <button id="bExport">Export&#8230;</button>
+      <div class="sep"></div>
+      <button id="bAddConcept" class="primary">Add concept</button>
+      <div class="grow"></div>
+      <button id="bTheme" title="Theme">&#9681;</button>
+    </div>
+    <div class="bar">
+      <span class="hint" style="margin:0">Layout</span>
+      <button class="lay on" data-l="tree-h">Tree &#8594;</button>
+      <button class="lay" data-l="tree-v">Tree &#8595;</button>
+      <button class="lay" data-l="radial">Radial</button>
+      <button class="lay" data-l="indent">Outline</button>
+      <div class="sep"></div>
+      <button id="bFit">Fit</button>
+      <button id="bZin">+</button>
+      <button id="bZout">&#8722;</button>
+      <button id="bExpand">Expand all</button>
+      <button id="bD2">Depth 2</button>
+      <div class="sep"></div>
+      <label class="hint" style="margin:0;display:flex;gap:5px;align-items:center">
+        <input type="checkbox" id="showMaps"> Show crosswalk links</label>
+      <button id="bSvg">Save SVG</button>
+      <div class="grow"></div>
+      <input type="search" id="find" placeholder="Find concept" style="width:170px">
+    </div>
+  </header>
+
+  <main>
+    <div id="graphWrap">
+      <div id="graph"></div>
+      <div class="legend">
+        <span><i style="border-color:var(--ng-edge)"></i>broader / narrower</span>
+        <span><i style="border-color:var(--ng-xlink);border-top-style:dashed"></i>crosswalk mapping</span>
+      </div>
+    </div>
+    <aside id="side">
+      <div class="tabs" id="tabs">
+        <button data-t="concept" class="on">Concept</button>
+        <button data-t="cross">Crosswalk</button>
+        <button data-t="check">Check</button>
+        <button data-t="help">Help</button>
+      </div>
+      <div id="sideBody"></div>
+    </aside>
+  </main>
+
+  <footer>
+    <span id="stScheme" class="pill ok">no scheme</span>
+    <span id="stCounts"></span>
+    <span id="stMaps"></span>
+    <span class="grow"></span>
+    <span id="stHint" class="hint" style="margin:0"></span>
+  </footer>
+</div>
+<div class="drop" id="drop">Drop taxonomy files to import</div>
+
+<dialog id="dlg">
+  <div class="dh" id="dlgTitle">Dialog</div>
+  <div class="db" id="dlgBody"></div>
+  <div class="df">
+    <button type="button" id="dlgCancel">Cancel</button>
+    <button type="button" id="dlgOk" class="primary">OK</button>
+  </div>
+</dialog>
+
+<script src="node-graph.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function el(t,c,x){var e=document.createElement(t); if(c)e.className=c; if(x!=null)e.textContent=x; return e}
+function store(k,v){ try{ v===undefined?localStorage.removeItem(k):localStorage.setItem(k,v) }catch(e){} }
+function recall(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+function deep(v){ return v===undefined?undefined:JSON.parse(JSON.stringify(v)) }
+function uuid(){ return (crypto&&crypto.randomUUID)?crypto.randomUUID():
+  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c){
+    var r=Math.random()*16|0,v=c==="x"?r:(r&3|8); return v.toString(16) }) }
+function download(name,text,mime){
+  var b=new Blob([text],{type:mime||"application/json"}),u=URL.createObjectURL(b),a=el("a");
+  a.href=u; a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(u);a.remove()},0);
+}
+function msg(k,t){ var d=el("div","msg "+k); d.textContent=t; return d }
+
+/* ------------------------------------------------------------------ model
+ * SKOS vocabulary, kept deliberately close to the standard:
+ *   scheme  = skos:ConceptScheme
+ *   concept = skos:Concept with prefLabel, altLabel, definition, notation,
+ *             broader (one parent here), related
+ *   mapping = skos:exactMatch / closeMatch / broadMatch / narrowMatch / relatedMatch
+ */
+var PREDS=["exactMatch","closeMatch","broadMatch","narrowMatch","relatedMatch"];
+var DB={ schemes:[], maps:[] };     // maps: {from:{s,c}, to:{s,c}, pred, note}
+var cur=null, selected=null, tab="concept", graph=null;
+
+function scheme(id){ return DB.schemes.filter(function(s){return s.id===id})[0] }
+function concepts(s){ return s?s.concepts:[] }
+function conceptById(s,id){ return (s?s.concepts:[]).filter(function(c){return c.id===id})[0] }
+function persist(){ store("tx.db",JSON.stringify(DB)); store("tx.cur",cur||"") }
+function restore(){
+  try{
+    var raw=recall("tx.db"); if(!raw) return false;
+    var d=JSON.parse(raw);
+    if(!d||!Array.isArray(d.schemes)) return false;
+    DB=d; DB.maps=DB.maps||[];
+    cur=recall("tx.cur")||((DB.schemes[0]||{}).id);
+    return DB.schemes.length>0;
+  }catch(e){ return false }
+}
+
+/* ----------------------------------------------------------------- import */
+function detectAndParse(text,name){
+  var t=text.replace(/^﻿/,"").trim();
+  if(t[0]==="{"||t[0]==="["){
+    var o=JSON.parse(t);
+    if(o&&o["@graph"]) return fromJsonLd(o,name);
+    if(Array.isArray(o)) return looksNested(o)?fromNested(o,name):fromFlat(o,name);
+    if(o&&Array.isArray(o.concepts)) return fromFlat(o.concepts,name,o.title||o.id);
+    if(o&&Array.isArray(o.items)) return fromFlat(o.items,name);
+    if(o&&Array.isArray(o.children)) return fromNested([o],name);
+    // object keyed by id
+    var vals=Object.keys(o).map(function(k){ var v=o[k]; if(v&&typeof v==="object"){ v=deep(v); if(v.id==null)v.id=k } return v });
+    if(vals.length&&typeof vals[0]==="object") return fromFlat(vals,name);
+    throw new Error("JSON shape not recognised");
+  }
+  return fromCSV(t,name);
+}
+function looksNested(arr){
+  return arr.some(function(x){ return x&&typeof x==="object"&&Array.isArray(x.children||x.narrower) });
+}
+function pick(o){ for(var i=1;i<arguments.length;i++){ var k=arguments[i];
+  if(o[k]!==undefined&&o[k]!==null&&o[k]!=="") return o[k] } return undefined }
+function asArray(v){ if(v==null||v==="")return []; return Array.isArray(v)?v.map(String):[String(v)] }
+
+function fromFlat(arr,name,title){
+  var cs=arr.filter(function(x){return x&&typeof x==="object"}).map(function(x,i){
+    var id=pick(x,"id","notation","code","@id","key","uri");
+    var parent=pick(x,"parent","parent_id","parentId","broader","broader_id","parentCode","superclass");
+    if(parent&&typeof parent==="object") parent=parent["@id"]||parent.id;
+    // Classification exports frequently carry only code + parent + description,
+    // with no column called "label". Treating description as the definition
+    // there would leave every concept named after its code.
+    var label=pick(x,"prefLabel","label","name","title","description_short","text");
+    var defn=pick(x,"definition","scopeNote","note");
+    var desc=pick(x,"description","desc");
+    if(label===undefined&&desc!==undefined){ label=desc; desc=undefined }
+    return {
+      id:String(id!=null?id:"c"+(i+1)),
+      notation:String(pick(x,"notation","code","id")||""),
+      prefLabel:String(label!=null?label:(id||"")),
+      altLabel:asArray(pick(x,"altLabel","aliases","synonyms","alt")),
+      definition:String(defn!=null?defn:(desc!=null?desc:"")),
+      broader:parent==null?null:String(parent),
+      related:asArray(pick(x,"related","see_also","relatedConcepts")),
+      status:String(pick(x,"status","state")||"active"),
+      meta:{}
+    };
+  });
+  return {id:slug(title||name),title:title||name.replace(/\.[^.]+$/,""),concepts:cs};
+}
+function fromNested(arr,name){
+  var out=[];
+  (function walk(list,parent){
+    list.forEach(function(x,i){
+      if(!x||typeof x!=="object")return;
+      var id=String(pick(x,"id","notation","code","key")||(parent?parent+".":"")+(i+1));
+      out.push({id:id,notation:String(pick(x,"notation","code")||""),
+        prefLabel:String(pick(x,"prefLabel","label","name","title")||id),
+        altLabel:asArray(pick(x,"altLabel","aliases")),
+        definition:String(pick(x,"definition","description")||""),
+        broader:parent,related:asArray(x.related),status:"active",meta:{}});
+      var kids=x.children||x.narrower;
+      if(Array.isArray(kids)) walk(kids,id);
+    });
+  })(arr,null);
+  return {id:slug(name),title:name.replace(/\.[^.]+$/,""),concepts:out};
+}
+function fromJsonLd(o,name){
+  var g=o["@graph"]||[];
+  function lit(v){
+    if(v==null) return "";
+    if(Array.isArray(v)) return lit(v[0]);
+    if(typeof v==="object") return String(v["@value"]||v["@id"]||"");
+    return String(v);
+  }
+  function ref(v){
+    if(v==null) return null;
+    if(Array.isArray(v)) return ref(v[0]);
+    if(typeof v==="object") return v["@id"]?String(v["@id"]):null;
+    return String(v);
+  }
+  function refs(v){
+    if(v==null) return [];
+    var a=Array.isArray(v)?v:[v];
+    return a.map(ref).filter(Boolean);
+  }
+  function get(n,names){ for(var i=0;i<names.length;i++){
+    if(n[names[i]]!==undefined) return n[names[i]];
+    if(n["skos:"+names[i]]!==undefined) return n["skos:"+names[i]];
+    if(n["http://www.w3.org/2004/02/skos/core#"+names[i]]!==undefined)
+      return n["http://www.w3.org/2004/02/skos/core#"+names[i]];
+  } return undefined }
+  var schemeNode=g.filter(function(n){ return /ConceptScheme/.test(JSON.stringify(n["@type"]||"")) })[0];
+  var cs=g.filter(function(n){ return !/ConceptScheme/.test(JSON.stringify(n["@type"]||"")) })
+    .map(function(n){
+      return { id:String(n["@id"]||uuid()),
+        notation:lit(get(n,["notation"])),
+        prefLabel:lit(get(n,["prefLabel"]))||String(n["@id"]||""),
+        altLabel:(function(){ var v=get(n,["altLabel"]); if(v==null)return [];
+          return (Array.isArray(v)?v:[v]).map(lit).filter(Boolean) })(),
+        definition:lit(get(n,["definition","scopeNote"])),
+        broader:ref(get(n,["broader"])),
+        related:refs(get(n,["related"])),
+        status:"active", meta:{} };
+    });
+  // narrower-only files: invert
+  g.forEach(function(n){
+    var nar=get(n,["narrower"]); if(!nar)return;
+    refs(nar).forEach(function(childId){
+      var c=cs.filter(function(x){return x.id===childId})[0];
+      if(c&&!c.broader) c.broader=String(n["@id"]);
+    });
+  });
+  var title=schemeNode?lit(get(schemeNode,["prefLabel"]))||String(schemeNode["@id"]):name;
+  return {id:slug(title||name),title:title||name,concepts:cs};
+}
+function parseCSVRows(text,d){
+  var rows=[],row=[],cur2="",q=false,i=0;
+  while(i<text.length){
+    var c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur2+='"';i+=2;continue} q=false;i++;continue } cur2+=c;i++;continue }
+    if(c==='"'){q=true;i++;continue}
+    if(c===d){row.push(cur2);cur2="";i++;continue}
+    if(c==="\r"){i++;continue}
+    if(c==="\n"){row.push(cur2);rows.push(row);row=[];cur2="";i++;continue}
+    cur2+=c;i++;
+  }
+  if(cur2!==""||row.length){row.push(cur2);rows.push(row)}
+  return rows.filter(function(r){return r.length>1||r[0]!==""});
+}
+function fromCSV(text,name){
+  var d=(text.split("\n")[0].split("\t").length>text.split("\n")[0].split(",").length)?"\t":",";
+  var rows=parseCSVRows(text,d);
+  if(!rows.length) throw new Error("no rows");
+  var head=rows[0].map(function(h){return h.trim()});
+  var lower=head.map(function(h){return h.toLowerCase()});
+  var pathCol=lower.findIndex(function(h){return h==="path"||h==="hierarchy"||h==="breadcrumb"});
+  if(pathCol>=0) return fromPathCSV(rows,head,pathCol,name);
+  var objs=rows.slice(1).map(function(r){
+    var o={}; head.forEach(function(h,i){ o[h]=r[i]===undefined?"":r[i].trim() }); return o;
+  });
+  return fromFlat(objs,name);
+}
+function fromPathCSV(rows,head,pathCol,name){
+  // "Tools > Hand Tools > Wrenches" style columns build the tree implicitly
+  var out=[],seen={};
+  rows.slice(1).forEach(function(r){
+    var p=(r[pathCol]||"").trim(); if(!p) return;
+    var parts=p.split(/\s*[>\/|]\s*/).filter(Boolean), parent=null;
+    parts.forEach(function(seg,i){
+      var id=slug(parts.slice(0,i+1).join("-"));
+      if(!seen[id]){
+        seen[id]=1;
+        out.push({id:id,notation:"",prefLabel:seg,altLabel:[],definition:"",
+          broader:parent,related:[],status:"active",meta:{}});
+      }
+      parent=id;
+    });
+  });
+  return {id:slug(name),title:name.replace(/\.[^.]+$/,""),concepts:out};
+}
+function slug(s){ return String(s||"scheme").toLowerCase().replace(/[^a-z0-9]+/g,"-")
+  .replace(/^-+|-+$/g,"").slice(0,60)||"scheme" }
+
+function addScheme(sc){
+  var base=sc.id,n=2;
+  while(DB.schemes.some(function(x){return x.id===sc.id})) sc.id=base+"-"+(n++);
+  DB.schemes.push(sc); cur=sc.id; persist(); refreshAll();
+  $("#stHint").textContent="imported "+sc.concepts.length+" concepts";
+}
+
+/* ----------------------------------------------------------------- export */
+function toJsonLd(s){
+  var base="urn:scheme:"+s.id+":";
+  function iri(id){ return /^[a-z]+:/i.test(id)?id:base+id }
+  var g=[{ "@id":"urn:scheme:"+s.id, "@type":"skos:ConceptScheme", "skos:prefLabel":s.title }];
+  s.concepts.forEach(function(c){
+    var n={ "@id":iri(c.id), "@type":"skos:Concept",
+      "skos:prefLabel":c.prefLabel, "skos:inScheme":{"@id":"urn:scheme:"+s.id} };
+    if(c.notation) n["skos:notation"]=c.notation;
+    if(c.definition) n["skos:definition"]=c.definition;
+    if(c.altLabel&&c.altLabel.length) n["skos:altLabel"]=c.altLabel;
+    if(c.broader) n["skos:broader"]={"@id":iri(c.broader)};
+    if(c.related&&c.related.length) n["skos:related"]=c.related.map(function(r){return {"@id":iri(r)}});
+    var ms=DB.maps.filter(function(m){ return m.from.s===s.id&&m.from.c===c.id });
+    ms.forEach(function(m){
+      var k="skos:"+m.pred, other=scheme(m.to.s);
+      var oid=other?("urn:scheme:"+other.id+":"+m.to.c):m.to.c;
+      n[k]=(n[k]||[]).concat([{"@id":oid}]);
+    });
+    g.push(n);
+  });
+  return JSON.stringify({ "@context":{ "skos":"http://www.w3.org/2004/02/skos/core#" }, "@graph":g },null,2);
+}
+function toFlat(s){
+  return JSON.stringify(s.concepts.map(function(c){
+    return {id:c.id,parent:c.broader||null,notation:c.notation||undefined,
+      prefLabel:c.prefLabel,altLabel:c.altLabel&&c.altLabel.length?c.altLabel:undefined,
+      definition:c.definition||undefined,related:c.related&&c.related.length?c.related:undefined,
+      status:c.status||undefined};
+  }),null,2);
+}
+function toNested(s){
+  var by={},roots=[];
+  s.concepts.forEach(function(c){ by[c.id]={id:c.id,prefLabel:c.prefLabel,
+    notation:c.notation||undefined,definition:c.definition||undefined,children:[]} });
+  s.concepts.forEach(function(c){
+    var n=by[c.id];
+    if(c.broader&&by[c.broader]) by[c.broader].children.push(n); else roots.push(n);
+  });
+  (function clean(list){ list.forEach(function(n){ if(!n.children.length) delete n.children; else clean(n.children) }) })(roots);
+  return JSON.stringify(roots,null,2);
+}
+function toCSV(s){
+  var head=["id","parent","notation","prefLabel","altLabel","definition","status"];
+  function esc(v){ v=v==null?"":String(v);
+    return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v }
+  var lines=[head.join(",")];
+  s.concepts.forEach(function(c){
+    lines.push([c.id,c.broader||"",c.notation||"",c.prefLabel,
+      (c.altLabel||[]).join(";"),c.definition||"",c.status||""].map(esc).join(","));
+  });
+  return lines.join("\n");
+}
+function toTermRecords(s){
+  return JSON.stringify(s.concepts.map(function(c){
+    return { id:uuid(), type:"term", slug:slug(c.id), label:c.prefLabel,
+      summary:c.definition||undefined,
+      aliases:c.altLabel&&c.altLabel.length?c.altLabel:undefined,
+      parent_id:null,
+      category:{ primary:"vocabulary", scheme:slug(s.id) },
+      identifiers:{ notation:[c.notation||c.id] },
+      status:c.status==="deprecated"?"deprecated":"active",
+      data:{ scheme:s.id, code:c.id, broader:c.broader||null,
+             related:c.related&&c.related.length?c.related:undefined } };
+  }),null,2);
+}
+
+/* ------------------------------------------------------------------ graph */
+function graphData(){
+  var s=scheme(cur); if(!s) return {nodes:[],links:[]};
+  var nodes=s.concepts.map(function(c){
+    var kids=s.concepts.filter(function(x){return x.broader===c.id}).length;
+    return { id:c.id, label:c.prefLabel||c.id, parent:c.broader||null,
+             badge:kids?kids:null, tone:c.status==="deprecated"?"w":null, data:c };
+  });
+  var links=[];
+  if($("#showMaps").checked){
+    var added={};
+    DB.maps.forEach(function(m){
+      var mine=null,other=null;
+      if(m.from.s===cur){ mine=m.from.c; other=m.to }
+      else if(m.to.s===cur){ mine=m.to.c; other=m.from }
+      else return;
+      var os=scheme(other.s); if(!os) return;
+      var oc=conceptById(os,other.c);
+      var nid="x:"+other.s+":"+other.c;
+      if(!added[nid]){
+        added[nid]=1;
+        nodes.push({ id:nid, label:(oc?oc.prefLabel:other.c)+"  ↗", parent:null,
+                     tone:"b", data:{external:true,scheme:other.s,concept:other.c} });
+      }
+      links.push({from:mine,to:nid,kind:m.pred,label:m.note||""});
+    });
+  }
+  // concept-to-concept skos:related inside the scheme
+  s.concepts.forEach(function(c){
+    (c.related||[]).forEach(function(r){
+      if(conceptById(s,r)) links.push({from:c.id,to:r,kind:"related"});
+    });
+  });
+  return {nodes:nodes,links:links};
+}
+function refreshGraph(){
+  if(!graph) return;
+  graph.setData(graphData());
+  var q=$("#find").value.trim();
+  if(q) graph.setSearch(q);
+}
+
+/* ------------------------------------------------------------------ panes */
+function renderSide(){
+  var b=$("#sideBody"); b.textContent="";
+  if(tab==="concept") renderConcept(b);
+  else if(tab==="cross") renderCross(b);
+  else if(tab==="check") renderCheck(b);
+  else renderHelp(b);
+}
+function renderConcept(b){
+  var s=scheme(cur);
+  if(!s){ b.appendChild(msg("info","Create or import a scheme to begin.")); return }
+  var c=selected?conceptById(s,selected):null;
+  if(!c){
+    b.appendChild(msg("info","Select a concept in the tree, or add one."));
+    b.appendChild(el("p","hint","This scheme holds "+s.concepts.length+" concepts."));
+    return;
+  }
+  function fld(label,value,onInput,help,type){
+    var w=el("div","fld");
+    w.appendChild(el("label",null,label));
+    var i = type==="area" ? el("textarea") : el("input");
+    if(type!=="area") i.type="text";
+    i.value=value==null?"":value;
+    i.oninput=function(){ onInput(i.value) };
+    i.onchange=function(){ persist(); refreshGraph(); renderSide() };
+    w.appendChild(i);
+    if(help) w.appendChild(el("div","help",help));
+    b.appendChild(w);
+    return i;
+  }
+  fld("skos:prefLabel",c.prefLabel,function(v){ c.prefLabel=v },"The one label this concept is known by.");
+  fld("Identifier",c.id,function(v){ /* applied on commit below */ },"Changing this rewrites every reference.").onchange=function(e){
+    var nv=e.target.value.trim(); if(!nv||nv===c.id){ renderSide(); return }
+    if(conceptById(s,nv)){ alert("Another concept already uses that identifier."); renderSide(); return }
+    var old=c.id;
+    s.concepts.forEach(function(x){
+      if(x.broader===old) x.broader=nv;
+      x.related=(x.related||[]).map(function(r){ return r===old?nv:r });
+    });
+    DB.maps.forEach(function(m){
+      if(m.from.s===s.id&&m.from.c===old) m.from.c=nv;
+      if(m.to.s===s.id&&m.to.c===old) m.to.c=nv;
+    });
+    c.id=nv; selected=nv; persist(); refreshAll();
+  };
+  fld("skos:notation",c.notation,function(v){ c.notation=v },"Code in the source system — an ETIM class, a NAICS code.");
+  fld("skos:definition",c.definition,function(v){ c.definition=v },null,"area");
+
+  var w=el("div","fld");
+  w.appendChild(el("label",null,"skos:broader (parent)"));
+  var sel=el("select");
+  sel.appendChild(new Option("— top concept —",""));
+  s.concepts.forEach(function(x){
+    if(x.id===c.id) return;
+    if(graph&&graph.ancestors(x.id).indexOf(c.id)>=0) return;  // no cycles
+    sel.appendChild(new Option(x.prefLabel+"  ("+x.id+")",x.id));
+  });
+  sel.value=c.broader||"";
+  sel.onchange=function(){ c.broader=sel.value||null; persist(); refreshAll() };
+  w.appendChild(sel);
+  w.appendChild(el("div","help","Descendants are excluded so a move cannot create a cycle."));
+  b.appendChild(w);
+
+  chipEditor(b,"skos:altLabel",c.altLabel,function(v){ c.altLabel=v; persist(); renderSide() },"add synonym");
+  chipEditor(b,"skos:related",c.related,function(v){ c.related=v; persist(); refreshAll() },"concept id");
+
+  var st=el("div","fld");
+  st.appendChild(el("label",null,"Status"));
+  var ss=el("select");
+  ["active","candidate","deprecated"].forEach(function(x){ ss.appendChild(new Option(x,x)) });
+  ss.value=c.status||"active";
+  ss.onchange=function(){ c.status=ss.value; persist(); refreshAll() };
+  st.appendChild(ss);
+  st.appendChild(el("div","help","Deprecated concepts stay in place so existing references keep resolving."));
+  b.appendChild(st);
+
+  var ms=DB.maps.filter(function(m){ return (m.from.s===cur&&m.from.c===c.id)||(m.to.s===cur&&m.to.c===c.id) });
+  b.appendChild(el("h4",null,"Crosswalk mappings ("+ms.length+")"));
+  if(!ms.length) b.appendChild(el("p","hint","None. Add them on the Crosswalk tab."));
+  ms.forEach(function(m){ b.appendChild(mapLine(m)) });
+
+  var acts=el("div","rowflex"); acts.style.marginTop="14px";
+  var bAdd=el("button",null,"Add child"); bAdd.className="primary";
+  bAdd.onclick=function(){ addConcept(c.id) };
+  var bDel=el("button",null,"Delete");
+  bDel.onclick=function(){
+    var kids=s.concepts.filter(function(x){return x.broader===c.id});
+    var m="Delete “"+c.prefLabel+"”?";
+    if(kids.length) m+="\n\n"+kids.length+" child concept(s) will move up to its parent.";
+    if(!confirm(m))return;
+    s.concepts.forEach(function(x){ if(x.broader===c.id) x.broader=c.broader||null });
+    s.concepts=s.concepts.filter(function(x){return x.id!==c.id});
+    DB.maps=DB.maps.filter(function(mm){
+      return !((mm.from.s===cur&&mm.from.c===c.id)||(mm.to.s===cur&&mm.to.c===c.id)) });
+    selected=null; persist(); refreshAll();
+  };
+  acts.appendChild(bAdd); acts.appendChild(bDel);
+  b.appendChild(acts);
+}
+function chipEditor(b,label,arr,onChange,ph){
+  var w=el("div","fld");
+  w.appendChild(el("label",null,label));
+  var row=el("div"); row.style.display="flex"; row.style.gap="5px";
+  var i=el("input"); i.type="text"; i.placeholder=ph; i.style.flex="1 1 auto";
+  var add=el("button","tiny","+");
+  add.onclick=function(){ var v=i.value.trim(); if(!v)return;
+    onChange((arr||[]).concat([v])); };
+  i.onkeydown=function(e){ if(e.key==="Enter"){ e.preventDefault(); add.onclick() } };
+  row.appendChild(i); row.appendChild(add); w.appendChild(row);
+  var chips=el("div","chips");
+  (arr||[]).forEach(function(v,idx){
+    var c=el("span","chip"); c.appendChild(document.createTextNode(v));
+    var x=el("b",null,"×");
+    x.onclick=function(){ var n=(arr||[]).slice(); n.splice(idx,1); onChange(n) };
+    c.appendChild(x); chips.appendChild(c);
+  });
+  w.appendChild(chips); b.appendChild(w);
+}
+function mapLine(m){
+  var d=el("div","mapline");
+  var a=scheme(m.from.s), bsc=scheme(m.to.s);
+  var ac=a?conceptById(a,m.from.c):null, bc=bsc?conceptById(bsc,m.to.c):null;
+  var head=el("div");
+  head.appendChild(el("span",null,(ac?ac.prefLabel:m.from.c)+"  "));
+  head.appendChild(el("span","pred","→ skos:"+m.pred+" →"));
+  head.appendChild(el("span",null,"  "+(bc?bc.prefLabel:m.to.c)));
+  d.appendChild(head);
+  d.appendChild(el("div","where",(a?a.title:m.from.s)+"  ↔  "+(bsc?bsc.title:m.to.s)));
+  if(m.note) d.appendChild(el("div","hint",m.note));
+  var x=el("button","tiny","remove");
+  x.onclick=function(){ DB.maps=DB.maps.filter(function(q){return q!==m}); persist(); refreshAll() };
+  d.appendChild(x);
+  return d;
+}
+function renderCross(b){
+  if(DB.schemes.length<2){
+    b.appendChild(msg("info","Load a second scheme to build a crosswalk — ETIM, UNSPSC, NAICS, or any other vocabulary you need to align with."));
+    return;
+  }
+  var s=scheme(cur);
+  b.appendChild(el("h4",null,"New mapping"));
+  if(!selected) b.appendChild(msg("warn","Select a concept in the tree first; it becomes the left-hand side."));
+  else {
+    var c=conceptById(s,selected);
+    b.appendChild(el("p","hint","From: "+(c?c.prefLabel:selected)+"  ("+s.title+")"));
+    var w1=el("div","fld");
+    w1.appendChild(el("label",null,"Predicate"));
+    var ps=el("select");
+    PREDS.forEach(function(p){ ps.appendChild(new Option("skos:"+p,p)) });
+    w1.appendChild(ps);
+    w1.appendChild(el("div","help","exactMatch: interchangeable. closeMatch: near enough for search, not for inference. "+
+      "broad/narrowMatch: the other side is wider or tighter. relatedMatch: associated, neither a parent nor a child."));
+    b.appendChild(w1);
+    var w2=el("div","fld");
+    w2.appendChild(el("label",null,"Target scheme"));
+    var os=el("select");
+    DB.schemes.forEach(function(x){ if(x.id!==cur) os.appendChild(new Option(x.title,x.id)) });
+    w2.appendChild(os); b.appendChild(w2);
+    var w3=el("div","fld");
+    w3.appendChild(el("label",null,"Target concept"));
+    var oc=el("select");
+    function fillTargets(){
+      oc.textContent="";
+      var t=scheme(os.value);
+      (t?t.concepts:[]).forEach(function(x){
+        oc.appendChild(new Option(x.prefLabel+(x.notation?"  ["+x.notation+"]":"")+"  ("+x.id+")",x.id)) });
+    }
+    fillTargets(); os.onchange=fillTargets;
+    w3.appendChild(oc); b.appendChild(w3);
+    var w4=el("div","fld");
+    w4.appendChild(el("label",null,"Note"));
+    var nt=el("input"); nt.type="text"; nt.placeholder="why this alignment holds";
+    w4.appendChild(nt); b.appendChild(w4);
+    var ba=el("button",null,"Add mapping"); ba.className="primary";
+    ba.onclick=function(){
+      if(!oc.value){ alert("Pick a target concept."); return }
+      var dup=DB.maps.some(function(m){ return m.from.s===cur&&m.from.c===selected&&
+        m.to.s===os.value&&m.to.c===oc.value });
+      if(dup){ alert("That mapping already exists."); return }
+      DB.maps.push({from:{s:cur,c:selected},to:{s:os.value,c:oc.value},pred:ps.value,note:nt.value.trim()});
+      persist(); refreshAll(); $("#stHint").textContent="mapping added";
+    };
+    b.appendChild(ba);
+  }
+  b.appendChild(el("h4",null,"All mappings ("+DB.maps.length+")"));
+  var rel=DB.maps.filter(function(m){ return m.from.s===cur||m.to.s===cur });
+  if(!rel.length) b.appendChild(el("p","hint","None involving this scheme yet."));
+  rel.forEach(function(m){ b.appendChild(mapLine(m)) });
+  if(DB.maps.length){
+    var bx=el("button",null,"Export crosswalk JSON");
+    bx.onclick=function(){
+      download("crosswalk.json",JSON.stringify({
+        generated:new Date().toISOString(),
+        schemes:DB.schemes.map(function(x){return {id:x.id,title:x.title,concepts:x.concepts.length}}),
+        mappings:DB.maps
+      },null,2));
+    };
+    var bs=el("button",null,"Export as SKOS");
+    bs.onclick=function(){ var s2=scheme(cur); download(s2.id+".skos.jsonld",toJsonLd(s2),"application/ld+json") };
+    var row=el("div","rowflex"); row.style.marginTop="10px";
+    row.appendChild(bx); row.appendChild(bs); b.appendChild(row);
+  }
+}
+function renderCheck(b){
+  var s=scheme(cur);
+  if(!s){ b.appendChild(msg("info","No scheme loaded.")); return }
+  var out=[];
+  function add(sev,t,id){ out.push({sev:sev,t:t,id:id}) }
+  var byId={}; s.concepts.forEach(function(c){
+    if(byId[c.id]) add("err","Duplicate identifier “"+c.id+"”",c.id);
+    byId[c.id]=c;
+  });
+  s.concepts.forEach(function(c){
+    if(!c.prefLabel||!c.prefLabel.trim()) add("err","No prefLabel",c.id);
+    if(c.broader&&!byId[c.broader]) add("err","broader points at “"+c.broader+"”, which does not exist",c.id);
+    (c.related||[]).forEach(function(r){
+      if(!byId[r]) add("warn","related points at “"+r+"”, which does not exist",c.id) });
+    if(c.broader===c.id) add("err","Is its own parent",c.id);
+  });
+  // duplicate labels under one parent are a real ambiguity for users
+  var seenPair={};
+  s.concepts.forEach(function(c){
+    var k=(c.broader||"~root")+"|"+(c.prefLabel||"").toLowerCase().trim();
+    if(seenPair[k]) add("warn","Shares a label with a sibling — ambiguous when browsing",c.id);
+    seenPair[k]=1;
+  });
+  var g=graph?graph.flagged():[];
+  g.forEach(function(f){ if(/cycle/.test(f.why)) add("err","Cycle: "+f.why,f.id) });
+  var orphanRoots=s.concepts.filter(function(c){return !c.broader}).length;
+  if(orphanRoots>12) add("info",orphanRoots+" top concepts — a very flat vocabulary; consider grouping",null);
+  var noDef=s.concepts.filter(function(c){return !c.definition}).length;
+  if(noDef) add("info",noDef+" concept(s) have no definition",null);
+  var unmapped=s.concepts.filter(function(c){
+    return !DB.maps.some(function(m){ return (m.from.s===cur&&m.from.c===c.id)||(m.to.s===cur&&m.to.c===c.id) }) }).length;
+  if(DB.schemes.length>1) add("info",unmapped+" concept(s) have no crosswalk mapping",null);
+
+  var counts={err:0,warn:0,info:0}; out.forEach(function(o){counts[o.sev]++});
+  b.appendChild(msg(counts.err?"err":counts.warn?"warn":"ok",
+    counts.err+" errors, "+counts.warn+" warnings, "+counts.info+" notes"));
+  var order={err:0,warn:1,info:2};
+  out.sort(function(a,b2){return order[a.sev]-order[b2.sev]});
+  out.forEach(function(o){
+    var d=el("div","finding "+o.sev);
+    d.appendChild(el("div",null,o.t));
+    if(o.id){ d.appendChild(el("div","where",o.id));
+      d.onclick=function(){ selected=o.id; if(graph)graph.reveal(o.id); tab="concept"; syncTabs(); renderSide() } }
+    b.appendChild(d);
+  });
+}
+function renderHelp(b){
+  b.innerHTML=
+    "<h4>Model</h4><p class='hint'>Concepts follow SKOS: <code>prefLabel</code> is the one name, "+
+    "<code>altLabel</code> holds synonyms, <code>notation</code> holds the source system's code, "+
+    "<code>broader</code> is the single parent, <code>related</code> is a non-hierarchical link. "+
+    "A scheme is a <code>skos:ConceptScheme</code>.</p>"+
+    "<h4>Import</h4><p class='hint'>SKOS JSON-LD, a flat array with parent/broader keys, a nested array with "+
+    "<code>children</code>, an object keyed by id, or CSV. CSV with a <code>path</code> column of "+
+    "<code>A &gt; B &gt; C</code> breadcrumbs builds the tree implicitly — which is how most product "+
+    "classification exports arrive.</p>"+
+    "<h4>Crosswalks</h4><p class='hint'>Load a second scheme, select a concept, and map it across with the "+
+    "SKOS matching predicates. <code>exactMatch</code> asserts the two are interchangeable and is transitive, so "+
+    "use it sparingly; <code>closeMatch</code> is the honest choice for ‘near enough to search with’. "+
+    "Mappings export inside the SKOS file and as a standalone crosswalk.</p>"+
+    "<h4>Views</h4><p class='hint'>Tree, radial and outline layouts all read the same data. Turn on "+
+    "<b>Show crosswalk links</b> to pull mapped concepts from other schemes into the picture as dashed edges. "+
+    "Drag to pan, wheel to zoom, click the knob on a node to collapse its branch.</p>";
+}
+function syncTabs(){ $$("#tabs button").forEach(function(x){ x.classList.toggle("on",x.dataset.t===tab) }) }
+
+/* ------------------------------------------------------------------ edits */
+function addConcept(parentId){
+  var s=scheme(cur);
+  if(!s){ alert("Create a scheme first."); return }
+  var body=el("div");
+  var f1=el("div","fld"); f1.appendChild(el("label",null,"Label"));
+  var i1=el("input"); i1.type="text"; f1.appendChild(i1); body.appendChild(f1);
+  var f2=el("div","fld"); f2.appendChild(el("label",null,"Identifier (optional)"));
+  var i2=el("input"); i2.type="text"; i2.placeholder="derived from the label if blank"; f2.appendChild(i2);
+  body.appendChild(f2);
+  dialog("Add concept",body,function(ok){
+    if(!ok||!i1.value.trim())return;
+    var id=(i2.value.trim()||slug(i1.value));
+    var base=id,n=2; while(conceptById(s,id)) id=base+"-"+(n++);
+    s.concepts.push({id:id,notation:"",prefLabel:i1.value.trim(),altLabel:[],definition:"",
+      broader:parentId||null,related:[],status:"active",meta:{}});
+    selected=id; persist(); refreshAll();
+  });
+}
+var dlgCb=null;
+function dialog(title,body,cb){
+  $("#dlgTitle").textContent=title;
+  var b=$("#dlgBody"); b.textContent=""; b.appendChild(body);
+  dlgCb=cb;
+  var d=$("#dlg"); if(d.showModal) d.showModal(); else d.setAttribute("open","");
+}
+function finish(ok){ var cb=dlgCb; dlgCb=null;
+  var d=$("#dlg"); try{ d.close() }catch(e){ d.removeAttribute("open") } if(cb) cb(ok) }
+$("#dlgOk").onclick=function(){ finish(true) };
+$("#dlgCancel").onclick=function(){ finish(false) };
+$("#dlg").addEventListener("cancel",function(e){ e.preventDefault(); finish(false) });
+
+/* ----------------------------------------------------------------- wiring */
+function refreshAll(){
+  var sel=$("#schemeSel"); sel.textContent="";
+  DB.schemes.forEach(function(s){ sel.appendChild(new Option(s.title+"  ("+s.concepts.length+")",s.id)) });
+  if(!DB.schemes.length) sel.appendChild(new Option("(none)",""));
+  if(cur) sel.value=cur;
+  refreshGraph(); renderSide(); status();
+}
+function status(){
+  var s=scheme(cur);
+  var p=$("#stScheme");
+  if(!s){ p.className="pill warn"; p.textContent="no scheme" }
+  else { p.className="pill ok"; p.textContent=s.title }
+  var st=graph?graph.stats():null;
+  $("#stCounts").textContent = s ? (s.concepts.length+" concepts · depth "+(st?st.depth:"?")+
+    " · "+(st?st.roots:"?")+" top") : "";
+  $("#stMaps").textContent = DB.maps.length ? (DB.maps.length+" mappings") : "";
+}
+$("#schemeSel").onchange=function(){ cur=this.value; selected=null; persist(); refreshAll() };
+$("#bNewScheme").onclick=function(){
+  var body=el("div");
+  var f=el("div","fld"); f.appendChild(el("label",null,"Scheme title"));
+  var i=el("input"); i.type="text"; f.appendChild(i); body.appendChild(f);
+  dialog("New concept scheme",body,function(ok){
+    if(!ok||!i.value.trim())return;
+    addScheme({id:slug(i.value),title:i.value.trim(),concepts:[]});
+  });
+};
+$("#bImport").onclick=function(){ $("#fImport").click() };
+$("#fImport").onchange=function(e){ readFiles(e.target.files); e.target.value="" };
+function readFiles(files){
+  Array.prototype.forEach.call(files,function(f){
+    var r=new FileReader();
+    r.onload=function(){
+      try{ addScheme(detectAndParse(String(r.result),f.name)) }
+      catch(err){ alert("Could not import "+f.name+": "+err.message) }
+    };
+    r.readAsText(f);
+  });
+}
+$("#bPaste").onclick=function(){
+  var body=el("div");
+  var f=el("div","fld"); f.appendChild(el("label",null,"Name"));
+  var i=el("input"); i.type="text"; i.placeholder="etim.csv"; f.appendChild(i); body.appendChild(f);
+  var ta=el("textarea"); body.appendChild(ta);
+  dialog("Paste a taxonomy",body,function(ok){
+    if(!ok||!ta.value.trim())return;
+    try{ addScheme(detectAndParse(ta.value,i.value.trim()||"pasted")) }
+    catch(err){ alert("Could not parse: "+err.message) }
+  });
+};
+$("#bExport").onclick=function(){
+  var s=scheme(cur); if(!s){ alert("No scheme selected."); return }
+  var body=el("div");
+  body.appendChild(el("p","hint","Export “"+s.title+"” as:"));
+  [["SKOS JSON-LD",function(){ download(s.id+".skos.jsonld",toJsonLd(s),"application/ld+json") }],
+   ["Flat JSON (id + parent)",function(){ download(s.id+".flat.json",toFlat(s)) }],
+   ["Nested JSON (children)",function(){ download(s.id+".nested.json",toNested(s)) }],
+   ["CSV",function(){ download(s.id+".csv",toCSV(s),"text/csv") }],
+   ["MDM term records",function(){ download(s.id+".terms.json",toTermRecords(s)) }]
+  ].forEach(function(p){
+    var b2=el("button",null,p[0]); b2.style.display="block"; b2.style.width="100%";
+    b2.style.marginBottom="6px"; b2.style.textAlign="left";
+    b2.onclick=function(){ p[1](); finish(false) };
+    body.appendChild(b2);
+  });
+  dialog("Export scheme",body,function(){});
+};
+$("#bAddConcept").onclick=function(){ addConcept(selected||null) };
+$$(".lay").forEach(function(b){
+  b.onclick=function(){
+    $$(".lay").forEach(function(x){x.classList.toggle("on",x===b)});
+    graph.setLayout(b.dataset.l); graph.fit();
+  };
+});
+$("#bFit").onclick=function(){ graph.fit() };
+$("#bZin").onclick=function(){ graph.zoom(1.2) };
+$("#bZout").onclick=function(){ graph.zoom(1/1.2) };
+$("#bExpand").onclick=function(){ graph.expandAll() };
+$("#bD2").onclick=function(){ graph.collapseToDepth(2) };
+$("#showMaps").onchange=function(){ refreshGraph() };
+$("#bSvg").onclick=function(){
+  var s=graph.exportSVG();
+  if(!s){ alert("Nothing to export."); return }
+  download((scheme(cur)||{id:"taxonomy"}).id+".svg",s,"image/svg+xml");
+};
+$("#find").addEventListener("input",function(){
+  graph.setSearch(this.value.trim());
+  $("#stHint").textContent=this.value.trim()?(graph.hitCount()+" matches"):"";
+});
+$$("#tabs button").forEach(function(b){ b.onclick=function(){ tab=b.dataset.t; syncTabs(); renderSide() } });
+$("#bTheme").onclick=function(){
+  var r=document.documentElement, c=r.dataset.theme;
+  r.dataset.theme = c==="auto"?"light":c==="light"?"dark":"auto";
+  store("tx.theme",r.dataset.theme);
+  setTimeout(function(){ graph.fit() },30);
+};
+var dropEl=$("#drop"),dn=0;
+window.addEventListener("dragenter",function(e){ e.preventDefault(); dn++; dropEl.classList.add("on") });
+window.addEventListener("dragover",function(e){ e.preventDefault() });
+window.addEventListener("dragleave",function(){ if(--dn<=0){dn=0;dropEl.classList.remove("on")} });
+window.addEventListener("drop",function(e){ e.preventDefault(); dn=0; dropEl.classList.remove("on");
+  if(e.dataTransfer.files.length) readFiles(e.dataTransfer.files) });
+
+/* ------------------------------------------------------------------- boot */
+var SAMPLE={ id:"products", title:"Product taxonomy (sample)", concepts:[
+  {id:"tools",prefLabel:"Tools",broader:null,notation:"",altLabel:[],definition:"Hand and power tools.",related:[],status:"active",meta:{}},
+  {id:"hand-tools",prefLabel:"Hand tools",broader:"tools",notation:"",altLabel:["manual tools"],definition:"",related:[],status:"active",meta:{}},
+  {id:"wrenches",prefLabel:"Wrenches",broader:"hand-tools",notation:"",altLabel:["spanners"],definition:"",related:[],status:"active",meta:{}},
+  {id:"torque-wrenches",prefLabel:"Torque wrenches",broader:"wrenches",notation:"",altLabel:[],definition:"",related:[],status:"active",meta:{}},
+  {id:"power-tools",prefLabel:"Power tools",broader:"tools",notation:"",altLabel:[],definition:"",related:[],status:"active",meta:{}},
+  {id:"bearings",prefLabel:"Bearings",broader:null,notation:"",altLabel:[],definition:"Rolling element bearings.",related:[],status:"active",meta:{}},
+  {id:"ball-bearings",prefLabel:"Ball bearings",broader:"bearings",notation:"",altLabel:[],definition:"",related:["wrenches"],status:"active",meta:{}},
+  {id:"deep-groove",prefLabel:"Deep groove ball bearings",broader:"ball-bearings",notation:"",altLabel:[],definition:"",related:[],status:"active",meta:{}},
+  {id:"roller-bearings",prefLabel:"Roller bearings",broader:"bearings",notation:"",altLabel:[],definition:"",related:[],status:"active",meta:{}}
+]};
+
+(function(){
+  var th=recall("tx.theme"); if(th) document.documentElement.dataset.theme=th;
+  graph=NodeGraph.create($("#graph"),{
+    emptyText:"No concepts yet — import a taxonomy or add one.",
+    onSelect:function(id,data){
+      if(data&&data.external){
+        var os=scheme(data.scheme);
+        if(os&&confirm("Open "+os.title+" and select that concept?")){
+          cur=data.scheme; selected=data.concept; persist(); refreshAll();
+          setTimeout(function(){ graph.reveal(data.concept) },40);
+        }
+        return;
+      }
+      selected=id; tab="concept"; syncTabs(); renderSide();
+    }
+  });
+  if(!restore()){ DB={schemes:[deep(SAMPLE)],maps:[]}; cur="products"; }
+  refreshAll();
+  setTimeout(function(){ graph.fit() },60);
+})();
+})();
+</script>
+</body>
+</html>

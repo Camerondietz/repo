@@ -71,9 +71,10 @@ footer{margin-top:30px;padding-top:14px;border-top:1px solid var(--line);
     <button id="theme" title="Light / dark / system">&#9681;</button>
   </header>
 
-  <p class="lede">Three browser tools for building and running the unified data standard.
+  <p class="lede">Five browser tools for building and running the unified data standard.
   Each is a single HTML file with no dependencies &#8212; they work opened straight from disk
-  and from a static host alike, and nothing you load ever leaves your machine.</p>
+  and from a static host alike, and nothing you load ever leaves your machine.
+  The two visual tools share one file, <code>node-graph.js</code>, which draws every tree and graph.</p>
 
   <div class="cards">
 
@@ -119,14 +120,44 @@ footer{margin-top:30px;padding-top:14px;border-top:1px solid var(--line);
       <div class="go"><a class="btn" href="data-mapper.html">Open Mapper &#8594;</a></div>
     </div>
 
+    <div class="card">
+      <h2>Taxonomy <span>&#9679;</span> Studio</h2>
+      <p class="one">Build the vocabularies everything is classified by.</p>
+      <ul>
+        <li><b>SKOS model</b> &#8212; <code>prefLabel</code>, <code>altLabel</code>, <code>notation</code>, <code>broader</code>, <code>related</code>, concept schemes</li>
+        <li><b>Import</b> SKOS JSON-LD, flat or nested JSON, or CSV &#8212; including breadcrumb <code>A &gt; B &gt; C</code> columns</li>
+        <li><b>Visualise</b> as tree, radial or outline, with collapsible branches</li>
+        <li><b>Crosswalk</b> to other vocabularies &#8212; ETIM, UNSPSC, NAICS &#8212; with the SKOS matching predicates</li>
+        <li><b>Export</b> SKOS JSON-LD, flat/nested JSON, CSV, or MDM <code>term</code> records</li>
+      </ul>
+      <p class="when">Reach for this when the thing you are working on is the vocabulary.</p>
+      <div class="go"><a class="btn" href="taxonomy-studio.html">Open Taxonomy &#8594;</a></div>
+    </div>
+
+    <div class="card">
+      <h2>Hierarchy <span>&#9679;</span> Explorer</h2>
+      <p class="one">See the shape of records that point at each other.</p>
+      <ul>
+        <li><b>Any parent field</b> &#8212; <code>parent_id</code>, <code>manager_id</code>, <code>father_id</code>, or a <code>relations[]</code> rel</li>
+        <li><b>Org charts, family trees, category trees, bills of materials</b> from the same picker</li>
+        <li><b>Colour by</b> any field, with a second relation drawn as dashed extra links</li>
+        <li><b>Focus</b> a subtree, follow breadcrumbs, inspect the full record</li>
+        <li><b>Safe on bad data</b> &#8212; cycles and orphans are detected, broken and listed, never hung on</li>
+      </ul>
+      <p class="when">Reach for this when the thing you are working on is the structure.</p>
+      <div class="go"><a class="btn" href="hierarchy-explorer.html">Open Hierarchy &#8594;</a></div>
+    </div>
+
   </div>
 
   <div class="flow">
     <h3>How they fit together</h3>
     <ol>
-      <li><b>Studio</b> &#8212; settle the target shape, and keep the type schemas in step with <code>record.schema.json</code>.</li>
+      <li><b>Schema Studio</b> &#8212; settle the target shape, and keep the type schemas in step with <code>record.schema.json</code>.</li>
+      <li><b>Taxonomy Studio</b> &#8212; settle the vocabularies those schemas classify against, and align them with outside standards.</li>
       <li><b>Mapper</b> &#8212; point each legacy source at that shape, save the mapping, run the migration.</li>
       <li><b>Workbench</b> &#8212; open the result, check it, fix what needs fixing, and maintain it from there.</li>
+      <li><b>Hierarchy Explorer</b> &#8212; look at how the migrated records actually hang together, and find the records that do not.</li>
     </ol>
   </div>
 

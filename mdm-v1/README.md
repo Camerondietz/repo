@@ -28,6 +28,25 @@ mdm-v2/
 
 Each type schema is `allOf: [record.schema.json]` plus a `const` on `type` and a narrowed `data`. Validating against a type schema therefore validates the envelope too. Validating against `record.schema.json` alone is also valid — useful for types that don't have a schema yet.
 
+## Field reference for app work
+
+Two generated files sit alongside the schemas:
+
+- **`all-fields.schema.json`** — every field the standard defines in one file. The envelope from `record.schema.json`, plus each type's payload as `$defs/data_<type>`, with an `if`/`then` per type so `data` is checked against the matching payload and each type's own extra `required` fields apply. Deliberately a *superset*: `type` is not an enum, so a record whose type has no schema yet still validates with `data` as a plain object.
+- **`all-fields.template.json`** — the same field set with every value null, one complete skeleton per type. Copy the block for the type you're building. Arrays of objects carry one fully-null element so the item's fields are visible; positional arrays like `geo.point` show `[null, null]`; open maps (`category`, `identifiers`, `metadata`) are `{}` and are listed in `_about.openMaps`.
+
+The template is a reference, not a record — it won't validate as-is, because required fields are null. Delete the keys you don't use rather than sending nulls: the envelope drops absent fields but validates present ones.
+
+Regenerate both after any schema change:
+
+```bash
+node build-all-fields.mjs
+```
+
+For real per-type validation use `types/<name>.schema.json`; the reference file checks payload field *types* and each type's required list, not every narrowing the type schemas apply.
+
+`frequency`, `sop` and `tool` are named in the design but have no schema yet, so they are absent. Add `types/<name>.schema.json` and re-run to include them.
+
 ## Principles
 
 **Resolve hierarchies at write time; keep queries flat.** Geography and classification are both tree problems. Resolving them at read time means every app needs the tree, a geometry engine, and matching logic. `geo.place_closure` is computed once on write, so "everything in Travis County" is one array-contains lookup.

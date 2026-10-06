@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hierarchy Explorer</title>
+<style>
+:root{
+  --bg:#f7f7f5; --panel:#fff; --panel-2:#fbfbfa; --ink:#1b1b19; --ink-2:#5c5c57;
+  --ink-3:#8a8a83; --line:#e2e2dd; --line-2:#cfcfc8; --accent:#2f6f4f; --accent-ink:#fff;
+  --warn:#8a5a00; --warn-bg:#fdf3e0; --err:#a3241f; --err-bg:#fdecea; --ok:#1f6b3f; --ok-bg:#e9f5ee;
+  --info:#1b4f8a; --info-bg:#e8f0fa; --violet:#6b3fa0;
+  --sel:#dceadf; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.06);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --ng-node:#fff; --ng-line:#d8d8d2; --ng-edge:#b9b9b2; --ng-ink:#1b1b19; --ng-ink2:#5c5c57;
+  --ng-badge:#ecece7; --ng-accent:#2f6f4f; --ng-hit:#c08a2e; --ng-bad:#a3241f; --ng-xlink:#6b3fa0;
+  --ng-muted:#8a8a83;
+  --ng-tone-a:#eaf5ee; --ng-tone-b:#eef3fb; --ng-tone-c:#fdf3e0; --ng-tone-d:#f6eefb;
+  --ng-tone-e:#fdecea; --ng-tone-f:#eefafa;
+}
+@media (prefers-color-scheme:dark){
+  html[data-theme="auto"]{
+    --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+    --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+    --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+    --info:#8ab7e8; --info-bg:#1a2433; --violet:#c4a2ef;
+    --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+    --ng-node:#1e1e23; --ng-line:#41414c; --ng-edge:#4d4d57; --ng-ink:#e9e9e6; --ng-ink2:#a8a8a2;
+    --ng-badge:#2d2d36; --ng-accent:#4c9c72; --ng-hit:#e0b064; --ng-bad:#f0928c; --ng-xlink:#c4a2ef;
+    --ng-muted:#77776f;
+    --ng-tone-a:#17291f; --ng-tone-b:#1d2634; --ng-tone-c:#2e2519; --ng-tone-d:#271c33;
+    --ng-tone-e:#331b1a; --ng-tone-f:#15292b;
+  }
+}
+html[data-theme="dark"]{
+  --bg:#16161a; --panel:#1e1e23; --panel-2:#23232a; --ink:#e9e9e6; --ink-2:#a8a8a2;
+  --ink-3:#77776f; --line:#31313a; --line-2:#41414c; --accent:#4c9c72; --accent-ink:#0d130f;
+  --warn:#e0b064; --warn-bg:#2e2519; --err:#f0928c; --err-bg:#331b1a; --ok:#79c79b; --ok-bg:#16291e;
+  --info:#8ab7e8; --info-bg:#1a2433; --violet:#c4a2ef;
+  --sel:#25382c; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+  --ng-node:#1e1e23; --ng-line:#41414c; --ng-edge:#4d4d57; --ng-ink:#e9e9e6; --ng-ink2:#a8a8a2;
+  --ng-badge:#2d2d36; --ng-accent:#4c9c72; --ng-hit:#e0b064; --ng-bad:#f0928c; --ng-xlink:#c4a2ef;
+  --ng-muted:#77776f;
+  --ng-tone-a:#17291f; --ng-tone-b:#1d2634; --ng-tone-c:#2e2519; --ng-tone-d:#271c33;
+  --ng-tone-e:#331b1a; --ng-tone-f:#15292b;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.5 var(--sans);overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:var(--panel);border:1px solid var(--line-2);border-radius:6px;padding:4px 9px;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--panel-2);border-color:var(--ink-3)}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button.on{background:var(--sel);border-color:var(--accent)}
+button.tiny{padding:1px 6px;font-size:11px;line-height:17px}
+input[type=text],input[type=search],select,textarea{background:var(--panel);border:1px solid var(--line-2);
+  border-radius:6px;padding:4px 7px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.app{display:flex;flex-direction:column;height:100%}
+header{border-bottom:1px solid var(--line);background:var(--panel);flex:0 0 auto}
+.bar{display:flex;align-items:center;gap:6px;padding:6px 10px;flex-wrap:wrap}
+.bar+.bar{border-top:1px solid var(--line)}
+.brand{font-weight:700;letter-spacing:-.01em;margin-right:6px;white-space:nowrap}
+.brand span{color:var(--accent)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 2px}
+.grow{flex:1 1 auto}
+.lbl{font-size:11px;color:var(--ink-3)}
+main{flex:1 1 auto;display:flex;min-height:0}
+#graphWrap{flex:1 1 auto;min-width:0;position:relative;background:var(--panel-2)}
+#graph{position:absolute;inset:0}
+#side{flex:0 0 356px;border-left:1px solid var(--line);background:var(--panel);
+  display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;gap:2px;padding:5px 8px 0;border-bottom:1px solid var(--line);background:var(--panel-2);flex:0 0 auto}
+.tabs button{border-radius:6px 6px 0 0;border-color:transparent;background:transparent;font-size:12px}
+.tabs button.on{background:var(--panel);border-color:var(--line);border-bottom-color:var(--panel);margin-bottom:-1px;font-weight:600}
+#sideBody{flex:1 1 auto;overflow:auto;padding:12px}
+footer{flex:0 0 auto;border-top:1px solid var(--line);background:var(--panel);padding:4px 10px;
+  display:flex;gap:14px;align-items:center;font:11.5px/1.4 var(--mono);color:var(--ink-2);flex-wrap:wrap}
+.pill{border-radius:999px;padding:1px 9px;font-weight:600;font-family:var(--sans);font-size:11px}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.err{background:var(--err-bg);color:var(--err)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.hint{color:var(--ink-3);font-size:11.5px;margin:6px 0}
+h4{margin:15px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}
+h4:first-child{margin-top:0}
+.msg{border-radius:6px;padding:7px 10px;margin:8px 0;font-size:12px}
+.msg.err{background:var(--err-bg);color:var(--err)}
+.msg.ok{background:var(--ok-bg);color:var(--ok)}
+.msg.warn{background:var(--warn-bg);color:var(--warn)}
+.msg.info{background:var(--info-bg);color:var(--info)}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{text-align:left;padding:3px 7px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--ink-2);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+td.k{font-family:var(--mono);font-size:11px;color:var(--ink-2);white-space:nowrap;width:38%}
+td.v{font-family:var(--mono);font-size:11px;word-break:break-word}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:7px;margin:0 0 12px}
+.card{background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:7px 9px}
+.card b{display:block;font-size:17px;font-weight:700;letter-spacing:-.02em}
+.card span{color:var(--ink-3);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.finding{border:1px solid var(--line);border-left-width:3px;border-radius:6px;padding:6px 9px;
+  margin-bottom:5px;font-size:12px;cursor:pointer}
+.finding.err{border-left-color:var(--err)}
+.finding.warn{border-left-color:var(--warn)}
+.finding.info{border-left-color:var(--info)}
+.finding .where{color:var(--ink-3);font-size:11px;font-family:var(--mono)}
+.crumb{font-size:11px;font-family:var(--mono);color:var(--ink-3);margin-bottom:8px;word-break:break-word}
+.crumb a{color:var(--accent);cursor:pointer;text-decoration:none}
+.crumb a:hover{text-decoration:underline}
+.swatch{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;
+  vertical-align:-1px;border:1px solid var(--line-2)}
+.legend{position:absolute;left:10px;bottom:10px;background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:5px 9px;font-size:11px;color:var(--ink-3);display:flex;gap:11px;flex-wrap:wrap;
+  max-width:62%}
+dialog{border:1px solid var(--line-2);border-radius:10px;background:var(--panel);color:var(--ink);
+  padding:0;box-shadow:var(--shadow);max-width:min(680px,94vw);width:100%}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+dialog .dh{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700}
+dialog .db{padding:14px;max-height:62vh;overflow:auto}
+dialog .df{padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end}
+dialog textarea{width:100%;min-height:200px;font:12px/1.6 var(--mono);resize:vertical}
+dialog input[type=text]{width:100%}
+.drop{position:fixed;inset:0;background:rgba(47,111,79,.14);border:3px dashed var(--accent);
+  z-index:99;display:none;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent)}
+.drop.on{display:flex}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="bar">
+      <div class="brand">Hierarchy<span>&#9679;</span>Explorer</div>
+      <button id="bLoad">Load data&#8230;</button>
+      <input type="file" id="fLoad" accept=".json,.ndjson,.jsonl,.csv,.tsv,.txt" hidden>
+      <button id="bPaste">Paste</button>
+      <button id="bSample">Sample</button>
+      <div class="sep"></div>
+      <span class="lbl">id</span><select id="fId" style="max-width:130px"></select>
+      <span class="lbl">parent</span><select id="fParent" style="max-width:150px"></select>
+      <span class="lbl">label</span><select id="fLabel" style="max-width:140px"></select>
+      <div class="grow"></div>
+      <button id="bTheme" title="Theme">&#9681;</button>
+    </div>
+    <div class="bar">
+      <span class="lbl">colour by</span><select id="fColor" style="max-width:140px"></select>
+      <span class="lbl">extra links</span><select id="fLink" style="max-width:150px"></select>
+      <div class="sep"></div>
+      <button class="lay on" data-l="tree-v">Org &#8595;</button>
+      <button class="lay" data-l="tree-h">Tree &#8594;</button>
+      <button class="lay" data-l="radial">Radial</button>
+      <button class="lay" data-l="indent">Outline</button>
+      <div class="sep"></div>
+      <button id="bFit">Fit</button>
+      <button id="bZin">+</button>
+      <button id="bZout">&#8722;</button>
+      <button id="bExpand">Expand all</button>
+      <button id="bD2">Depth 2</button>
+      <button id="bFocus">Focus subtree</button>
+      <button id="bClearFocus" style="display:none">Clear focus</button>
+      <button id="bSvg">Save SVG</button>
+      <div class="grow"></div>
+      <input type="search" id="find" placeholder="Find" style="width:150px">
+    </div>
+  </header>
+
+  <main>
+    <div id="graphWrap">
+      <div id="graph"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <aside id="side">
+      <div class="tabs" id="tabs">
+        <button data-t="record" class="on">Record</button>
+        <button data-t="structure">Structure</button>
+        <button data-t="check">Check</button>
+        <button data-t="help">Help</button>
+      </div>
+      <div id="sideBody"></div>
+    </aside>
+  </main>
+
+  <footer>
+    <span id="stSrc" class="pill warn">no data</span>
+    <span id="stShape"></span>
+    <span class="grow"></span>
+    <span id="stHint" class="hint" style="margin:0"></span>
+  </footer>
+</div>
+<div class="drop" id="drop">Drop a data file</div>
+
+<dialog id="dlg">
+  <div class="dh" id="dlgTitle">Dialog</div>
+  <div class="db" id="dlgBody"></div>
+  <div class="df">
+    <button type="button" id="dlgCancel">Cancel</button>
+    <button type="button" id="dlgOk" class="primary">OK</button>
+  </div>
+</dialog>
+
+<script src="node-graph.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function el(t,c,x){var e=document.createElement(t); if(c)e.className=c; if(x!=null)e.textContent=x; return e}
+function store(k,v){ try{ v===undefined?localStorage.removeItem(k):localStorage.setItem(k,v) }catch(e){} }
+function recall(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+function msg(k,t){ var d=el("div","msg "+k); d.textContent=t; return d }
+function download(name,text,mime){
+  var b=new Blob([text],{type:mime||"application/json"}),u=URL.createObjectURL(b),a=el("a");
+  a.href=u; a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(u);a.remove()},0);
+}
+
+var RECS=[], FIELDS=[], RELS=[], graph=null, selected=null, tab="record", focusRoot=null, srcName="";
+var cfg={id:"",parent:"",label:"",color:"",link:""};
+var TONES=["a","b","c","d","e","f"], colorMap={};
+
+/* ----------------------------------------------------------------- import */
+function flatten(v,pre,out){
+  out=out||{}; pre=pre||"";
+  if(v===null||typeof v!=="object"){ out[pre]=v; return out }
+  if(Array.isArray(v)){
+    if(!v.length){ out[pre]=[]; return out }
+    if(v.every(function(x){return x===null||typeof x!=="object"})){ out[pre]=v; return out }
+    v.forEach(function(x,i){ flatten(x,pre?pre+"."+i:String(i),out) });
+    return out;
+  }
+  var ks=Object.keys(v);
+  if(!ks.length){ out[pre]={}; return out }
+  ks.forEach(function(k){ flatten(v[k],pre?pre+"."+k:k,out) });
+  return out;
+}
+function parseCSV(text,d){
+  var rows=[],row=[],cur="",q=false,i=0;
+  while(i<text.length){
+    var c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur+='"';i+=2;continue} q=false;i++;continue } cur+=c;i++;continue }
+    if(c==='"'){q=true;i++;continue}
+    if(c===d){row.push(cur);cur="";i++;continue}
+    if(c==="\r"){i++;continue}
+    if(c==="\n"){row.push(cur);rows.push(row);row=[];cur="";i++;continue}
+    cur+=c;i++;
+  }
+  if(cur!==""||row.length){row.push(cur);rows.push(row)}
+  return rows.filter(function(r){return r.length>1||r[0]!==""});
+}
+function coerce(s){
+  if(typeof s!=="string")return s;
+  var t=s.trim(); if(t==="")return "";
+  if(t==="true")return true; if(t==="false")return false; if(t==="null")return null;
+  if(/^-?0\d/.test(t)) return s;
+  if(/^-?\d+(\.\d+)?$/.test(t)) return Number(t);
+  return s;
+}
+function load(name,text){
+  srcName=name;
+  var t=text.replace(/^﻿/,"").trim(), arr=null;
+  try{
+    if(t[0]==="["||t[0]==="{"){
+      var o=JSON.parse(t);
+      arr=Array.isArray(o)?o:pickArray(o);
+      if(!arr) throw new Error("no array of records found");
+    } else if(t.indexOf("\n")>0&&t[0]==="{"){
+      arr=t.split(/\r?\n/).filter(function(l){return l.trim()}).map(function(l){return JSON.parse(l)});
+    } else if(/^\s*\{/.test(t)&&t.indexOf("\n{")>0){
+      arr=t.split(/\r?\n/).filter(function(l){return l.trim()}).map(function(l){return JSON.parse(l)});
+    } else {
+      var d=(t.split("\n")[0].split("\t").length>t.split("\n")[0].split(",").length)?"\t":",";
+      var rows=parseCSV(t,d);
+      var head=rows[0].map(function(h,i){return h.trim()||("col"+(i+1))});
+      arr=rows.slice(1).map(function(r){
+        var o={}; head.forEach(function(h,i){ o[h]=coerce(r[i]===undefined?"":r[i]) }); return o });
+    }
+  }catch(e){ alert("Could not read "+name+": "+e.message); return }
+  RECS=arr.filter(function(r){ return r&&typeof r==="object" });
+  profile(); autoPick(); rebuild();
+  $("#stHint").textContent="loaded "+RECS.length+" records";
+}
+function pickArray(o){
+  var names=["items","records","rows","data","results","people","nodes","entries","documents"];
+  for(var i=0;i<names.length;i++) if(Array.isArray(o[names[i]])) return o[names[i]];
+  var best=null;
+  Object.keys(o).forEach(function(k){ if(Array.isArray(o[k])&&(!best||o[k].length>best.length)) best=o[k] });
+  return best;
+}
+function profile(){
+  var seen={},names=[];
+  RECS.forEach(function(r){
+    Object.keys(flatten(r)).forEach(function(k){ if(!seen[k]){seen[k]=1;names.push(k)} });
+  });
+  FIELDS=names;
+  // MDM-style relations[] become pseudo-fields so a rel can act as the parent
+  var rels={};
+  RECS.forEach(function(r){
+    if(Array.isArray(r.relations)) r.relations.forEach(function(x){
+      if(x&&x.rel) rels[x.rel]=1 });
+  });
+  RELS=Object.keys(rels).sort();
+}
+function fieldOptions(sel,extraBlank,chosen){
+  sel.textContent="";
+  if(extraBlank) sel.appendChild(new Option("— none —",""));
+  FIELDS.forEach(function(f){ sel.appendChild(new Option(f,f)) });
+  RELS.forEach(function(r){ sel.appendChild(new Option("relations: "+r,"rel:"+r)) });
+  if(chosen!=null) sel.value=chosen;
+}
+function autoPick(){
+  function first(cands){
+    for(var i=0;i<cands.length;i++){
+      var hit=FIELDS.filter(function(f){ return f.toLowerCase()===cands[i] })[0];
+      if(hit) return hit;
+    }
+    return "";
+  }
+  cfg.id=first(["id","uuid","guid","key","employee_id","person_id","node_id"])||FIELDS[0]||"";
+  cfg.parent=first(["parent_id","parentid","parent","manager_id","manager","reports_to","supervisor",
+                    "broader","father","father_id","boss"]);
+  if(!cfg.parent&&RELS.length){
+    ["manager","parent","reports_to","supervisor","father"].forEach(function(r){
+      if(!cfg.parent&&RELS.indexOf(r)>=0) cfg.parent="rel:"+r });
+  }
+  cfg.label=first(["label","name","full_name","title","display_name","prefLabel"])||cfg.id;
+  cfg.color=first(["type","category.primary","department","status","rank","role","generation"]);
+  cfg.link="";
+  if(RELS.length){
+    ["spouse","mother","partner","related","dotted_line"].forEach(function(r){
+      if(!cfg.link&&RELS.indexOf(r)>=0) cfg.link="rel:"+r });
+  }
+}
+function valueOf(rec,spec){
+  if(!spec) return undefined;
+  if(spec.indexOf("rel:")===0){
+    var rel=spec.slice(4);
+    if(!Array.isArray(rec.relations)) return undefined;
+    var hit=rec.relations.filter(function(x){ return x&&x.rel===rel })[0];
+    return hit?hit.id:undefined;
+  }
+  var flat=flatten(rec);
+  return flat[spec];
+}
+function valuesOf(rec,spec){
+  if(spec&&spec.indexOf("rel:")===0){
+    var rel=spec.slice(4);
+    if(!Array.isArray(rec.relations)) return [];
+    return rec.relations.filter(function(x){return x&&x.rel===rel}).map(function(x){return x.id});
+  }
+  var v=valueOf(rec,spec);
+  return v==null||v===""?[]:[v];
+}
+
+/* ------------------------------------------------------------------ graph */
+function rebuild(){
+  fieldOptions($("#fId"),false,cfg.id);
+  fieldOptions($("#fParent"),true,cfg.parent);
+  fieldOptions($("#fLabel"),false,cfg.label);
+  fieldOptions($("#fColor"),true,cfg.color);
+  fieldOptions($("#fLink"),true,cfg.link);
+  colorMap={};
+  var vals=[];
+  if(cfg.color) RECS.forEach(function(r){
+    var v=valueOf(r,cfg.color);
+    if(v!=null&&v!==""&&vals.indexOf(String(v))<0) vals.push(String(v)) });
+  vals.slice(0,TONES.length).forEach(function(v,i){ colorMap[v]=TONES[i] });
+
+  var nodes=RECS.map(function(r){
+    var id=valueOf(r,cfg.id);
+    if(id==null||id==="") return null;
+    var kids=0;
+    var lbl=valueOf(r,cfg.label);
+    var cv=cfg.color?String(valueOf(r,cfg.color)==null?"":valueOf(r,cfg.color)):"";
+    return { id:String(id), label:(lbl==null||lbl==="")?String(id):String(lbl),
+             parent:(function(){ var p=valueOf(r,cfg.parent); return p==null||p===""?null:String(p) })(),
+             tone:colorMap[cv]||null, data:r };
+  }).filter(Boolean);
+  var count={};
+  nodes.forEach(function(n){ if(n.parent) count[n.parent]=(count[n.parent]||0)+1 });
+  nodes.forEach(function(n){ if(count[n.id]) n.badge=count[n.id] });
+
+  var links=[];
+  if(cfg.link) RECS.forEach(function(r){
+    var from=valueOf(r,cfg.id); if(from==null)return;
+    valuesOf(r,cfg.link).forEach(function(to){
+      if(to==null||to==="")return;
+      links.push({from:String(from),to:String(to),kind:cfg.link.replace(/^rel:/,"")});
+    });
+  });
+
+  if(focusRoot){
+    var keep={}, byParent={};
+    nodes.forEach(function(n){ (byParent[n.parent]=byParent[n.parent]||[]).push(n) });
+    (function down(id){ keep[id]=1; (byParent[id]||[]).forEach(function(c){ down(c.id) }) })(focusRoot);
+    nodes=nodes.filter(function(n){ return keep[n.id] });
+    nodes.forEach(function(n){ if(n.id===focusRoot) n.parent=null });
+    links=links.filter(function(l){ return keep[l.from]&&keep[l.to] });
+  }
+
+  graph.setData({nodes:nodes,links:links});
+  var q=$("#find").value.trim(); if(q) graph.setSearch(q);
+  renderLegend(vals);
+  renderSide(); status();
+}
+function renderLegend(vals){
+  var L=$("#legend"); L.textContent="";
+  if(!cfg.color||!vals.length){ L.style.display="none"; return }
+  L.style.display="flex";
+  vals.slice(0,TONES.length).forEach(function(v){
+    var s=el("span");
+    var sw=el("span","swatch"); sw.style.background="var(--ng-tone-"+colorMap[v]+")";
+    s.appendChild(sw); s.appendChild(document.createTextNode(v||"(blank)"));
+    L.appendChild(s);
+  });
+  if(vals.length>TONES.length) L.appendChild(el("span",null,"+"+(vals.length-TONES.length)+" more"));
+}
+function status(){
+  var p=$("#stSrc");
+  if(!RECS.length){ p.className="pill warn"; p.textContent="no data" }
+  else { p.className="pill ok"; p.textContent=RECS.length+" records" }
+  var st=graph?graph.stats():null;
+  $("#stShape").textContent = st ? (st.nodes+" nodes · "+st.roots+" roots · depth "+st.depth+
+    " · "+st.leaves+" leaves"+(st.flagged?(" · "+st.flagged+" flagged"):"")) : "";
+}
+
+/* ------------------------------------------------------------------ panes */
+function renderSide(){
+  var b=$("#sideBody"); b.textContent="";
+  if(tab==="record") renderRecord(b);
+  else if(tab==="structure") renderStructure(b);
+  else if(tab==="check") renderCheck(b);
+  else renderHelp(b);
+}
+function recById(id){
+  return RECS.filter(function(r){ return String(valueOf(r,cfg.id))===String(id) })[0];
+}
+function renderRecord(b){
+  if(!RECS.length){ b.appendChild(msg("info","Load a data file, or click Sample.")); return }
+  if(!selected){ b.appendChild(msg("info","Click a node to inspect its record.")); return }
+  var r=recById(selected);
+  if(!r){ b.appendChild(msg("warn","No record for that node.")); return }
+  var anc=graph.ancestors(selected).slice().reverse();
+  if(anc.length){
+    var c=el("div","crumb");
+    anc.forEach(function(a,i){
+      var rr=recById(a), nm=rr?String(valueOf(rr,cfg.label)||a):a;
+      var link=el("a",null,nm);
+      link.onclick=function(){ selected=a; graph.reveal(a); renderSide() };
+      c.appendChild(link);
+      c.appendChild(document.createTextNode(i<anc.length-1?"  ›  ":"  ›  "));
+    });
+    c.appendChild(el("b",null,String(valueOf(r,cfg.label)||selected)));
+    b.appendChild(c);
+  }
+  var kids=RECS.filter(function(x){ return String(valueOf(x,cfg.parent))===String(selected) });
+  var row=el("div"); row.style.cssText="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap";
+  var bf=el("button","tiny","Focus here");
+  bf.onclick=function(){ focusRoot=selected; $("#bClearFocus").style.display=""; rebuild();
+    setTimeout(function(){ graph.fit() },30) };
+  row.appendChild(bf);
+  if(kids.length){ row.appendChild(el("span","hint",kids.length+" direct child"+(kids.length===1?"":"ren"))) }
+  b.appendChild(row);
+
+  var t=el("table"); var tb=el("tbody"); t.appendChild(tb);
+  var flat=flatten(r);
+  Object.keys(flat).forEach(function(k){
+    var v=flat[k];
+    var tr=el("tr");
+    tr.appendChild(el("td","k",k));
+    var s=v===null?"null":(typeof v==="object"?JSON.stringify(v):String(v));
+    tr.appendChild(el("td","v",s.length>160?s.slice(0,160)+"…":s));
+    tb.appendChild(tr);
+  });
+  b.appendChild(t);
+}
+function renderStructure(b){
+  if(!RECS.length){ b.appendChild(msg("info","Load data first.")); return }
+  var st=graph.stats();
+  var cards=el("div","cards");
+  [["Nodes",st.nodes],["Roots",st.roots],["Depth",st.depth],["Leaves",st.leaves]]
+    .forEach(function(x){ var d=el("div","card"); d.appendChild(el("b",null,String(x[1])));
+      d.appendChild(el("span",null,x[0])); cards.appendChild(d) });
+  b.appendChild(cards);
+
+  var byParent={},depths={};
+  RECS.forEach(function(r){
+    var p=valueOf(r,cfg.parent); p=(p==null||p==="")?"~root":String(p);
+    byParent[p]=(byParent[p]||0)+1;
+  });
+  b.appendChild(el("h4",null,"Top of the structure"));
+  var roots=RECS.filter(function(r){ var p=valueOf(r,cfg.parent); return p==null||p==="" });
+  if(!roots.length) b.appendChild(el("p","hint","No roots — every record names a parent, which usually means a cycle."));
+  var ul=el("div");
+  roots.slice(0,40).forEach(function(r){
+    var id=String(valueOf(r,cfg.id));
+    var a=el("div"); a.style.cssText="padding:3px 0;cursor:pointer;font-size:12px";
+    a.textContent="▸ "+String(valueOf(r,cfg.label)||id)+"  ("+(byParent[id]||0)+" direct)";
+    a.onclick=function(){ selected=id; graph.reveal(id); tab="record"; syncTabs(); renderSide() };
+    ul.appendChild(a);
+  });
+  b.appendChild(ul);
+  if(roots.length>40) b.appendChild(el("p","hint","and "+(roots.length-40)+" more"));
+
+  b.appendChild(el("h4",null,"Widest branches"));
+  var wide=Object.keys(byParent).filter(function(k){return k!=="~root"})
+    .sort(function(a,c){ return byParent[c]-byParent[a] }).slice(0,8);
+  var t=el("table"); t.innerHTML="<thead><tr><th>node</th><th>direct children</th></tr></thead>";
+  var tb=el("tbody"); t.appendChild(tb);
+  wide.forEach(function(k){
+    var r=recById(k);
+    var tr=el("tr");
+    var td=el("td",null,r?String(valueOf(r,cfg.label)||k):k);
+    td.style.cursor="pointer";
+    td.onclick=function(){ selected=k; graph.reveal(k); tab="record"; syncTabs(); renderSide() };
+    tr.appendChild(td); tr.appendChild(el("td",null,String(byParent[k])));
+    tb.appendChild(tr);
+  });
+  b.appendChild(t);
+
+  b.appendChild(el("h4",null,"Export"));
+  var row=el("div"); row.style.cssText="display:flex;gap:6px;flex-wrap:wrap";
+  var b1=el("button",null,"Nested JSON");
+  b1.onclick=function(){ download((srcName||"hierarchy").replace(/\.[^.]+$/,"")+".nested.json",
+    JSON.stringify(nested(),null,2)) };
+  var b2=el("button",null,"Paths CSV");
+  b2.onclick=function(){ download((srcName||"hierarchy").replace(/\.[^.]+$/,"")+".paths.csv",pathsCSV(),"text/csv") };
+  row.appendChild(b1); row.appendChild(b2); b.appendChild(row);
+}
+function nested(){
+  var by={},roots=[];
+  RECS.forEach(function(r){ var id=String(valueOf(r,cfg.id));
+    by[id]={id:id,label:String(valueOf(r,cfg.label)||id),children:[]} });
+  RECS.forEach(function(r){
+    var id=String(valueOf(r,cfg.id)), p=valueOf(r,cfg.parent);
+    p=(p==null||p==="")?null:String(p);
+    if(p&&by[p]&&p!==id) by[p].children.push(by[id]); else roots.push(by[id]);
+  });
+  (function clean(l){ l.forEach(function(n){ if(!n.children.length) delete n.children; else clean(n.children) }) })(roots);
+  return roots;
+}
+function pathsCSV(){
+  var lines=["id,depth,path"];
+  function esc(v){ v=String(v==null?"":v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v }
+  RECS.forEach(function(r){
+    var id=String(valueOf(r,cfg.id));
+    var anc=graph.ancestors(id).slice().reverse();
+    var names=anc.map(function(a){ var rr=recById(a); return rr?String(valueOf(rr,cfg.label)||a):a });
+    names.push(String(valueOf(r,cfg.label)||id));
+    lines.push([esc(id),anc.length,esc(names.join(" > "))].join(","));
+  });
+  return lines.join("\n");
+}
+function renderCheck(b){
+  if(!RECS.length){ b.appendChild(msg("info","Load data first.")); return }
+  var out=[];
+  function add(sev,t,id){ out.push({sev:sev,t:t,id:id}) }
+  var ids={},dups=[];
+  RECS.forEach(function(r){
+    var id=valueOf(r,cfg.id);
+    if(id==null||id===""){ add("err","Record with no value in the id field",null); return }
+    id=String(id);
+    if(ids[id]) dups.push(id);
+    ids[id]=1;
+  });
+  dups.slice(0,20).forEach(function(d){ add("err","Duplicate id “"+d+"” — only one node is drawn",d) });
+  graph.flagged().forEach(function(f){
+    if(/duplicate id/i.test(f.why)) return;   // already reported above, with more detail
+    add(/cycle/.test(f.why)?"err":"warn", f.why.charAt(0).toUpperCase()+f.why.slice(1), f.id) });
+  var noLabel=RECS.filter(function(r){ var l=valueOf(r,cfg.label); return l==null||l==="" }).length;
+  if(noLabel) add("warn",noLabel+" record(s) have no value in the label field, so they show their id",null);
+  var st=graph.stats();
+  if(st.roots>1) add("info",st.roots+" separate roots — this is a forest, not one tree",null);
+  if(!cfg.parent) add("warn","No parent field chosen, so every record is a root",null);
+
+  var counts={err:0,warn:0,info:0}; out.forEach(function(o){counts[o.sev]++});
+  b.appendChild(msg(counts.err?"err":counts.warn?"warn":"ok",
+    counts.err+" errors, "+counts.warn+" warnings, "+counts.info+" notes"));
+  var order={err:0,warn:1,info:2};
+  out.sort(function(a,c){return order[a.sev]-order[c.sev]});
+  out.slice(0,120).forEach(function(o){
+    var d=el("div","finding "+o.sev);
+    d.appendChild(el("div",null,o.t));
+    if(o.id){ d.appendChild(el("div","where",String(o.id)));
+      d.onclick=function(){ selected=String(o.id); graph.reveal(o.id); tab="record"; syncTabs(); renderSide() } }
+    b.appendChild(d);
+  });
+}
+function renderHelp(b){
+  b.innerHTML=
+    "<h4>What it draws</h4><p class='hint'>Any set of records where one field points at another record's id. "+
+    "Pick the <b>id</b>, <b>parent</b> and <b>label</b> fields and the structure follows — an org chart from "+
+    "<code>manager_id</code>, a family tree from <code>father_id</code>, a category tree from <code>parent_id</code>, "+
+    "a bill of materials from <code>assembly</code>.</p>"+
+    "<h4>MDM records</h4><p class='hint'>A <code>relations[]</code> array is read too: every distinct "+
+    "<code>rel</code> appears in the pickers as <code>relations: &lt;rel&gt;</code>, so you can make "+
+    "<code>manager</code> the parent and <code>spouse</code> an extra link.</p>"+
+    "<h4>Two parents</h4><p class='hint'>A node has one parent in the tree. For a family tree, set the parent "+
+    "field to one line of descent and put the other in <b>extra links</b> — it draws as a dashed edge rather "+
+    "than restructuring the tree.</p>"+
+    "<h4>Safety</h4><p class='hint'>Cycles are detected and broken rather than hanging the page; the records "+
+    "involved are outlined in red and listed under Check. Records whose parent id does not exist become roots "+
+    "and are flagged as orphans.</p>"+
+    "<h4>Getting around</h4><p class='hint'>Drag to pan, wheel to zoom, click the knob on a node to collapse "+
+    "its branch, <b>Focus subtree</b> to drill into one branch. Export the shape as nested JSON or as a "+
+    "breadcrumb CSV, and the picture as SVG.</p>";
+}
+function syncTabs(){ $$("#tabs button").forEach(function(x){ x.classList.toggle("on",x.dataset.t===tab) }) }
+
+/* ----------------------------------------------------------------- dialog */
+var dlgCb=null;
+function dialog(title,body,cb){
+  $("#dlgTitle").textContent=title;
+  var b=$("#dlgBody"); b.textContent=""; b.appendChild(body);
+  dlgCb=cb;
+  var d=$("#dlg"); if(d.showModal) d.showModal(); else d.setAttribute("open","");
+}
+function finish(ok){ var cb=dlgCb; dlgCb=null;
+  var d=$("#dlg"); try{ d.close() }catch(e){ d.removeAttribute("open") } if(cb) cb(ok) }
+$("#dlgOk").onclick=function(){ finish(true) };
+$("#dlgCancel").onclick=function(){ finish(false) };
+$("#dlg").addEventListener("cancel",function(e){ e.preventDefault(); finish(false) });
+
+/* ----------------------------------------------------------------- wiring */
+$("#bLoad").onclick=function(){ $("#fLoad").click() };
+$("#fLoad").onchange=function(e){
+  var f=e.target.files[0]; if(!f)return;
+  var r=new FileReader(); r.onload=function(){ load(f.name,String(r.result)) }; r.readAsText(f);
+  e.target.value="";
+};
+$("#bPaste").onclick=function(){
+  var body=el("div");
+  var i=el("input"); i.type="text"; i.placeholder="people.json";
+  body.appendChild(el("div","hint","Name")); body.appendChild(i);
+  var ta=el("textarea"); body.appendChild(el("div","hint","Data")); body.appendChild(ta);
+  dialog("Paste data",body,function(ok){ if(ok&&ta.value.trim()) load(i.value.trim()||"pasted.json",ta.value) });
+};
+["fId","fParent","fLabel","fColor","fLink"].forEach(function(id){
+  $("#"+id).onchange=function(){
+    cfg[{fId:"id",fParent:"parent",fLabel:"label",fColor:"color",fLink:"link"}[id]]=this.value;
+    rebuild();
+  };
+});
+$$(".lay").forEach(function(b){
+  b.onclick=function(){ $$(".lay").forEach(function(x){x.classList.toggle("on",x===b)});
+    graph.setLayout(b.dataset.l); graph.fit() };
+});
+$("#bFit").onclick=function(){ graph.fit() };
+$("#bZin").onclick=function(){ graph.zoom(1.2) };
+$("#bZout").onclick=function(){ graph.zoom(1/1.2) };
+$("#bExpand").onclick=function(){ graph.expandAll() };
+$("#bD2").onclick=function(){ graph.collapseToDepth(2) };
+$("#bFocus").onclick=function(){
+  if(!selected){ alert("Select a node first."); return }
+  focusRoot=selected; $("#bClearFocus").style.display=""; rebuild();
+  setTimeout(function(){ graph.fit() },30);
+};
+$("#bClearFocus").onclick=function(){ focusRoot=null; this.style.display="none"; rebuild();
+  setTimeout(function(){ graph.fit() },30) };
+$("#bSvg").onclick=function(){
+  var s=graph.exportSVG(); if(!s){ alert("Nothing to export."); return }
+  download((srcName||"hierarchy").replace(/\.[^.]+$/,"")+".svg",s,"image/svg+xml");
+};
+$("#find").addEventListener("input",function(){
+  graph.setSearch(this.value.trim());
+  $("#stHint").textContent=this.value.trim()?(graph.hitCount()+" matches"):"";
+});
+$$("#tabs button").forEach(function(b){ b.onclick=function(){ tab=b.dataset.t; syncTabs(); renderSide() } });
+$("#bTheme").onclick=function(){
+  var r=document.documentElement, c=r.dataset.theme;
+  r.dataset.theme = c==="auto"?"light":c==="light"?"dark":"auto";
+  store("he.theme",r.dataset.theme);
+  setTimeout(function(){ graph.fit() },30);
+};
+var dropEl=$("#drop"),dn=0;
+window.addEventListener("dragenter",function(e){ e.preventDefault(); dn++; dropEl.classList.add("on") });
+window.addEventListener("dragover",function(e){ e.preventDefault() });
+window.addEventListener("dragleave",function(){ if(--dn<=0){dn=0;dropEl.classList.remove("on")} });
+window.addEventListener("drop",function(e){ e.preventDefault(); dn=0; dropEl.classList.remove("on");
+  var f=e.dataTransfer.files[0]; if(!f)return;
+  var r=new FileReader(); r.onload=function(){ load(f.name,String(r.result)) }; r.readAsText(f);
+});
+
+/* ------------------------------------------------------------------ sample */
+var SAMPLE=[
+  {id:"1",name:"Dana Okafor",title:"Chief",department:"Command",manager_id:""},
+  {id:"2",name:"Sam Reyes",title:"Deputy Chief, Operations",department:"Operations",manager_id:"1"},
+  {id:"3",name:"Lee Park",title:"Deputy Chief, Support",department:"Support",manager_id:"1"},
+  {id:"4",name:"Jordan Blake",title:"Battalion Chief A",department:"Operations",manager_id:"2"},
+  {id:"5",name:"Riley Chen",title:"Battalion Chief B",department:"Operations",manager_id:"2"},
+  {id:"6",name:"Ash Novak",title:"Captain 11",department:"Operations",manager_id:"4"},
+  {id:"7",name:"Kim Alvarez",title:"Captain 12",department:"Operations",manager_id:"4"},
+  {id:"8",name:"Max Dubois",title:"Captain 21",department:"Operations",manager_id:"5"},
+  {id:"9",name:"Noor Haddad",title:"Logistics Officer",department:"Support",manager_id:"3"},
+  {id:"10",name:"Tess Varga",title:"Training Officer",department:"Training",manager_id:"3"},
+  {id:"11",name:"Ira Solberg",title:"Firefighter",department:"Operations",manager_id:"6"},
+  {id:"12",name:"Wren Castillo",title:"Firefighter",department:"Operations",manager_id:"6"},
+  {id:"13",name:"Pat Mburu",title:"Firefighter",department:"Operations",manager_id:"7"},
+  {id:"14",name:"Quinn Adeyemi",title:"Mechanic",department:"Support",manager_id:"9"}
+];
+
+(function(){
+  var th=recall("he.theme"); if(th) document.documentElement.dataset.theme=th;
+  graph=NodeGraph.create($("#graph"),{
+    emptyText:"Load a data file to draw its hierarchy.",
+    nodeHeight:28,
+    onSelect:function(id){ selected=id; tab="record"; syncTabs(); renderSide() }
+  });
+  graph.setLayout("tree-v");
+  load("org-sample.json",JSON.stringify(SAMPLE));
+  setTimeout(function(){ graph.fit() },80);
+})();
+})();
+</script>
+</body>
+</html>

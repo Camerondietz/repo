@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/rfq.schema.json",
+  "title": "RFQ Record",
+  "description": "A request for quote from a customer or internal user. Each line is either a known product (product_id) or a description by taxonomy class plus attribute values (spec) when the part is not yet identified - exactly what the RFQ app captures on a call. Requester is rel='requester' (person) and rel='customer' (organization). Quotes and orders that follow are transactional and live in Aventrek/ERPNext, referencing this id.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "rfq"
+    },
+    "pii": {
+      "description": "True when contact holds personal data."
+    },
+    "data": {
+      "$ref": "#/$defs/rfq_data"
+    }
+  },
+  "$defs": {
+    "rfq_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "rfq_state": {
+          "description": "Where the request stands, from draft to won or lost.",
+          "enum": [
+            "draft",
+            "submitted",
+            "in_review",
+            "quoted",
+            "won",
+            "lost",
+            "cancelled"
+          ]
+        },
+        "needed_by": {
+          "description": "Date the customer needs the parts.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "channel": {
+          "description": "How the request came in.",
+          "enum": [
+            "web",
+            "phone",
+            "email",
+            "in_person",
+            "internal"
+          ]
+        },
+        "lines": {
+          "description": "Requested items, one per line.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "line": {
+                "description": "Line number.",
+                "type": "integer"
+              },
+              "product_id": {
+                "description": "Id of the product record, when the exact product is known.",
+                "type": "string",
+                "format": "uuid"
+              },
+              "customer_pn": {
+                "description": "The customer's own part number.",
+                "type": "string"
+              },
+              "mfr_pn": {
+                "description": "Manufacturer part number as given.",
+                "type": "string"
+              },
+              "manufacturer": {
+                "description": "Manufacturer name as given.",
+                "type": "string"
+              },
+              "class_path": {
+                "type": "string",
+                "description": "Product taxonomy path when the exact part is unknown."
+              },
+              "spec": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {},
+                "description": "Attribute values keyed by attribute key, same shape as product.data.specs."
+              },
+              "qty": {
+                "description": "Quantity requested.",
+                "type": "number"
+              },
+              "uom": {
+                "description": "Unit of the quantity.",
+                "type": "string"
+              },
+              "notes": {
+                "description": "Requirements, alternates accepted, packaging.",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "contact": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "name": {
+              "description": "Requester's name as entered.",
+              "type": "string"
+            },
+            "email": {
+              "description": "Requester's email as entered.",
+              "type": "string"
+            },
+            "phone": {
+              "description": "Requester's phone as entered.",
+              "type": "string"
+            },
+            "company": {
+              "description": "Requester's company as entered.",
+              "type": "string"
+            }
+          },
+          "description": "Raw contact as entered (external users); resolved to person/organization records on review."
+        }
+      }
+    }
+  }
+}

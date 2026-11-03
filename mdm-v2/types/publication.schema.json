@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/publication.schema.json",
+  "title": "Publication Record",
+  "description": "One content_item placed on one channel: the per-channel variant text, schedule, the live URL and metrics. Transactional-ish but small, so it lives in the marketing mart and syncs to the warehouse for history. rel='content' and rel='channel' are required; rel='campaign' optional.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "publication"
+    },
+    "relations": {
+      "description": "Links: exactly one content (what is published) and one channel (where).",
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "rel": {
+                "const": "content"
+              }
+            },
+            "required": [
+              "rel"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "rel": {
+                "const": "channel"
+              }
+            },
+            "required": [
+              "rel"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
+    },
+    "data": {
+      "$ref": "#/$defs/publication_data"
+    }
+  },
+  "required": [
+    "relations"
+  ],
+  "$defs": {
+    "publication_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "variant_text": {
+          "description": "Text tailored for this channel.",
+          "type": "string"
+        },
+        "media": {
+          "description": "Images or video used in this post.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hashtags": {
+          "description": "Hashtags for this post.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scheduled_for": {
+          "description": "When it should go out.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "published_at": {
+          "description": "When it actually went out.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "live_url": {
+          "description": "Link to the live post.",
+          "type": "string",
+          "format": "uri"
+        },
+        "pub_state": {
+          "description": "Where this post stands.",
+          "enum": [
+            "planned",
+            "scheduled",
+            "published",
+            "failed",
+            "removed"
+          ]
+        },
+        "metrics": {
+          "description": "Performance numbers from the platform.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "as_of": {
+              "description": "When the numbers were read.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time"
+            },
+            "impressions": {
+              "description": "Times shown.",
+              "type": "integer"
+            },
+            "engagements": {
+              "description": "Likes, comments, shares and saves together.",
+              "type": "integer"
+            },
+            "clicks": {
+              "description": "Link clicks.",
+              "type": "integer"
+            },
+            "followers_gained": {
+              "description": "New followers attributed to the post.",
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

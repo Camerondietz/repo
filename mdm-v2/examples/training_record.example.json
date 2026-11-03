@@ -1,0 +1,21 @@
+{
+  "$schema": "../types/training_record.schema.json",
+  "id": "4c9a6d1e-2b7f-5c3a-9e1d-0f2a3b4c5d6e",
+  "type": "training_record",
+  "label": "IS-100.C completion",
+  "pii": true,
+  "valid_to": null,
+  "relations": [
+    {
+      "rel": "person",
+      "type": "person",
+      "id": "378ae13a-f609-45f5-92e0-2755e41cd5de",
+      "label": "Cameron Dietz"
+    }
+  ],
+  "data": {
+    "completed_on": "2024-03-02",
+    "result": "passed",
+    "hours": 3
+  }
+}

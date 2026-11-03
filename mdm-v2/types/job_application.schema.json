@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/job_application.schema.json",
+  "title": "Job Application Record",
+  "description": "Your application to a job_listing (rel='listing', rel='applicant' person). Contacts are rel='contact' people; resume and cover letter are rel='resume' / rel='cover_letter' documents; interviews are event records with rel='application' back to this. Pipeline stage in data.stage; record lifecycle stays in status.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "job_application"
+    },
+    "classification": {
+      "description": "Default C2 (sensitive): an application reveals job-search activity."
+    },
+    "data": {
+      "$ref": "#/$defs/job_application_data"
+    }
+  },
+  "$defs": {
+    "job_application_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "stage": {
+          "description": "Where the application stands, from interested to an outcome.",
+          "enum": [
+            "interested",
+            "preparing",
+            "applied",
+            "screen",
+            "interview",
+            "assessment",
+            "offer",
+            "accepted",
+            "rejected",
+            "withdrawn",
+            "ghosted"
+          ]
+        },
+        "applied_on": {
+          "description": "Date the application was submitted.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "next_action": {
+          "description": "The next thing to do, e.g. 'Follow up with recruiter'.",
+          "type": "string"
+        },
+        "next_action_on": {
+          "description": "When the next action is due.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "fit_score": {
+          "description": "Your own 0-10 rating of how well the role fits.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "notes_md": {
+          "description": "Notes in Markdown: interviews, impressions, questions.",
+          "type": "string"
+        },
+        "offer": {
+          "description": "Offer details once one arrives.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "salary": {
+              "$ref": "../common.schema.json#/$defs/money"
+            },
+            "period": {
+              "description": "Whether the offered salary is hourly or yearly.",
+              "enum": [
+                "hour",
+                "year"
+              ]
+            },
+            "start_date": {
+              "description": "Proposed start date.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "deadline": {
+              "description": "Date the offer must be answered by.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          }
+        },
+        "history": {
+          "description": "Every stage change and note, oldest first (the app appends these).",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "at": {
+                "description": "When it happened.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "stage": {
+                "description": "Stage at that moment.",
+                "type": "string"
+              },
+              "note": {
+                "description": "What happened.",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

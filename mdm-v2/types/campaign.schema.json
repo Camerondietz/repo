@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/campaign.schema.json",
+  "title": "Campaign Record",
+  "description": "A coordinated push across content and channels with a goal and dates. Children (content_items, publications) point to it with rel='campaign'. Can link to a C2 objective with rel='supports'.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "campaign"
+    },
+    "data": {
+      "$ref": "#/$defs/campaign_data"
+    }
+  },
+  "$defs": {
+    "campaign_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "objective": {
+          "description": "What the campaign should achieve, in a sentence.",
+          "type": "string",
+          "maxLength": 2000
+        },
+        "start": {
+          "description": "First day of the campaign.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "end": {
+          "description": "Last day of the campaign.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "avenues": {
+          "description": "Marketing avenues it runs in (business_reviews, emergency, better_society, engineering, tech_cyber).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "budget": {
+          "$ref": "../common.schema.json#/$defs/money"
+        },
+        "kpis": {
+          "description": "Measures of success, each with a target and the current value.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "metric": {
+                "description": "What is measured, e.g. impressions, leads, followers.",
+                "type": "string"
+              },
+              "target": {
+                "description": "Value to reach by the end date.",
+                "type": "number"
+              },
+              "current": {
+                "description": "Latest measured value.",
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

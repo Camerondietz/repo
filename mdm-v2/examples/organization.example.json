@@ -1,0 +1,94 @@
+{
+  "$schema": "../types/organization.schema.json",
+
+  "id": "83621ca5-3a81-4c57-b4f1-b7ff1e5f2f8f",
+  "uri": "https://mdm.cameron-dietz.com/id/organization/83621ca5-3a81-4c57-b4f1-b7ff1e5f2f8f",
+  "type": "organization",
+  "slug": "applied-industrial-technologies",
+
+  "label": "Applied Industrial Technologies",
+  "summary": "Industrial distributor of bearings, power transmission, fluid power and specialty flow control products.",
+  "aliases": ["Applied", "AIT", "Applied Industrial"],
+
+  "category": {
+    "primary": "supplier",
+    "kind": "corporation",
+    "domain": "industrial.distribution",
+    "jurisdiction": "private"
+  },
+  "tags": ["distributor", "mro"],
+
+  "status": "active",
+  "version": "1.0",
+
+  "valid_from": "1928-01-01T00:00:00Z",
+  "valid_to": null,
+  "last_verified": "2026-09-01",
+  "review_due": "2027-09-01",
+
+  "visibility": "internal",
+  "pii": false,
+  "owner": { "type": "person", "id": "378ae13a-f609-45f5-92e0-2755e41cd5de", "label": "Cameron Dietz" },
+
+  "parent_id": null,
+  "relations": [
+    {
+      "rel": "primary_location",
+      "type": "location",
+      "id": "c7180d1b-06e9-4ae7-b861-4c895c639ab1",
+      "label": "AIT Austin",
+      "primary": true
+    }
+  ],
+
+  "identifiers": {
+    "domain": ["applied.com"],
+    "ticker": ["AIT"],
+    "duns": ["004966533"]
+  },
+
+  "url": "https://www.applied.com",
+  "links": [
+    { "rel": "login", "href": "https://www.applied.com/login", "label": "Customer portal" }
+  ],
+  "attachments": [],
+
+  "geo": {
+    "point": [-81.6944, 41.4993],
+    "precision": "locality",
+    "address": {
+      "street_address": "1 Applied Plaza",
+      "address_locality": "Cleveland",
+      "address_region": "OH",
+      "postal_code": "44115",
+      "country_code": "US"
+    },
+    "timezone": "America/New_York"
+  },
+
+  "source_system": "",
+  "source_record_id": "",
+
+  "apps": ["intelcom", "mdm"],
+
+  "created_at": "2026-07-29T07:16:09.868693Z",
+  "updated_at": "2026-07-29T07:16:09.868713Z",
+  "deleted_at": null,
+
+  "metadata": {},
+
+  "data": {
+    "legal_name": "Applied Industrial Technologies, Inc.",
+    "ownership": {
+      "structure": "public",
+      "ticker": "AIT",
+      "exchange": "NYSE"
+    },
+    "founded": "1928-01-01",
+    "contact": {
+      "phone": "+1-216-426-4000",
+      "hours": "Mo-Fr 08:00-17:00"
+    },
+    "naics": ["423840"]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "../collection.schema.json",
+
+  "meta": {
+    "repo_version": "2.0.0",
+    "generated": "2026-09-15T14:02:11Z",
+    "updated": "2026-09-15",
+    "count": 2,
+    "total": 147,
+    "next": "eyJvZmZzZXQiOjJ9",
+    "prev": null,
+    "tool": "mdm-export",
+    "filters": { "type": "document", "category.primary": "fema" }
+  },
+
+  "items": [
+    {
+      "id": "0f2c9a84-3d51-4e7b-8a62-1c5b9e0d4f33",
+      "uri": "https://mdm.cameron-dietz.com/id/document/0f2c9a84-3d51-4e7b-8a62-1c5b9e0d4f33",
+      "type": "document",
+      "slug": "nims-doctrine-2023",
+      "label": "National Incident Management System",
+      "summary": "FEMA doctrine establishing the national approach to incident management.",
+      "category": {
+        "primary": "fema",
+        "kind": "doctrine",
+        "domain": "emergency_management.planning",
+        "form": "reference"
+      },
+      "tags": ["nims", "ics", "doctrine"],
+      "status": "active",
+      "version": "1.0",
+      "visibility": "public",
+      "last_verified": "2026-08-20",
+      "url": "https://www.fema.gov/sites/default/files/documents/fema_nims-doctrine-2023.pdf",
+      "attachments": [
+        {
+          "role": "primary",
+          "path": "docs/fema/nims-doctrine-2023.pdf",
+          "media_type": "application/pdf",
+          "file_type": "pdf",
+          "size_bytes": 4812390,
+          "checksum_sha256": "9f2b4c6d8e0a1b3c5d7e9f0a2b4c6d8e0f1a3b5c7d9e1f3a5b7c9d1e3f5a7b9c"
+        }
+      ],
+      "apps": ["intelcom", "docs-repo"],
+      "created_at": "2026-03-04T15:20:11Z",
+      "updated_at": "2026-08-20T10:05:44Z",
+      "data": { "publisher": "FEMA", "publication_date": "2023-11" }
+    },
+    {
+      "id": "7c14e5b8-9a02-4d63-81f7-5e3b0c9d2a48",
+      "uri": "https://mdm.cameron-dietz.com/id/document/7c14e5b8-9a02-4d63-81f7-5e3b0c9d2a48",
+      "type": "document",
+      "slug": "cpg-101-v3",
+      "label": "Developing and Maintaining Emergency Operations Plans (CPG 101)",
+      "summary": "FEMA guidance on the emergency operations planning process.",
+      "category": {
+        "primary": "fema",
+        "kind": "guidance",
+        "domain": "emergency_management.planning",
+        "form": "reference"
+      },
+      "tags": ["cpg", "planning", "eop"],
+      "status": "superseded",
+      "superseded_by": "bd60f3a1-7c85-4e29-90d4-1a6f8b2c5e07",
+      "version": "3.0",
+      "visibility": "public",
+      "last_verified": "2026-08-20",
+      "attachments": [
+        {
+          "role": "primary",
+          "path": "docs/fema/cpg-101-v3.pdf",
+          "media_type": "application/pdf",
+          "file_type": "pdf",
+          "size_bytes": 3120448,
+          "checksum_sha256": "2c4e6a8b0d2f4a6c8e0b2d4f6a8c0e2b4d6f8a0c2e4b6d8f0a2c4e6b8d0f2a4c"
+        }
+      ],
+      "apps": ["intelcom", "docs-repo"],
+      "created_at": "2026-03-04T15:22:40Z",
+      "updated_at": "2026-08-20T10:06:02Z",
+      "data": { "publisher": "FEMA", "publication_date": "2021-09" }
+    }
+  ]
+}

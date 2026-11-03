@@ -1,0 +1,46 @@
+{
+  "$schema": "../types/part_number.schema.json",
+  "id": "0b6f3c2e-91d4-5a7e-b8c1-2d3e4f5a6b7c",
+  "type": "part_number",
+  "label": "Digi-Key 296-1395-1-ND",
+  "category": {
+    "kind": "distributor"
+  },
+  "identifiers": {
+    "vendor_pn": [
+      "296-1395-1-ND"
+    ]
+  },
+  "lang": "en",
+  "relations": [
+    {
+      "rel": "product",
+      "type": "product",
+      "id": "5a1b2c3d-4e5f-5a6b-8c7d-9e0f1a2b3c4d",
+      "label": "TI SN74HC595DR"
+    }
+  ],
+  "data": {
+    "commercial": {
+      "cost": {
+        "currency": "USD",
+        "amount": "0.0034"
+      },
+      "price_breaks": [
+        {
+          "min_qty": 2500,
+          "price": {
+            "currency": "USD",
+            "amount": "0.0031"
+          }
+        }
+      ],
+      "moq": 2500
+    }
+  },
+  "ext": {
+    "aventrek": {
+      "supplier_sku_status": "synced"
+    }
+  }
+}

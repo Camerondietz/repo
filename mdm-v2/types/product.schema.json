@@ -1,0 +1,392 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/product.schema.json",
+  "title": "Product Record",
+  "description": "One uniquely defined part, material, kit, assembly, service or software product - the 'master part'. Replaces `item` (which mixed the product model with the physical unit). A product is the DEFINITION; one physical unit you own is an `asset`; a manufacturer, vendor or customer part number that points at it is a `part_number`. Kind lives in category.kind: oem | generic | assembly | kit | raw_material | consumable | service | software | document_product. Classification uses taxonomy paths: category.product (your own taxonomy), with external codes in identifiers (etim_class, unspsc, hts, eccn, gtin). Assemblies and kits: one `relations` edge per component, rel='component', with props {qty, uom, find_no, optional, reference_designators}. Kits list components but are sold as one; assemblies are built. Revisions: a form-fit-function change is a NEW product linked by rel='supersedes' and the old one's superseded_by; a non-FFF change is a new `data.revision` value on the same record. Processed states (cleaned, plated, refurbished, calibrated) that must be stocked or priced separately are their own product with rel='derived_from' (the base product) and rel='processed_by' (the service product); otherwise record the process on the asset. Services are products with category.kind='service'.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "product"
+    },
+    "data": {
+      "$ref": "#/$defs/product_data"
+    }
+  },
+  "$defs": {
+    "product_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "revision": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Engineering revision of this definition (Rev C, 02). Non-FFF changes only; FFF changes make a new product."
+        },
+        "lifecycle": {
+          "enum": [
+            "concept",
+            "development",
+            "active",
+            "nrnd",
+            "last_time_buy",
+            "obsolete",
+            "discontinued"
+          ],
+          "description": "Commercial/engineering lifecycle of the design (distinct from record status)."
+        },
+        "brand": {
+          "description": "Brand name the product is sold under.",
+          "type": "string",
+          "maxLength": 128
+        },
+        "model": {
+          "description": "Model name or series.",
+          "type": "string",
+          "maxLength": 128
+        },
+        "mpn": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Manufacturer part number as printed. Also index it in identifiers.mpn. Other companies' numbers are part_number records."
+        },
+        "uom": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Base unit of measure for stocking/selling.",
+          "examples": [
+            "each",
+            "ft",
+            "m",
+            "lb",
+            "kg",
+            "box",
+            "hour"
+          ]
+        },
+        "specs": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              {
+                "type": "array"
+              },
+              {
+                "$ref": "../common.schema.json#/$defs/quantity"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          },
+          "properties": {},
+          "description": "Technical attributes. Keys are attribute keys from the `attributes` taxonomy scheme (snake_case, unit-free names). Values are a scalar, or {value, unit, min, max, tol} for measured values. Attribute definitions carry the ETIM feature code, datatype and allowed values, so keys stay readable while remaining ETIM-mappable. Measured values use the shared quantity shape ({value, unit, min, max, tol}).",
+          "examples": [
+            {
+              "bore_diameter": {
+                "value": 25,
+                "unit": "mm"
+              },
+              "material": "chrome_steel_52100",
+              "seal_type": "2rs"
+            }
+          ]
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "length": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "description": "Length.",
+                  "type": "number"
+                },
+                "unit": {
+                  "description": "Unit of the length (mm, in).",
+                  "type": "string",
+                  "maxLength": 32
+                }
+              },
+              "description": "A measured quantity."
+            },
+            "width": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "description": "Width.",
+                  "type": "number"
+                },
+                "unit": {
+                  "description": "Unit of the width.",
+                  "type": "string",
+                  "maxLength": 32
+                }
+              },
+              "description": "A measured quantity."
+            },
+            "height": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "description": "Height.",
+                  "type": "number"
+                },
+                "unit": {
+                  "description": "Unit of the height.",
+                  "type": "string",
+                  "maxLength": 32
+                }
+              },
+              "description": "A measured quantity."
+            },
+            "diameter": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "description": "Diameter.",
+                  "type": "number"
+                },
+                "unit": {
+                  "description": "Unit of the diameter.",
+                  "type": "string",
+                  "maxLength": 32
+                }
+              },
+              "description": "A measured quantity."
+            }
+          },
+          "description": "Overall envelope dimensions."
+        },
+        "weight": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "value": {
+              "description": "Weight.",
+              "type": "number"
+            },
+            "unit": {
+              "description": "Unit of the weight (g, kg, lb).",
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "description": "A measured quantity."
+        },
+        "packaging": {
+          "description": "How the product is packed.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "pack_qty": {
+              "description": "Units per pack.",
+              "type": "number"
+            },
+            "pack_uom": {
+              "description": "What a pack is (box, reel, case).",
+              "type": "string",
+              "maxLength": 32
+            },
+            "gtin": {
+              "description": "GTIN/UPC/EAN barcode of the pack.",
+              "type": "string",
+              "maxLength": 14
+            }
+          }
+        },
+        "compliance": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "hts": {
+              "type": "string",
+              "maxLength": 16,
+              "description": "Harmonized Tariff Schedule code; also identifiers.hts."
+            },
+            "eccn": {
+              "description": "US export control classification number.",
+              "type": "string",
+              "maxLength": 16
+            },
+            "country_of_origin": {
+              "description": "ISO 3166-1 alpha-2 country where it is made.",
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            "rohs": {
+              "description": "RoHS status as stated by the manufacturer.",
+              "type": "string",
+              "maxLength": 64
+            },
+            "reach": {
+              "description": "REACH status as stated by the manufacturer.",
+              "type": "string",
+              "maxLength": 64
+            },
+            "prop65": {
+              "description": "True if a California Proposition 65 warning applies.",
+              "type": "boolean"
+            },
+            "certifications": {
+              "description": "Certifications and listings, e.g. UL, CE, CSA.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 64
+              }
+            }
+          },
+          "description": "Regulatory and trade compliance facts."
+        },
+        "engineering": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {},
+          "description": "Open block for complex engineering detail that does not fit specs: tolerancing, materials of construction, ratings tables, CAD references (CAD files themselves are attachments)."
+        },
+        "pricing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "list": {
+              "$ref": "../common.schema.json#/$defs/money"
+            },
+            "unit": {
+              "description": "Unit the price is per.",
+              "type": "string",
+              "maxLength": 32
+            },
+            "as_of": {
+              "description": "Date the price was last confirmed.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          },
+          "description": "Reference list price only. Vendor costs and customer prices live on part_number records; transactional prices stay in the selling app."
+        },
+        "is_sellable": {
+          "description": "True if you sell it.",
+          "type": "boolean"
+        },
+        "is_purchasable": {
+          "description": "True if you buy it.",
+          "type": "boolean"
+        },
+        "is_stocked": {
+          "description": "True if you keep it in stock.",
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "6d0a1b2c-7e8f-4a90-b1c2-3d4e5f607182",
+      "type": "product",
+      "label": "SKF 6205-2RS Deep Groove Ball Bearing",
+      "category": {
+        "kind": "oem",
+        "product": "power-transmission.bearings.ball-bearings.deep-groove"
+      },
+      "identifiers": {
+        "mpn": [
+          "6205-2RS"
+        ],
+        "etim_class": [
+          "EC000466"
+        ],
+        "unspsc": [
+          "31171504"
+        ],
+        "hts": [
+          "8482.10.5044"
+        ]
+      },
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "0f3c2b8e-1d0a-4c55-9e1f-2b7c9d4a6e01",
+          "label": "SKF"
+        }
+      ],
+      "data": {
+        "mpn": "6205-2RS",
+        "uom": "each",
+        "lifecycle": "active",
+        "specs": {
+          "bore_diameter": {
+            "value": 25,
+            "unit": "mm"
+          },
+          "outside_diameter": {
+            "value": 52,
+            "unit": "mm"
+          },
+          "width": {
+            "value": 15,
+            "unit": "mm"
+          },
+          "seal_type": "2rs"
+        }
+      }
+    },
+    {
+      "id": "a5b1f4d2-3c6e-4f70-8a9b-0c1d2e3f4a5b",
+      "type": "product",
+      "label": "Pump Rebuild Kit PK-200",
+      "category": {
+        "kind": "kit",
+        "product": "fluid-fuel-management.pumps.spare-parts"
+      },
+      "relations": [
+        {
+          "rel": "component",
+          "type": "product",
+          "id": "6d0a1b2c-7e8f-4a90-b1c2-3d4e5f607182",
+          "label": "SKF 6205-2RS",
+          "props": {
+            "qty": 2,
+            "uom": "each",
+            "find_no": "10"
+          }
+        },
+        {
+          "rel": "component",
+          "type": "product",
+          "id": "b7c2e5f3-4d7f-4a81-9b0c-1d2e3f4a5b6c",
+          "label": "Mechanical seal 1-1/4",
+          "props": {
+            "qty": 1,
+            "uom": "each",
+            "find_no": "20"
+          }
+        }
+      ],
+      "data": {
+        "uom": "kit",
+        "is_sellable": true
+      }
+    }
+  ]
+}

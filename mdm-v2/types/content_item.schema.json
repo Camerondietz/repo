@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/content_item.schema.json",
+  "title": "Content Item Record",
+  "description": "One piece of content created once and reused everywhere: a business review, a news repost, an emergency notice, an article, a video, a photo set, a social post. Marketing's core record. The canonical body lives here; per-channel variants and their results are publication records. Subject links: rel='about' -> location/organization/product/event; rel='campaign'; rel='author'. Avenue (business_reviews, emergency, better_society, engineering, tech_cyber) is category.avenue so new avenues need no schema change.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "content_item"
+    },
+    "data": {
+      "$ref": "#/$defs/content_item_data"
+    }
+  },
+  "$defs": {
+    "content_item_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "content_kind": {
+          "description": "What sort of content it is.",
+          "enum": [
+            "review",
+            "article",
+            "post",
+            "repost",
+            "alert",
+            "video",
+            "photo_set",
+            "thread",
+            "newsletter",
+            "page",
+            "other"
+          ]
+        },
+        "headline": {
+          "description": "Title or headline (for a review, usually the place's name).",
+          "type": "string",
+          "maxLength": 300
+        },
+        "body_md": {
+          "type": "string",
+          "description": "Canonical body in Markdown."
+        },
+        "excerpt": {
+          "description": "Short summary used for previews and social posts.",
+          "type": "string",
+          "maxLength": 600
+        },
+        "rating": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "For reviews."
+        },
+        "visited_on": {
+          "description": "For reviews: the date of the visit.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "captured": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "at": {
+              "description": "When the idea or draft was captured.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time"
+            },
+            "device": {
+              "description": "Device it was captured on.",
+              "type": "string"
+            },
+            "method": {
+              "description": "How it was captured: quick capture on a phone, at a desk, drafted by AI, or imported.",
+              "enum": [
+                "mobile_quick_capture",
+                "desk",
+                "ai_draft",
+                "import"
+              ]
+            }
+          },
+          "description": "How it was captured - supports 'content as a by-product of life' (quick capture at the restaurant or during morning news)."
+        },
+        "source_links": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "What a repost or news item points at."
+        },
+        "ai_assist": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "used": {
+              "description": "True when AI helped write it (disclosed where a channel requires).",
+              "type": "boolean"
+            },
+            "model": {
+              "description": "AI model used, if any.",
+              "type": "string"
+            },
+            "prompt_ref": {
+              "description": "Name or id of the prompt template used.",
+              "type": "string"
+            }
+          },
+          "description": "Disclosure and traceability when AI helped draft it."
+        },
+        "workflow": {
+          "description": "Editorial stage, from idea to published.",
+          "enum": [
+            "idea",
+            "captured",
+            "drafting",
+            "ready",
+            "scheduled",
+            "published",
+            "archived"
+          ]
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "8e9f0a1b-2c3d-4e4f-9a5b-6c7d8e9f0a1b",
+      "type": "content_item",
+      "label": "Terry Black's BBQ review",
+      "category": {
+        "avenue": "business_reviews",
+        "review": "food.bbq"
+      },
+      "relations": [
+        {
+          "rel": "about",
+          "type": "location",
+          "id": "9f0a1b2c-3d4e-4f5a-8b6c-7d8e9f0a1b2c",
+          "label": "Terry Black's BBQ"
+        }
+      ],
+      "classification": {
+        "c": 0,
+        "i": 1,
+        "a": 1
+      },
+      "data": {
+        "content_kind": "review",
+        "rating": 4.5,
+        "workflow": "published",
+        "body_md": "Terry Black's is one of Austin's most popular barbecue destinations..."
+      }
+    }
+  ]
+}

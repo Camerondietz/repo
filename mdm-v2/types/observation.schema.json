@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/observation.schema.json",
+  "title": "Observation / Log Entry",
+  "description": "A dated measurement or log entry about something: a health metric or workout set (Health manager), an inspection reading on an asset, a KPI value for an objective, a weather reading at a location. Shape follows the FHIR/OGC observation pattern: what was measured (category.metric, or data.code), its value, when, and about what (rel='subject'). Personal health observations are C3+ and never published.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "observation"
+    },
+    "data": {
+      "$ref": "#/$defs/observation_data"
+    }
+  },
+  "$defs": {
+    "observation_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "observed_at": {
+          "description": "When the measurement was taken.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "code": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "What was measured, as a key from your metrics taxonomy or a LOINC/UCUM-style code.",
+          "examples": [
+            "body_weight",
+            "resting_heart_rate",
+            "squat_1rm",
+            "torque_reading",
+            "kpi.revenue"
+          ]
+        },
+        "value": {
+          "description": "Number, string, boolean, or shared quantity {value, unit}.",
+          "anyOf": [
+            {
+              "type": [
+                "number",
+                "string",
+                "boolean",
+                "null"
+              ]
+            },
+            {
+              "$ref": "../common.schema.json#/$defs/quantity"
+            }
+          ]
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "code": {
+                "description": "Which part of a multi-part reading, e.g. systolic, diastolic.",
+                "type": "string"
+              },
+              "value": {
+                "description": "The value of that part (number, text or quantity)."
+              }
+            }
+          },
+          "description": "Multi-part readings, e.g. blood pressure systolic/diastolic, or sets x reps x weight."
+        },
+        "method": {
+          "description": "How it was measured (device, survey, manual count).",
+          "type": "string",
+          "maxLength": 256
+        },
+        "notes": {
+          "description": "Context for the reading.",
+          "type": "string",
+          "maxLength": 4000
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "7d1e2f3a-4b5c-5d6e-8f90-a1b2c3d4e5f6",
+      "type": "observation",
+      "label": "Resting heart rate 2026-10-20",
+      "pii": true,
+      "classification": {
+        "c": 3
+      },
+      "data": {
+        "observed_at": "2026-10-20T07:00:00Z",
+        "code": "resting_heart_rate",
+        "value": {
+          "value": 58,
+          "unit": "/min"
+        }
+      }
+    }
+  ]
+}

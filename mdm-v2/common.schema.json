@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/common.schema.json",
+  "title": "Shared value types (master schema v2.1)",
+  "description": "Value shapes every type schema reuses, so money, quantities, contact methods and translations look the same in every app. Reference with {\"$ref\": \"../common.schema.json#/$defs/<name>\"}.",
+  "$defs": {
+    "money": {
+      "title": "Money",
+      "type": "object",
+      "required": [
+        "currency"
+      ],
+      "additionalProperties": false,
+      "description": "An amount in one ISO 4217 currency. Use `amount_minor` (integer minor units, e.g. cents) for ordinary prices and totals. Use `amount` (exact decimal string) when the value has more precision than the currency's minor unit, such as component prices of $0.0034 each or FX-converted costs. Never use floats. When both are present they must agree.",
+      "properties": {
+        "currency": {
+          "description": "ISO 4217 currency code, e.g. USD, EUR.",
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "examples": [
+            "USD"
+          ]
+        },
+        "amount_minor": {
+          "type": "integer",
+          "description": "Minor units (cents for USD)."
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+          "maxLength": 32,
+          "description": "Exact decimal in major units, e.g. \"0.0034\"."
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "amount_minor"
+          ]
+        },
+        {
+          "required": [
+            "amount"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "currency": "USD",
+          "amount_minor": 1299
+        },
+        {
+          "currency": "USD",
+          "amount": "0.0034"
+        }
+      ]
+    },
+    "money_range": {
+      "description": "A range of money in one currency, e.g. a salary band. Amounts in minor units (cents).",
+      "title": "Money range",
+      "type": "object",
+      "required": [
+        "currency"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "description": "ISO 4217 currency code for both ends of the range.",
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "min_minor": {
+          "description": "Low end in minor units (cents for USD).",
+          "type": "integer"
+        },
+        "max_minor": {
+          "description": "High end in minor units (cents for USD).",
+          "type": "integer"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        }
+      }
+    },
+    "period": {
+      "enum": [
+        "once",
+        "hour",
+        "day",
+        "week",
+        "month",
+        "quarter",
+        "year"
+      ],
+      "description": "Recurrence period of an amount (salary per year, rent per month)."
+    },
+    "quantity": {
+      "title": "Quantity",
+      "type": "object",
+      "required": [
+        "value",
+        "unit"
+      ],
+      "additionalProperties": false,
+      "description": "A measured amount. `unit` is a UCUM code (mm, kg, Cel, h, [in_i]) or a UN/ECE Recommendation 20 code (EA, BX, FT) for trade units. Store as received; convert at display time.",
+      "properties": {
+        "value": {
+          "description": "The measured or nominal value.",
+          "type": "number"
+        },
+        "unit": {
+          "description": "Unit of measure, UCUM-style where possible, e.g. mm, kg, V, A, degC.",
+          "type": "string",
+          "maxLength": 32
+        },
+        "min": {
+          "description": "Lowest value when the quantity is a range (e.g. operating temperature).",
+          "type": "number"
+        },
+        "max": {
+          "description": "Highest value when the quantity is a range.",
+          "type": "number"
+        },
+        "tol": {
+          "type": "number",
+          "description": "Symmetric tolerance in the same unit."
+        }
+      },
+      "examples": [
+        {
+          "value": 25,
+          "unit": "mm"
+        },
+        {
+          "value": 12,
+          "unit": "EA"
+        }
+      ]
+    },
+    "contact_point": {
+      "title": "Contact point",
+      "type": "object",
+      "required": [
+        "kind",
+        "value"
+      ],
+      "additionalProperties": false,
+      "description": "One way to reach someone or something. A list of these replaces one-phone-one-email fields, so mobile, fax, second email, social handles and messaging apps need no schema change.",
+      "properties": {
+        "kind": {
+          "description": "Channel: email, phone, mobile, fax, sms, website, social, radio, other.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": [
+            "email",
+            "phone",
+            "mobile",
+            "fax",
+            "sms",
+            "website",
+            "linkedin",
+            "x",
+            "instagram",
+            "signal",
+            "radio_callsign"
+          ]
+        },
+        "value": {
+          "description": "The address or number itself, as written.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "label": {
+          "description": "Which one it is, e.g. work, home, after hours, dispatch.",
+          "type": "string",
+          "maxLength": 128,
+          "examples": [
+            "home",
+            "work",
+            "after hours",
+            "dispatch"
+          ]
+        },
+        "primary": {
+          "description": "True for the preferred contact point of this kind.",
+          "type": "boolean",
+          "default": false
+        },
+        "valid_to": {
+          "description": "Last date this contact point worked (kept for history instead of deleting it).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      },
+      "examples": [
+        {
+          "kind": "mobile",
+          "value": "+1 512 555 0100",
+          "primary": true
+        }
+      ]
+    },
+    "contact_points": {
+      "description": "All the ways to reach a person, organization or place: one entry per email, phone or other channel, with one primary per kind.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/contact_point"
+      },
+      "maxItems": 64,
+      "default": []
+    },
+    "lang": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$",
+      "description": "BCP 47 language tag.",
+      "examples": [
+        "en",
+        "en-US",
+        "es"
+      ]
+    },
+    "translations": {
+      "title": "Translations",
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 512
+            }
+          }
+        }
+      },
+      "description": "Display text in other languages, keyed by BCP 47 tag. The envelope `label`/`summary` stay in the record's own `lang`."
+    }
+  }
+}

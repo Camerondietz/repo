@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/resource.schema.json",
+  "title": "Resource Record",
+  "description": "A pointer to something useful that lives elsewhere: a website, an online tool or calculator, a dataset, an API, a course, a video, a reference page. The canonical address is the envelope `url`. Use `document` instead when you hold the file itself. The engineering-reference 'tool' nodes become resources with category.kind='tool'.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "resource"
+    },
+    "data": {
+      "$ref": "#/$defs/resource_data"
+    }
+  },
+  "$defs": {
+    "resource_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "resource_kind": {
+          "description": "What sort of resource it is.",
+          "enum": [
+            "website",
+            "tool",
+            "calculator",
+            "dataset",
+            "api",
+            "course",
+            "video",
+            "article",
+            "book",
+            "software",
+            "service",
+            "community",
+            "other"
+          ]
+        },
+        "access": {
+          "description": "What it takes to use it.",
+          "enum": [
+            "free",
+            "freemium",
+            "paid",
+            "login",
+            "internal",
+            "unknown"
+          ]
+        },
+        "provider": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Plain-text provider; add rel='provider' when it is an organization record."
+        },
+        "embed": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "kind": {
+              "description": "How an app shows it: an iframe, a built-in component, or a plain link.",
+              "enum": [
+                "iframe",
+                "component",
+                "link"
+              ]
+            },
+            "component": {
+              "type": "string",
+              "description": "Internal component name when the tool is built into one of your apps."
+            }
+          },
+          "description": "How an app should present it."
+        },
+        "rating": {
+          "description": "Your 1-5 rating.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "last_checked": {
+          "description": "Date someone last confirmed it works.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "8a9b0c1d-2e3f-4a4b-9c5d-6e7f8a9b0c1d",
+      "type": "resource",
+      "label": "Bolt Torque Calculator",
+      "url": "https://engineering-reference.cameron-dietz.com/tools/bolt-torque",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering.mechanical.fasteners"
+      },
+      "data": {
+        "resource_kind": "calculator",
+        "access": "free",
+        "embed": {
+          "kind": "component",
+          "component": "BoltTorque"
+        }
+      }
+    }
+  ]
+}

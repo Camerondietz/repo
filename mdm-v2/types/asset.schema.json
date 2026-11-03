@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/asset.schema.json",
+  "title": "Asset Record",
+  "description": "One physical thing you OWN (or a lot of identical things): a tool, a vehicle, a spare in a bin, a laptop. Points at its product definition with rel='product'; ownership, custody and place are edges (rel='owner' organization, rel='custodian' person, rel='located_at' location). Feeds the future inventory app; finance tools later read acquisition and depreciation facts from here. Stock you SELL is transactional and stays in ERPNext.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "asset"
+    },
+    "data": {
+      "$ref": "#/$defs/asset_data"
+    }
+  },
+  "$defs": {
+    "asset_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "serial_number": {
+          "description": "Manufacturer serial number of this physical unit.",
+          "type": "string",
+          "maxLength": 128
+        },
+        "asset_tag": {
+          "description": "Your own inventory tag or barcode on the unit.",
+          "type": "string",
+          "maxLength": 64
+        },
+        "quantity": {
+          "type": "number",
+          "description": "1 for a serialized unit; >1 for a lot/bin of identical items."
+        },
+        "uom": {
+          "description": "Unit the asset is counted in (each, set, ft).",
+          "type": "string",
+          "maxLength": 32
+        },
+        "condition": {
+          "description": "Physical condition at the last check.",
+          "enum": [
+            "new",
+            "good",
+            "fair",
+            "poor",
+            "refurbished",
+            "damaged",
+            "salvage",
+            "unknown"
+          ]
+        },
+        "revision_installed": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Product revision this unit actually is."
+        },
+        "processes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "service": {
+                "type": "string",
+                "description": "Service product id or label, e.g. cleaning, calibration."
+              },
+              "date": {
+                "description": "When the process step was done.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "by": {
+                "description": "Who did it (person or vendor name).",
+                "type": "string"
+              },
+              "notes": {
+                "description": "What was done or found.",
+                "type": "string"
+              }
+            }
+          },
+          "description": "Services performed on this unit (cleaning, calibration, repair)."
+        },
+        "acquisition": {
+          "description": "How and when the asset was acquired.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "date": {
+              "description": "Date it was bought or received.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "cost": {
+              "$ref": "../common.schema.json#/$defs/money"
+            },
+            "vendor": {
+              "description": "Who it was bought from.",
+              "type": "string"
+            },
+            "po": {
+              "description": "Purchase order number.",
+              "type": "string",
+              "maxLength": 64
+            }
+          }
+        },
+        "lifecycle": {
+          "description": "Key dates in the asset's service life.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "in_service": {
+              "description": "Date it went into use.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "warranty_until": {
+              "description": "Last day of warranty coverage.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "service_due": {
+              "description": "Next scheduled service or inspection.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "retired": {
+              "description": "Date it was taken out of service.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          }
+        },
+        "finance": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "depreciation_method": {
+              "description": "Depreciation method, e.g. straight_line, declining_balance, macrs.",
+              "type": "string"
+            },
+            "useful_life_months": {
+              "description": "Useful life used for depreciation, in months.",
+              "type": "integer"
+            },
+            "gl_account": {
+              "description": "General ledger account the asset is booked to.",
+              "type": "string"
+            }
+          },
+          "description": "Placeholder for future finance integration."
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+      "type": "asset",
+      "label": "Milwaukee M18 Impact Driver #2",
+      "relations": [
+        {
+          "rel": "product",
+          "type": "product",
+          "id": "7f8e9d0c-1b2a-4c3d-8e4f-5a6b7c8d9e0f",
+          "label": "Milwaukee 2953-20"
+        },
+        {
+          "rel": "owner",
+          "type": "organization",
+          "id": "8a9b0c1d-2e3f-4a5b-9c6d-7e8f9a0b1c2d",
+          "label": "Aventrek"
+        }
+      ],
+      "classification": {
+        "c": 1,
+        "i": 1,
+        "a": 1
+      },
+      "data": {
+        "serial_number": "J47AD213456",
+        "quantity": 1,
+        "condition": "good",
+        "acquisition": {
+          "date": "2026-03-02",
+          "cost": {
+            "currency": "USD",
+            "amount_minor": 14900
+          }
+        }
+      }
+    }
+  ]
+}

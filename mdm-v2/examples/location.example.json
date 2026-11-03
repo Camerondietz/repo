@@ -1,0 +1,102 @@
+{
+  "$schema": "../types/location.schema.json",
+
+  "id": "c7180d1b-06e9-4ae7-b861-4c895c639ab1",
+  "uri": "https://mdm.cameron-dietz.com/id/location/c7180d1b-06e9-4ae7-b861-4c895c639ab1",
+  "type": "location",
+  "slug": "ait-austin",
+
+  "label": "AIT Austin",
+  "summary": "Applied Industrial Technologies service center serving the Austin metro.",
+  "aliases": ["Applied Austin", "AIT Branch 4616"],
+
+  "category": {
+    "primary": "address",
+    "kind": "branch",
+    "domain": "industrial.distribution",
+    "audience": "internal"
+  },
+  "tags": ["will-call", "counter-service"],
+
+  "status": "active",
+  "state": "in_service",
+
+  "valid_from": "2026-07-29T07:15:38Z",
+  "valid_to": null,
+  "last_verified": "2026-09-01",
+
+  "visibility": "internal",
+  "pii": false,
+
+  "parent_id": null,
+  "relations": [
+    {
+      "rel": "operated_by",
+      "type": "organization",
+      "id": "83621ca5-3a81-4c57-b4f1-b7ff1e5f2f8f",
+      "label": "Applied Industrial Technologies",
+      "primary": true
+    }
+  ],
+
+  "identifiers": {
+    "branch_code": ["4616"]
+  },
+
+  "url": "https://www.applied.com/locations/austin-tx",
+  "links": [],
+  "attachments": [],
+
+  "geo": {
+    "point": [-97.6890, 30.4245],
+    "precision": "street",
+    "address": {
+      "street_address": "4616 W Howard Ln",
+      "address_locality": "Austin",
+      "address_region": "TX",
+      "postal_code": "78727",
+      "country_code": "US",
+      "formatted": "4616 W Howard Ln, Austin, TX 78727, United States"
+    },
+    "shapes": [
+      {
+        "role": "service_area",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [-98.05, 30.60],
+              [-97.40, 30.60],
+              [-97.40, 30.05],
+              [-98.05, 30.05],
+              [-98.05, 30.60]
+            ]
+          ]
+        },
+        "simplified": true
+      }
+    ],
+    "places": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+    "place_closure": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+    "bbox": [-98.05, 30.05, -97.40, 30.60],
+    "elevation_m": 231,
+    "timezone": "America/Chicago"
+  },
+
+  "source_system": "",
+  "source_record_id": "",
+
+  "apps": ["intelcom", "mdm"],
+
+  "created_at": "2026-07-29T07:15:38.745077Z",
+  "updated_at": "2026-07-29T07:15:38.745102Z",
+  "deleted_at": null,
+
+  "metadata": {},
+
+  "data": {
+    "phone": "+1-512-836-6501",
+    "hours": "Mo-Fr 07:00-17:00",
+    "access_notes": "Will-call counter at the north dock; ring bell after 16:00."
+  }
+}

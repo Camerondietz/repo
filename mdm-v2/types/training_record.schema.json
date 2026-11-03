@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/training_record.schema.json",
+  "title": "Training Record",
+  "description": "One person's completion of one training module, course, certification or qualification on a date (the Training app). Reified like employment because it has its own dates, result and evidence. Relations: rel='person' (who), rel='module' (the procedure or resource that is the course), rel='provider' (organization that delivered it), rel='evidence' (document: certificate). Expiring certifications set valid_to; the review_due envelope field drives renewal reminders.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "training_record"
+    },
+    "data": {
+      "$ref": "#/$defs/training_record_data"
+    }
+  },
+  "$defs": {
+    "training_record_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "completed_on": {
+          "description": "Date the training was completed.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "result": {
+          "description": "Outcome.",
+          "enum": [
+            "passed",
+            "failed",
+            "attended",
+            "in_progress",
+            "waived",
+            "expired"
+          ]
+        },
+        "score": {
+          "description": "Score, when graded.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "hours": {
+          "description": "Hours of training credited.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "credential_id": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Certificate or license number (also mirror into identifiers)."
+        },
+        "instructor": {
+          "description": "Who taught or signed off.",
+          "type": "string",
+          "maxLength": 256
+        },
+        "notes": {
+          "description": "Anything else worth keeping.",
+          "type": "string",
+          "maxLength": 4000
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "4c9a6d1e-2b7f-5c3a-9e1d-0f2a3b4c5d6e",
+      "type": "training_record",
+      "label": "IS-100.C completion - Cameron Dietz",
+      "pii": true,
+      "data": {
+        "completed_on": "2024-03-02",
+        "result": "passed",
+        "hours": 3
+      }
+    }
+  ]
+}

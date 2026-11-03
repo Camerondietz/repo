@@ -1,0 +1,332 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/event.schema.json",
+  "title": "Event Record",
+  "description": "Anything that happens at a time: a meeting, a deadline, an interview, a trip, a weather warning, an IPAWS/CAP alert, an incident. One-time or recurring. Time lives in `data` (start/end) while valid_from/valid_to stay record-validity; location is geo (point, address, or affected_area shapes) and/or rel='location'. People are edges: organizer, attendee, issuer. CAP alerts keep their native fields in data.cap so they round-trip; areas go to geo.shapes role='affected_area' and SAME/UGC codes into identifiers.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "event"
+    },
+    "data": {
+      "$ref": "#/$defs/event_data"
+    }
+  },
+  "$defs": {
+    "event_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "start": {
+          "description": "Start date and time (ISO 8601 with offset or UTC).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "end": {
+          "description": "End date and time.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "all_day": {
+          "description": "True for an all-day event (times are ignored).",
+          "type": "boolean"
+        },
+        "timezone": {
+          "description": "IANA time zone the event is planned in, e.g. America/Chicago.",
+          "type": "string",
+          "maxLength": 64,
+          "examples": [
+            "America/Chicago"
+          ]
+        },
+        "recurrence": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "freq": {
+              "description": "How often it repeats.",
+              "enum": [
+                "minutely",
+                "hourly",
+                "daily",
+                "weekly",
+                "monthly",
+                "yearly"
+              ]
+            },
+            "interval": {
+              "description": "Repeat every N periods (2 with weekly = every other week).",
+              "type": "integer",
+              "minimum": 1
+            },
+            "byday": {
+              "description": "Weekdays it falls on: MO, TU, WE, TH, FR, SA, SU.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(MO|TU|WE|TH|FR|SA|SU)$"
+              }
+            },
+            "bymonthday": {
+              "description": "Days of the month it falls on (1-31, -1 = last day).",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "byweekday": {
+              "description": "Weekday for 'the Nth weekday of the month' rules, used with bysetpos.",
+              "type": "string"
+            },
+            "bysetpos": {
+              "description": "Which occurrence in the month: 1 = first, -1 = last.",
+              "type": "integer"
+            },
+            "time": {
+              "description": "Local start time HH:MM.",
+              "type": "string",
+              "pattern": "^[0-2][0-9]:[0-5][0-9]$"
+            },
+            "until": {
+              "description": "Last date an occurrence may fall on.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "count": {
+              "description": "Total number of occurrences (instead of until).",
+              "type": "integer"
+            },
+            "label": {
+              "description": "Human-readable rule, e.g. 'Every Monday 08:30'.",
+              "type": "string"
+            },
+            "rrule": {
+              "type": "string",
+              "maxLength": 512,
+              "description": "Optional raw RFC 5545 RRULE; when present it wins over the structured fields."
+            },
+            "exdates": {
+              "description": "Dates skipped (holidays, cancellations).",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          },
+          "description": "Recurrence. Same structured shape C2 already reads (data.recurrence), plus an optional raw RRULE for anything it cannot express."
+        },
+        "status": {
+          "enum": [
+            "tentative",
+            "confirmed",
+            "cancelled",
+            "completed",
+            "postponed"
+          ],
+          "description": "Event condition. (Record lifecycle stays in envelope status.)"
+        },
+        "agenda": {
+          "description": "What will be covered.",
+          "type": "string",
+          "maxLength": 8000
+        },
+        "outcome": {
+          "description": "What happened or was decided (filled in afterwards).",
+          "type": "string",
+          "maxLength": 8000
+        },
+        "virtual_url": {
+          "description": "Meeting link for online attendance.",
+          "type": "string",
+          "format": "uri"
+        },
+        "cap": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "identifier": {
+              "description": "CAP message identifier from the issuing authority (unique per alert).",
+              "type": "string"
+            },
+            "sender": {
+              "description": "Issuing authority, e.g. NWS Austin/San Antonio TX.",
+              "type": "string"
+            },
+            "sent": {
+              "description": "When the authority issued the message.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time"
+            },
+            "msg_type": {
+              "description": "CAP message type: a new alert, an update, a cancellation…",
+              "enum": [
+                "Alert",
+                "Update",
+                "Cancel",
+                "Ack",
+                "Error"
+              ]
+            },
+            "scope": {
+              "description": "Who the alert is for.",
+              "enum": [
+                "Public",
+                "Restricted",
+                "Private"
+              ]
+            },
+            "event": {
+              "description": "Event type as the authority names it, e.g. Severe Thunderstorm Warning.",
+              "type": "string"
+            },
+            "event_code": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {},
+              "description": "e.g. {SAME: 'TOR', NWS: 'TOW'}"
+            },
+            "urgency": {
+              "description": "How soon action is needed (CAP).",
+              "enum": [
+                "Immediate",
+                "Expected",
+                "Future",
+                "Past",
+                "Unknown"
+              ]
+            },
+            "severity": {
+              "description": "How bad the threat is (CAP).",
+              "enum": [
+                "Extreme",
+                "Severe",
+                "Moderate",
+                "Minor",
+                "Unknown"
+              ]
+            },
+            "certainty": {
+              "description": "How sure the authority is (CAP).",
+              "enum": [
+                "Observed",
+                "Likely",
+                "Possible",
+                "Unlikely",
+                "Unknown"
+              ]
+            },
+            "headline": {
+              "description": "One-line headline from the authority.",
+              "type": "string"
+            },
+            "description": {
+              "description": "Full description of the hazard.",
+              "type": "string"
+            },
+            "instruction": {
+              "description": "What people should do.",
+              "type": "string"
+            },
+            "expires": {
+              "description": "When the alert expires.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time"
+            },
+            "references": {
+              "description": "Earlier CAP messages this one updates or cancels.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Common Alerting Protocol 1.2 block for IPAWS / NWS alerts."
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "6e7f8a9b-0c1d-4e2f-a3b4-c5d6e7f8a9b0",
+      "type": "event",
+      "label": "Weekly ops sync",
+      "category": {
+        "kind": "meeting",
+        "domain": "operations"
+      },
+      "relations": [
+        {
+          "rel": "organizer",
+          "type": "person",
+          "id": "378ae13a-f609-45f5-92e0-2755e41cd5de",
+          "label": "Cameron Dietz"
+        }
+      ],
+      "data": {
+        "start": "2026-11-02T15:00:00Z",
+        "end": "2026-11-02T15:30:00Z",
+        "timezone": "America/Chicago",
+        "recurrence": {
+          "freq": "weekly",
+          "interval": 1,
+          "byday": [
+            "MO"
+          ],
+          "time": "09:00"
+        }
+      }
+    },
+    {
+      "id": "7f8a9b0c-1d2e-4f3a-b4c5-d6e7f8a9b0c1",
+      "type": "event",
+      "label": "Tornado Warning - Travis County",
+      "category": {
+        "kind": "alert",
+        "hazard": "tornado"
+      },
+      "classification": {
+        "c": 0,
+        "i": 3,
+        "a": 3
+      },
+      "source_system": "ipaws",
+      "source_record_id": "urn:oid:2.49.0.1.840.0.example",
+      "identifiers": {
+        "same": [
+          "048453"
+        ]
+      },
+      "data": {
+        "start": "2026-05-04T22:10:00Z",
+        "end": "2026-05-04T22:45:00Z",
+        "cap": {
+          "msg_type": "Alert",
+          "event": "Tornado Warning",
+          "urgency": "Immediate",
+          "severity": "Extreme",
+          "certainty": "Observed"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/relationship.schema.json",
+  "title": "Relationship Record",
+  "description": "A person-to-person (or person-to-organization, non-employment) relationship that needs its own dates or facts: marriage, guardianship, partnership, mentorship, board seat. Plain, undated family links can stay as `relations` edges on the person (rel parent/child/spouse/sibling); promote to this record when dates, notes or sensitivity matter. Always pii=true. Employment has its own type.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "relationship"
+    },
+    "pii": {
+      "const": true
+    },
+    "relations": {
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "rel": {
+                "const": "subject"
+              }
+            },
+            "required": [
+              "rel"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "rel": {
+                "const": "object"
+              }
+            },
+            "required": [
+              "rel"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ],
+      "description": "Exactly one rel='subject' and one rel='object'. Read as: subject IS <kind> OF object (subject=Jane, kind=parent, object=Tom)."
+    },
+    "data": {
+      "$ref": "#/$defs/relationship_data"
+    }
+  },
+  "required": [
+    "relations",
+    "pii"
+  ],
+  "$defs": {
+    "relationship_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "kind": {
+          "description": "The relationship, read as subject IS kind OF object, e.g. parent, mentor, godparent.",
+          "type": "string",
+          "maxLength": 64,
+          "examples": [
+            "spouse",
+            "parent",
+            "child",
+            "sibling",
+            "guardian",
+            "partner",
+            "grandparent",
+            "in_law",
+            "mentor",
+            "friend",
+            "board_member",
+            "advisor"
+          ]
+        },
+        "symmetric": {
+          "type": "boolean",
+          "description": "True when the relation reads the same both ways (spouse, sibling)."
+        },
+        "notes": {
+          "description": "Private notes about the relationship.",
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "2a3b4c5d-6e7f-4a8b-9c0d-1e2f3a4b5c6d",
+      "type": "relationship",
+      "label": "Jane Doe - parent of - Tom Doe",
+      "pii": true,
+      "classification": {
+        "c": 3,
+        "i": 2,
+        "a": 1
+      },
+      "relations": [
+        {
+          "rel": "subject",
+          "type": "person",
+          "id": "3b4c5d6e-7f8a-4b9c-8d0e-1f2a3b4c5d6e"
+        },
+        {
+          "rel": "object",
+          "type": "person",
+          "id": "4c5d6e7f-8a9b-4c0d-9e1f-2a3b4c5d6e7f"
+        }
+      ],
+      "data": {
+        "kind": "parent",
+        "symmetric": false
+      }
+    }
+  ]
+}

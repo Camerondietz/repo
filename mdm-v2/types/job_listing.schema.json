@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/job_listing.schema.json",
+  "title": "Job Listing Record",
+  "description": "A posted job at an organization (rel='organization'; rel='department' optional; rel='location' or geo). Source posting URL is envelope url; where you found it is source_system/source_url.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "job_listing"
+    },
+    "data": {
+      "$ref": "#/$defs/job_listing_data"
+    }
+  },
+  "$defs": {
+    "job_listing_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "title": {
+          "description": "Job title as posted.",
+          "type": "string",
+          "maxLength": 256
+        },
+        "industry": {
+          "description": "Employer's industry, as posted or as you classify it.",
+          "type": "string",
+          "maxLength": 128
+        },
+        "function": {
+          "description": "Job function, e.g. sales, engineering, operations.",
+          "type": "string",
+          "examples": [
+            "supply_chain",
+            "engineering",
+            "sales",
+            "operations"
+          ]
+        },
+        "seniority": {
+          "description": "Level of the role.",
+          "enum": [
+            "intern",
+            "entry",
+            "mid",
+            "senior",
+            "lead",
+            "manager",
+            "director",
+            "executive"
+          ]
+        },
+        "employment_type": {
+          "description": "Kind of employment offered.",
+          "enum": [
+            "full_time",
+            "part_time",
+            "contract",
+            "temporary",
+            "intern"
+          ]
+        },
+        "remote": {
+          "description": "Where the work happens.",
+          "enum": [
+            "onsite",
+            "hybrid",
+            "remote"
+          ]
+        },
+        "salary": {
+          "$ref": "../common.schema.json#/$defs/money_range",
+          "description": "Posted pay range, when the listing gives one."
+        },
+        "posted_on": {
+          "description": "Date the listing was posted.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "closes_on": {
+          "description": "Application deadline.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "description_md": {
+          "description": "Full posting text in Markdown.",
+          "type": "string"
+        },
+        "requirements": {
+          "description": "Stated requirements, one per entry.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "skills": {
+          "description": "Skills the listing asks for.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

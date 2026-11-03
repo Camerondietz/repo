@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/procedure.schema.json",
+  "title": "Procedure Record",
+  "description": "A repeatable way of doing something: SOP, checklist, work instruction, playbook, runbook, recipe, workout routine. Shape matches what the C2 SOP Library already reads (trigger, roles, steps), so C2 SOPs move here with type 'sop' -> 'procedure' and category.kind='sop' (the C2 mart adapter maps it back). Ownership: rel='owning_team'; approvals: rel='approved_by'; governing docs: rel='references'.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "procedure"
+    },
+    "data": {
+      "$ref": "#/$defs/procedure_data"
+    }
+  },
+  "$defs": {
+    "procedure_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "procedure_kind": {
+          "description": "What sort of procedure it is.",
+          "enum": [
+            "sop",
+            "checklist",
+            "work_instruction",
+            "playbook",
+            "runbook",
+            "recipe",
+            "routine",
+            "training_module",
+            "other"
+          ]
+        },
+        "trigger": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "When to run it."
+        },
+        "roles": {
+          "description": "Roles that carry it out, e.g. dispatcher, shift lead.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          }
+        },
+        "steps": {
+          "description": "The steps in order.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "n": {
+                "description": "Step number.",
+                "type": "integer"
+              },
+              "text": {
+                "description": "What to do.",
+                "type": "string"
+              },
+              "role": {
+                "description": "Who does this step.",
+                "type": "string"
+              },
+              "minutes": {
+                "description": "Expected minutes for the step.",
+                "type": "number"
+              },
+              "caution": {
+                "description": "Warning shown before the step.",
+                "type": "string"
+              },
+              "media": {
+                "type": "string",
+                "description": "Attachment role or URL."
+              },
+              "substeps": {
+                "description": "Smaller steps inside this one.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "estimated_minutes": {
+          "description": "Expected total time.",
+          "type": "number"
+        },
+        "review_interval_months": {
+          "description": "How often it must be reviewed.",
+          "type": "integer"
+        },
+        "revision": {
+          "description": "Revision label, e.g. Rev C.",
+          "type": "string",
+          "maxLength": 32
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "9b0c1d2e-3f4a-4b5c-8d6e-7f8a9b0c1d2e",
+      "type": "procedure",
+      "label": "Publish data to GitHub repo",
+      "category": {
+        "kind": "sop",
+        "domain": "governance.publishing"
+      },
+      "classification": {
+        "c": 1,
+        "i": 3,
+        "a": 1
+      },
+      "data": {
+        "procedure_kind": "sop",
+        "trigger": "After any warehouse change meant for apps",
+        "roles": [
+          "data steward"
+        ],
+        "steps": [
+          {
+            "n": 1,
+            "text": "python tools/mdm.py validate",
+            "minutes": 1
+          },
+          {
+            "n": 2,
+            "text": "python tools/mdm.py publish --profile all",
+            "minutes": 2
+          },
+          {
+            "n": 3,
+            "text": "Review repo diff, commit, push",
+            "minutes": 5
+          }
+        ]
+      }
+    }
+  ]
+}

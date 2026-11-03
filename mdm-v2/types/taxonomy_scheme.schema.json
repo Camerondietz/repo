@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/taxonomy_scheme.schema.json",
+  "title": "Taxonomy Scheme Record",
+  "description": "A whole classification system: your product taxonomy, the subjects taxonomy, review-page content categories, the attribute dictionary, and external standards (ETIM 9.0, UNSPSC, HTS, a vendor's category tree). SKOS ConceptScheme. Its terms are taxonomy_term records with rel='in_scheme' -> this record. `slug` is the scheme key used as the category dimension name on other records (category.product, category.subject).",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "taxonomy_scheme"
+    },
+    "data": {
+      "$ref": "#/$defs/taxonomy_scheme_data"
+    }
+  },
+  "required": [
+    "slug"
+  ],
+  "$defs": {
+    "taxonomy_scheme_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "authority": {
+          "description": "internal = yours to change; external = maintained by someone else (ETIM, NAICS).",
+          "enum": [
+            "internal",
+            "external"
+          ]
+        },
+        "publisher": {
+          "description": "Who maintains the scheme.",
+          "type": "string",
+          "maxLength": 256
+        },
+        "scheme_version": {
+          "description": "Version or release of the scheme, e.g. ETIM 9.0.",
+          "type": "string",
+          "maxLength": 64
+        },
+        "license": {
+          "description": "License terms for using and republishing it.",
+          "type": "string",
+          "maxLength": 256
+        },
+        "dimension": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "The `category` key that holds paths from this scheme on classified records, e.g. 'product', 'subject', 'review'."
+        },
+        "applies_to": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "description": "Record types this scheme classifies."
+        },
+        "authoring_file": {
+          "type": "string",
+          "description": "Human-edited source file, e.g. taxonomy/schemes/subjects.csv. The JSON records are generated from it."
+        },
+        "max_depth": {
+          "description": "Deepest level allowed in the tree.",
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "1d2e3f4a-5b6c-4d7e-8f9a-0b1c2d3e4f5a",
+      "type": "taxonomy_scheme",
+      "slug": "product",
+      "label": "Product Taxonomy (master)",
+      "data": {
+        "authority": "internal",
+        "dimension": "product",
+        "applies_to": [
+          "product",
+          "part_number",
+          "rfq"
+        ],
+        "authoring_file": "taxonomy/schemes/product.csv",
+        "scheme_version": "0.1"
+      }
+    }
+  ]
+}

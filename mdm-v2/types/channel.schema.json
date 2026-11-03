@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/channel.schema.json",
+  "title": "Channel Record",
+  "description": "A place content goes: one of your websites (best-of-austin.com, better-society.org), a social account, a newsletter list, an alert feed. Records rather than config so the marketing system stays modular: add a channel and it appears as a publish target. Connector credentials NEVER live here - only a reference to the secret name.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "channel"
+    },
+    "data": {
+      "$ref": "#/$defs/channel_data"
+    }
+  },
+  "$defs": {
+    "channel_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "platform": {
+          "description": "Where content is published: website, instagram, facebook, x, linkedin, youtube, email, rss…",
+          "type": "string",
+          "examples": [
+            "website",
+            "instagram",
+            "facebook",
+            "x",
+            "linkedin",
+            "youtube",
+            "tiktok",
+            "threads",
+            "bluesky",
+            "nextdoor",
+            "email",
+            "rss",
+            "github_repo"
+          ]
+        },
+        "handle": {
+          "description": "Account name, page or address on that platform.",
+          "type": "string"
+        },
+        "avenues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Avenues this channel accepts, e.g. ['business_reviews']."
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Content kinds it accepts and limits, e.g. ['review','photo_set']."
+        },
+        "connector": {
+          "description": "How posts reach the platform. Secrets are named, never stored.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "kind": {
+              "description": "manual (copy and paste), api, buffer, zapier, github (commit to a site repo) or webhook.",
+              "enum": [
+                "manual",
+                "api",
+                "buffer",
+                "zapier",
+                "github",
+                "webhook"
+              ]
+            },
+            "secret_ref": {
+              "type": "string",
+              "description": "Name of the secret in your vault/.env, never the value."
+            }
+          }
+        },
+        "posting_rules": {
+          "description": "House rules for this channel: tone, length limits, hashtags, what never to post.",
+          "type": "string",
+          "maxLength": 4000
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "0a1b2c3d-4e5f-4a6b-9c7d-8e9f0a1b2c3d",
+      "type": "channel",
+      "label": "Best of Austin (website)",
+      "url": "https://best-of-austin.com/",
+      "data": {
+        "platform": "website",
+        "avenues": [
+          "business_reviews"
+        ],
+        "connector": {
+          "kind": "github"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/taxonomy_term.schema.json",
+  "title": "Taxonomy Term Record",
+  "description": "One node in a scheme (SKOS Concept): a product class, a subject category, a review-page category, an attribute definition. Hierarchy by parent_id (broader); extra broader terms and 'related' via relations. `data.path` is the dotted slug path written into other records' `category[<dimension>]`, so a prefix match on 'engineering' finds 'engineering.mechanical.fasteners'. Replaces content_category (website category pages keep their SEO block in data.seo) and the engineering-reference/review-page nodes.json category shape.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "taxonomy_term"
+    },
+    "relations": {
+      "description": "rel='in_scheme' (required in practice), optional rel='broader' for extra parents, rel='related' for see-also."
+    },
+    "data": {
+      "$ref": "#/$defs/taxonomy_term_data"
+    }
+  },
+  "$defs": {
+    "taxonomy_term_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "scheme": {
+          "type": "string",
+          "description": "Scheme slug (denormalized for convenience; rel='in_scheme' is authoritative)."
+        },
+        "notation": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Stable code within the scheme: EC000466, 31171504, 8482.10, PT-07-018."
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+([._-][a-z0-9]+)*$",
+          "maxLength": 512,
+          "description": "Dotted slug path from the root, recomputed by the toolchain when a term moves or is renamed."
+        },
+        "level": {
+          "description": "Depth in the tree, 0 = top. Derived from the parent chain; do not edit.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "definition": {
+          "description": "What belongs under this term.",
+          "type": "string",
+          "maxLength": 4000
+        },
+        "scope_note": {
+          "description": "What does not belong, or how to choose between close terms.",
+          "type": "string",
+          "maxLength": 2000
+        },
+        "order": {
+          "type": "integer",
+          "description": "Sibling sort order."
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "Attribute term slug from the `attributes` scheme."
+              },
+              "required": {
+                "description": "True if every product in this class must have the attribute.",
+                "type": "boolean"
+              },
+              "facet": {
+                "type": "boolean",
+                "description": "Show as a search/filter facet (RFQ, product search)."
+              },
+              "order": {
+                "description": "Display order of the attribute.",
+                "type": "integer"
+              }
+            }
+          },
+          "description": "Attribute template for product classes: which specs a product in this class should have. Drives product forms, RFQ facets and completeness checks."
+        },
+        "attribute_def": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "datatype": {
+              "description": "Kind of value the attribute holds.",
+              "enum": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "enum",
+                "range",
+                "date"
+              ]
+            },
+            "unit": {
+              "description": "Unit of the value, e.g. V, mm.",
+              "type": "string"
+            },
+            "unit_dimension": {
+              "description": "Physical dimension, e.g. voltage, length, so units can convert.",
+              "type": "string",
+              "examples": [
+                "length",
+                "mass",
+                "pressure"
+              ]
+            },
+            "allowed_values": {
+              "description": "Values allowed for an enum attribute.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "key": {
+                    "description": "Stored value (snake_case).",
+                    "type": "string"
+                  },
+                  "label": {
+                    "description": "Text shown to people.",
+                    "type": "string"
+                  },
+                  "etim_value": {
+                    "description": "Matching ETIM value code (EV…).",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "etim_feature": {
+              "description": "Matching ETIM feature code (EF…).",
+              "type": "string",
+              "examples": [
+                "EF000008"
+              ]
+            }
+          },
+          "description": "Only for terms in the `attributes` scheme: the definition of one spec key."
+        },
+        "seo": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "title": {
+              "description": "Page title for the category page.",
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": {
+              "description": "Meta description for the category page.",
+              "type": "string",
+              "maxLength": 320
+            },
+            "keywords": {
+              "description": "Search keywords.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Website category-page metadata (review page, engineering reference)."
+        },
+        "publish": {
+          "type": "boolean",
+          "description": "Show on public sites. Replaces the nodes.json 'published' / 'not-published' status."
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "2e3f4a5b-6c7d-4e8f-9a0b-1c2d3e4f5a6b",
+      "type": "taxonomy_term",
+      "slug": "fasteners",
+      "label": "Fasteners",
+      "parent_id": "3f4a5b6c-7d8e-4f9a-8b0c-1d2e3f4a5b6c",
+      "relations": [
+        {
+          "rel": "in_scheme",
+          "type": "taxonomy_scheme",
+          "id": "4a5b6c7d-8e9f-4a0b-9c1d-2e3f4a5b6c7d",
+          "label": "Subjects"
+        }
+      ],
+      "data": {
+        "scheme": "subjects",
+        "path": "engineering.mechanical-engineering.fasteners",
+        "level": 2,
+        "publish": true,
+        "seo": {
+          "title": "Fasteners reference"
+        }
+      }
+    }
+  ]
+}

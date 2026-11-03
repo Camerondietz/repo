@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/work_item.schema.json",
+  "title": "Planning / Work Item Record",
+  "description": "The C2 planning family: goal > strategy > objective > task (> sub-task), plus milestone. Kept as their own `type` values because C2 already reads them that way. Hierarchy by parent_id; dimensions by relations organization/team and category.domain; people by assignee; links by depends_on / supports / governed_by. Work state in envelope `state` (not_started, in_progress, blocked, at_risk, done, cancelled).",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "description": "Level in the plan: goal > strategy > objective > task, with milestones as checkpoints.",
+      "enum": [
+        "goal",
+        "strategy",
+        "objective",
+        "task",
+        "milestone"
+      ]
+    },
+    "data": {
+      "$ref": "#/$defs/work_item_data"
+    }
+  },
+  "$defs": {
+    "work_item_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "start": {
+          "description": "Planned start date.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "due": {
+          "description": "Due date.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "target_date": {
+          "description": "Target date for goals and objectives.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "description": "Milestone date."
+        },
+        "progress": {
+          "description": "Percent complete, 0-100.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "estimate_h": {
+          "description": "Estimated hours of work.",
+          "type": "number"
+        },
+        "blocker": {
+          "description": "What is holding it up, if anything.",
+          "type": "string"
+        },
+        "kpi": {
+          "description": "Measure that shows progress.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "metric": {
+              "description": "What is measured.",
+              "type": "string"
+            },
+            "current": {
+              "description": "Latest value.",
+              "type": "number"
+            },
+            "target": {
+              "description": "Value to reach.",
+              "type": "number"
+            },
+            "unit": {
+              "description": "Unit of the values.",
+              "type": "string"
+            }
+          }
+        },
+        "recurrence": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "freq": {
+              "description": "How often it repeats.",
+              "enum": [
+                "minutely",
+                "hourly",
+                "daily",
+                "weekly",
+                "monthly",
+                "yearly"
+              ]
+            },
+            "interval": {
+              "description": "Repeat every N periods.",
+              "type": "integer",
+              "minimum": 1
+            },
+            "byday": {
+              "description": "Weekdays it falls on: MO, TU, WE, TH, FR, SA, SU.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(MO|TU|WE|TH|FR|SA|SU)$"
+              }
+            },
+            "bymonthday": {
+              "description": "Days of the month (1-31, -1 = last day).",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "byweekday": {
+              "description": "Weekday for 'the Nth weekday of the month' rules.",
+              "type": "string"
+            },
+            "bysetpos": {
+              "description": "Which occurrence in the month: 1 = first, -1 = last.",
+              "type": "integer"
+            },
+            "time": {
+              "description": "Local time HH:MM.",
+              "type": "string",
+              "pattern": "^[0-2][0-9]:[0-5][0-9]$"
+            },
+            "until": {
+              "description": "Last date an occurrence may fall on.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "count": {
+              "description": "Total number of occurrences.",
+              "type": "integer"
+            },
+            "label": {
+              "description": "Human-readable rule.",
+              "type": "string"
+            },
+            "rrule": {
+              "type": "string",
+              "maxLength": 512,
+              "description": "Optional raw RFC 5545 RRULE; when present it wins over the structured fields."
+            },
+            "exdates": {
+              "description": "Dates skipped.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          },
+          "description": "Recurrence. Same structured shape C2 already reads (data.recurrence), plus an optional raw RRULE for anything it cannot express."
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "0c1d2e3f-4a5b-4c6d-9e7f-8a9b0c1d2e3f",
+      "type": "task",
+      "label": "Seed organization records from business cards",
+      "state": "in_progress",
+      "category": {
+        "priority": "high",
+        "domain": "governance.mdm"
+      },
+      "data": {
+        "start": "2026-10-24",
+        "due": "2026-11-07",
+        "progress": 10
+      }
+    }
+  ]
+}

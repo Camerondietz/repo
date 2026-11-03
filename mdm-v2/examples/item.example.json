@@ -1,0 +1,124 @@
+{
+  "$schema": "../types/item.schema.json",
+
+  "id": "6d0a1b2c-7e8f-4a90-b1c2-3d4e5f607182",
+  "uri": "https://mdm.cameron-dietz.com/id/item/6d0a1b2c-7e8f-4a90-b1c2-3d4e5f607182",
+  "type": "item",
+  "slug": "skf-6205-2rs",
+
+  "label": "SKF 6205-2RS Deep Groove Ball Bearing",
+  "summary": "Single-row deep groove ball bearing, 25 mm bore, contact seals both sides.",
+  "aliases": ["6205-2RS", "6205 2RS1", "SKF 6205-2RSH"],
+
+  "category": {
+    "primary": "bearings",
+    "kind": "ball_bearing",
+    "domain": "industrial.power_transmission",
+    "form": "component"
+  },
+  "tags": ["stocked", "sealed", "metric"],
+
+  "status": "active",
+  "state": "in_service",
+  "version": "2.0",
+
+  "valid_from": "2025-01-01T00:00:00Z",
+  "valid_to": null,
+  "last_verified": "2026-09-01",
+
+  "visibility": "internal",
+  "pii": false,
+
+  "parent_id": null,
+  "relations": [
+    {
+      "rel": "manufacturer",
+      "type": "organization",
+      "id": "c2e7f481-5a93-4d06-b8f1-7e204c9a6d35",
+      "label": "SKF",
+      "primary": true
+    },
+    {
+      "rel": "documents",
+      "type": "document",
+      "id": "a5b9c3d7-1e48-4f26-90ab-5c7d3e1f8b04",
+      "label": "SKF Rolling Bearings Catalogue"
+    },
+    {
+      "rel": "related",
+      "type": "item",
+      "id": "3f8e1d5a-9c24-4b70-8e16-2a5d9f0c7b43",
+      "label": "SKF 6205-2Z (shielded variant)"
+    },
+    {
+      "rel": "stocked_at",
+      "type": "location",
+      "id": "c7180d1b-06e9-4ae7-b861-4c895c639ab1",
+      "label": "AIT Austin"
+    }
+  ],
+
+  "identifiers": {
+    "sku": ["AIT-44821"],
+    "mpn": ["6205-2RS1"],
+    "upc": ["7316570012345"]
+  },
+
+  "url": "https://www.applied.com/products/skf-6205-2rs1",
+  "links": [
+    { "rel": "datasheet", "href": "https://www.skf.com/productinfo/6205-2RS1", "label": "Manufacturer product page" }
+  ],
+
+  "attachments": [
+    {
+      "role": "datasheet",
+      "path": "docs/items/skf-6205-2rs.pdf",
+      "media_type": "application/pdf",
+      "file_type": "pdf",
+      "size_bytes": 184320
+    },
+    {
+      "role": "featured_image",
+      "href": "https://cdn.applied.com/img/skf-6205-2rs.webp",
+      "media_type": "image/webp"
+    }
+  ],
+
+  "geo": {
+    "places": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+    "place_closure": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"]
+  },
+
+  "source_system": "erp",
+  "source_record_id": "44821",
+
+  "apps": ["intelcom", "mdm"],
+
+  "created_at": "2026-05-12T08:30:00Z",
+  "updated_at": "2026-09-01T09:15:00Z",
+  "deleted_at": null,
+
+  "metadata": {},
+
+  "data": {
+    "features": {
+      "bore_mm": 25,
+      "outer_diameter_mm": 52,
+      "width_mm": 15,
+      "material": "52100 chrome steel",
+      "seal": "2RS contact seal both sides",
+      "dynamic_load_rating_kn": 14.8,
+      "max_rpm": 9000
+    },
+    "pricing": {
+      "currency": "USD",
+      "list_minor": 1899,
+      "sale_minor": 1499,
+      "unit": "each",
+      "as_of": "2026-09-01"
+    },
+    "condition": "new",
+    "quantity_on_hand": 42,
+    "uom": "each"
+  }
+}

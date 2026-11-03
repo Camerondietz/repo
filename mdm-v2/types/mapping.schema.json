@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/mapping.schema.json",
+  "title": "Mapping (Crosswalk) Record",
+  "description": "One crosswalk assertion between two terms in different schemes, e.g. ETIM EC000466 -> master product term 'power-transmission.bearings.ball-bearings.deep-groove', or UNSPSC 31171504 -> same. SKOS mapping semantics. Bulk mappings are authored in CSV (taxonomy/crosswalks/*.csv) and generated into these records; each keeps its method and confidence so automated (rule/AI) suggestions can sit beside human-approved ones. The auto-classifier walks: identifiers on the incoming product (etim_class, unspsc, hts, vendor category) -> mapping records with status active -> master term.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "mapping"
+    },
+    "relations": {
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "rel": {
+                "const": "source"
+              }
+            },
+            "required": [
+              "rel"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "rel": {
+                "const": "target"
+              }
+            },
+            "required": [
+              "rel"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ],
+      "description": "Exactly one rel='source' and one rel='target' edge, both to taxonomy_term records."
+    },
+    "data": {
+      "$ref": "#/$defs/mapping_data"
+    }
+  },
+  "required": [
+    "relations"
+  ],
+  "$defs": {
+    "mapping_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scheme": {
+              "description": "Scheme the source term belongs to (slug, e.g. etim).",
+              "type": "string"
+            },
+            "notation": {
+              "description": "Source term's code, e.g. EG000023.",
+              "type": "string"
+            },
+            "path": {
+              "description": "Source term's dotted path in its scheme.",
+              "type": "string"
+            },
+            "label": {
+              "description": "Source term's name, kept so the mapping reads without lookups.",
+              "type": "string"
+            }
+          },
+          "description": "Denormalized for display; rel='source' is authoritative."
+        },
+        "target": {
+          "description": "The term the source maps to.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scheme": {
+              "description": "Scheme the target term belongs to (slug, e.g. product).",
+              "type": "string"
+            },
+            "notation": {
+              "description": "Target term's code.",
+              "type": "string"
+            },
+            "path": {
+              "description": "Target term's dotted path in its scheme.",
+              "type": "string"
+            },
+            "label": {
+              "description": "Target term's name.",
+              "type": "string"
+            }
+          }
+        },
+        "match": {
+          "enum": [
+            "exact",
+            "close",
+            "broad",
+            "narrow",
+            "related"
+          ],
+          "description": "SKOS: exactMatch, closeMatch, broadMatch (target is broader), narrowMatch (target is narrower), relatedMatch."
+        },
+        "confidence": {
+          "description": "How sure the mapping is, 0 to 1 (1 = certain).",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "method": {
+          "description": "How the mapping was made.",
+          "enum": [
+            "manual",
+            "rule",
+            "ai",
+            "imported",
+            "inferred"
+          ]
+        },
+        "rule": {
+          "type": "string",
+          "description": "For method=rule: the rule expression or id."
+        },
+        "reviewed_by": {
+          "description": "Who checked the mapping.",
+          "type": "string"
+        },
+        "reviewed_on": {
+          "description": "When it was checked.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      }
+    }
+  },
+  "$comment": "Envelope status drives use: draft = suggestion awaiting review, active = approved and used by the auto-classifier, withdrawn = rejected (kept so it is not re-suggested).",
+  "examples": [
+    {
+      "id": "5b6c7d8e-9f0a-4b1c-8d2e-3f4a5b6c7d8e",
+      "type": "mapping",
+      "label": "ETIM EC000466 -> Deep groove ball bearings",
+      "status": "active",
+      "relations": [
+        {
+          "rel": "source",
+          "type": "taxonomy_term",
+          "id": "6c7d8e9f-0a1b-4c2d-9e3f-4a5b6c7d8e9f"
+        },
+        {
+          "rel": "target",
+          "type": "taxonomy_term",
+          "id": "7d8e9f0a-1b2c-4d3e-8f4a-5b6c7d8e9f0a"
+        }
+      ],
+      "data": {
+        "source": {
+          "scheme": "etim-9",
+          "notation": "EC000466"
+        },
+        "target": {
+          "scheme": "product",
+          "path": "power-transmission.bearings.ball-bearings.deep-groove"
+        },
+        "match": "exact",
+        "confidence": 1,
+        "method": "manual"
+      }
+    }
+  ]
+}

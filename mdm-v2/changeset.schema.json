@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/changeset.schema.json",
+  "title": "MDM Changeset",
+  "description": "How every app writes back: a document of whole-record upserts. Applied with `python tools/mdm.py apply-changeset FILE`, later POSTed to the MDM API unchanged. Deletes are soft: upsert the record with deleted_at set. Optional `base` checksums let the receiver detect that someone else changed a record since the app loaded it (optimistic concurrency) instead of silently overwriting.",
+  "type": "object",
+  "required": [
+    "format",
+    "version",
+    "upserts"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "format": {
+      "const": "mdm-changeset"
+    },
+    "version": {
+      "const": 1
+    },
+    "id": {
+      "description": "Unique id of this changeset file (UUID), so the same export is never applied twice by mistake.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "exported_at": {
+      "description": "When the app exported the changeset (UTC).",
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "maxLength": 2048,
+      "description": "App id or page URL that produced it."
+    },
+    "app": {
+      "type": "string",
+      "maxLength": 64,
+      "description": "Producing app id from registry/apps.json."
+    },
+    "actor": {
+      "$ref": "record.schema.json#/$defs/actor_ref"
+    },
+    "schema_version": {
+      "description": "Master schema version the app was built for, e.g. 2.1.",
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "submitted",
+        "approved",
+        "applied",
+        "rejected"
+      ],
+      "default": "submitted",
+      "description": "AI-produced changesets arrive as draft until a person approves them."
+    },
+    "note": {
+      "description": "Free-text note from whoever exported it (what changed and why).",
+      "type": "string",
+      "maxLength": 4000
+    },
+    "base": {
+      "type": "object",
+      "propertyNames": {
+        "format": "uuid"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "description": "record id -> checksum_sha256 the app started from."
+    },
+    "upserts": {
+      "type": "array",
+      "items": {
+        "$ref": "record.schema.json"
+      },
+      "description": "Whole records (each still validated against its type schema on apply)."
+    }
+  }
+}

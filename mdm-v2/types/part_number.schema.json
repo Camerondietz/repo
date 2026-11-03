@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdm.cameron-dietz.com/schema/v2/types/part_number.schema.json",
+  "title": "Part Number Record",
+  "description": "Cross-reference from one company's part number to a master product: a vendor SKU, a customer's internal PN, a distributor number, a manufacturer number for a generic part, or a GTIN. Reified as a record (not just identifiers) because it carries its own facts: who issued it, pack quantity, UOM conversion, cost, MOQ, lead time and dates. Rule: one product -> many part_numbers; one part_number -> exactly one product. Generic parts (an M6x20 hex bolt) have many mfr part_numbers all pointing at the one generic product. The searchable value also goes in identifiers[<pn_type>_pn] on this record; the toolchain builds the (issuer, value) -> product index from these records.",
+  "allOf": [
+    {
+      "$ref": "../record.schema.json"
+    }
+  ],
+  "properties": {
+    "type": {
+      "const": "part_number"
+    },
+    "relations": {
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "rel": {
+                "const": "product"
+              }
+            },
+            "required": [
+              "rel"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ],
+      "description": "Exactly one rel='product' edge; plus rel='issuer' (the organization that owns the number) when known."
+    },
+    "data": {
+      "$ref": "#/$defs/part_number_data"
+    }
+  },
+  "required": [
+    "relations"
+  ],
+  "$defs": {
+    "part_number_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "pn": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "The number exactly as the issuer writes it."
+        },
+        "pn_normalized": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Upper-cased, punctuation and spaces removed - the match key."
+        },
+        "pn_type": {
+          "enum": [
+            "manufacturer",
+            "vendor",
+            "distributor",
+            "customer",
+            "internal",
+            "gtin",
+            "upc",
+            "ean",
+            "nsn",
+            "legacy"
+          ],
+          "description": "Role of the issuer for this number."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "The issuer's own description, kept verbatim for matching."
+        },
+        "uom": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Issuer's unit of measure."
+        },
+        "conversion": {
+          "type": "number",
+          "description": "How many master-product base units one issuer unit equals (e.g. box of 100 -> 100)."
+        },
+        "commercial": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "cost": {
+              "$ref": "../common.schema.json#/$defs/money"
+            },
+            "price": {
+              "$ref": "../common.schema.json#/$defs/money"
+            },
+            "price_breaks": {
+              "description": "Quantity price breaks from this source.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "min_qty": {
+                    "description": "Smallest order quantity that gets this price.",
+                    "type": "number"
+                  },
+                  "price": {
+                    "$ref": "../common.schema.json#/$defs/money"
+                  }
+                }
+              }
+            },
+            "moq": {
+              "description": "Minimum order quantity.",
+              "type": "number"
+            },
+            "order_multiple": {
+              "description": "Orders must be a multiple of this quantity.",
+              "type": "number"
+            },
+            "lead_time_days": {
+              "description": "Lead time in days when not in stock.",
+              "type": "integer"
+            },
+            "stock": {
+              "description": "Units in stock at the source.",
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "as_of": {
+              "description": "When price and stock were read.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time"
+            }
+          },
+          "description": "Commercial terms from this issuer. Volatile: refreshed by vendor-API ingests; history stays in the lake."
+        },
+        "preferred": {
+          "type": "boolean",
+          "description": "Preferred source among several vendor part_numbers for the same product."
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "1c9d7e2a-5b3f-4e60-9a7b-8c9d0e1f2a3b",
+      "type": "part_number",
+      "label": "Digi-Key 1829-ACC-500-103-ND",
+      "identifiers": {
+        "vendor_pn": [
+          "1829-ACC-500-103-ND"
+        ]
+      },
+      "relations": [
+        {
+          "rel": "product",
+          "type": "product",
+          "id": "e2f3a4b5-c6d7-4e8f-9a0b-1c2d3e4f5a6b",
+          "label": "Lantronix ACC-500-103"
+        },
+        {
+          "rel": "issuer",
+          "type": "organization",
+          "id": "d1e2f3a4-b5c6-4d7e-8f9a-0b1c2d3e4f5a",
+          "label": "Digi-Key"
+        }
+      ],
+      "data": {
+        "pn": "1829-ACC-500-103-ND",
+        "pn_normalized": "1829ACC500103ND",
+        "pn_type": "distributor",
+        "uom": "each",
+        "conversion": 1,
+        "commercial": {
+          "cost": {
+            "currency": "USD",
+            "amount_minor": 1062
+          },
+          "moq": 1,
+          "lead_time_days": 28,
+          "as_of": "2026-10-20T00:00:00Z"
+        }
+      }
+    }
+  ]
+}

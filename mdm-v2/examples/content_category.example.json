@@ -1,0 +1,101 @@
+{
+  "$schema": "../types/content_category.schema.json",
+
+  "id": "4a9f61d8-2c33-4f0e-9b7a-8e5d1c04b6f2",
+  "uri": "https://mdm.cameron-dietz.com/id/content_category/4a9f61d8-2c33-4f0e-9b7a-8e5d1c04b6f2",
+  "type": "content_category",
+  "slug": "things-to-do",
+
+  "label": "Things To Do",
+  "summary": "Activities and attractions",
+  "aliases": ["Activities", "Attractions"],
+
+  "category": {
+    "primary": "guide",
+    "kind": "category",
+    "locality": "austin",
+    "audience": "public"
+  },
+  "tags": ["activities"],
+
+  "status": "active",
+  "version": "1.0",
+
+  "valid_from": "2026-01-01T00:00:00Z",
+  "valid_to": null,
+  "last_verified": "2026-09-01",
+  "review_due": "2027-01-01",
+
+  "visibility": "public",
+  "pii": false,
+  "owner": { "type": "person", "id": "378ae13a-f609-45f5-92e0-2755e41cd5de", "label": "Cameron Dietz" },
+
+  "parent_id": null,
+  "relations": [
+    {
+      "rel": "related",
+      "type": "content_category",
+      "id": "8e1b4f7c-6d02-4a95-b3e8-1f70c2d59a46",
+      "label": "Food & Drink"
+    },
+    {
+      "rel": "child",
+      "type": "content_category",
+      "id": "c9d3a06b-4e57-4812-9f60-2b8e1a5d7c30",
+      "label": "Outdoor Activities"
+    }
+  ],
+
+  "identifiers": {},
+
+  "url": "https://review-page.example.com/things-to-do",
+  "links": [],
+
+  "attachments": [
+    {
+      "role": "featured_image",
+      "href": "https://cdn.review-page.example.com/img/things-to-do.webp",
+      "media_type": "image/webp",
+      "label": "Category hero image"
+    }
+  ],
+
+  "geo": {
+    "point": [-97.7431, 30.2672],
+    "precision": "locality",
+    "address": {
+      "address_locality": "Austin",
+      "address_region": "TX",
+      "country_code": "US"
+    },
+    "places": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+    "place_closure": ["b1f7c0e2-5b6a-4a3d-9c11-0a8e4d2f7a10"],
+    "timezone": "America/Chicago"
+  },
+
+  "source_system": "review-page",
+  "source_record_id": "things-to-do",
+
+  "apps": ["review-page"],
+
+  "created_at": "2026-01-15T11:00:00Z",
+  "updated_at": "2026-09-01T11:00:00Z",
+  "deleted_at": null,
+
+  "metadata": {
+    "legacy_status": "published"
+  },
+
+  "data": {
+    "seo": {
+      "title": "Things to do Austin",
+      "description": "Activities Austin",
+      "keywords": ["Austin activities"],
+      "noindex": false
+    },
+    "display": {
+      "sort_order": 10,
+      "layout": "grid"
+    }
+  }
+}

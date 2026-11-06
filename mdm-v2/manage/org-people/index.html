@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Org / People</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../data/marts/org-people.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+<script>
+  // Opened somewhere without the MASTER folder around it: use the published shared library instead.
+  if (!window.MDMApp) document.write('<link rel="stylesheet" href="https://repo.cameron-dietz.com/lib/mdm-app.css">' +
+    ["mdm-client", "mdm-registry", "mdm-store", "mdm-app"].map((f) => '<script src="https://repo.cameron-dietz.com/lib/' + f + '.js"><\/script>').join(""));
+</script>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * Master Organization / People Manager (registry id: org-people, ceiling C3).
+ * People, organizations (tree by parent_id), employments, family relations, locations, duplicates.
+ * With the warehouse folder connected every save goes straight to data/warehouse; otherwise use Import / Export.
+ */
+const FAMILY = ["spouse", "parent", "child", "sibling", "guardian", "ward"];
+const norm = (s) => String(s || "").toLowerCase().normalize("NFKD").replace(/[^\w ]/g, "").replace(/\b(inc|llc|ltd|corp|co|company|the)\b/g, "").replace(/\s+/g, " ").trim();
+const cps = (r) => (r.data && r.data.contact_points) || [];
+const cp = (r, re) => { const list = cps(r).filter((c) => re.test(c.kind)); const p = list.find((c) => c.primary) || list[0]; return p ? p.value : ((r.data && r.data.contact) || {})[re.source.split("|")[0]] || ""; };
+const edgeTo = (r, rel) => (r.relations || []).find((e) => e.rel === rel) || {};
+const isCurrent = (r) => !r.valid_to || r.valid_to > new Date().toISOString();
+
+function employments(app, r) {
+  const rel = r.type === "person" ? "person" : "organization";
+  return app.incoming(r.id, rel).map((x) => x.rec).filter((x) => x.type === "employment");
+}
+function worksAt(app, p) {
+  return employments(app, p).filter(isCurrent).map((e) => edgeTo(e, "organization").label).filter(Boolean).join(", ");
+}
+
+function employmentTemplate(person, org) {
+  const rels = [];
+  if (person) rels.push({ rel: "person", type: "person", id: person.id, label: person.label, primary: true });
+  if (org) rels.push({ rel: "organization", type: "organization", id: org.id, label: org.label });
+  return { label: [person && person.label, org && org.label].filter(Boolean).join(" @ "), relations: rels, valid_from: new Date().toISOString().slice(0, 10) + "T00:00:00Z", data: {} };
+}
+
+function addEmployment(r, app) {
+  const isPerson = r.type === "person";
+  app.pick(isPerson ? `Where does ${r.label} work?` : `Who works at ${r.label}?`, app.byType(isPerson ? "organization" : "person"), (other) => {
+    const t = isPerson ? employmentTemplate(r, other) : employmentTemplate(other, r);
+    app.openEditor(app.newRecord("employment", t), true);
+  });
+}
+
+function addFamily(r, app) {
+  const kind = prompt(`Relation from ${r.label}: ${FAMILY.join(", ")}`, "spouse");
+  if (!kind || !FAMILY.includes(kind.trim())) return;
+  app.pick(`${r.label} is ${kind} of…`, app.byType("person").filter((p) => p.id !== r.id), (other) => {
+    const inverse = { spouse: "spouse", sibling: "sibling", parent: "child", child: "parent", guardian: "ward", ward: "guardian" }[kind];
+    const a = app.clone(r); a.relations = (a.relations || []).concat([app.edge(kind, other)]);
+    const b = app.clone(other); b.relations = (b.relations || []).concat([app.edge(inverse, r)]);
+    app.saveDraft(a, { silent: true, defer: true }); app.saveDraft(b, { silent: true });
+    app.toast(`${r.label} ↔ ${other.label} linked`);
+  }, "Both people get a link (spouse ↔ spouse, parent ↔ child), the same way the contact import writes them.");
+}
+
+// Merge: the duplicate is kept, marked superseded_by the keeper; links pointing at it move to the keeper.
+function merge(dup, app, likely) {
+  // likely matches first (same group in the duplicates list, or the same normalized name), then everyone else
+  const first = new Set((likely || []).map((r) => r.id));
+  const score = (x) => (first.has(x.id) ? 0 : norm(x.label) === norm(dup.label) ? 1 : 2);
+  const cands = app.byType(dup.type).filter((x) => x.id !== dup.id && x.status !== "superseded").sort((a, b) => score(a) - score(b) || String(a.label).localeCompare(String(b.label)));
+  app.pick(`Merge "${dup.label}" into…`, cands, (keep) => {
+    if (!confirm(`Keep "${keep.label}" and mark "${dup.label}" as superseded by it?\nNothing is deleted: the duplicate stays, with superseded_by set, and links to it move to the keeper.`)) return;
+    const k = app.clone(keep);
+    k.aliases = [...new Set([...(k.aliases || []), ...(dup.label !== k.label ? [dup.label] : []), ...(dup.aliases || [])])];
+    k.identifiers = Object.assign({}, k.identifiers);
+    for (const [s, v] of Object.entries(dup.identifiers || {})) k.identifiers[s] = [...new Set([...app.vals(k.identifiers[s]), ...app.vals(v)])];
+    if (!Object.keys(k.identifiers).length) delete k.identifiers;
+    if (cps(dup).length) {
+      k.data = Object.assign({}, k.data);
+      const seen = new Set(cps(k).map((c) => c.kind + ":" + c.value));
+      k.data.contact_points = cps(k).concat(cps(dup).filter((c) => !seen.has(c.kind + ":" + c.value)).map((c) => Object.assign({}, c, { primary: false })));
+    }
+    k.tags = [...new Set([...(k.tags || []), ...(dup.tags || [])])]; if (!k.tags.length) delete k.tags;
+    const d = app.clone(dup); d.status = "superseded"; d.superseded_by = keep.id;
+    app.saveDraft(k, { silent: true, defer: true }); app.saveDraft(d, { silent: true, defer: true });
+    let moved = 0;
+    for (const x of app.incoming(dup.id)) {
+      const r = app.clone(x.rec);
+      r.relations = r.relations.map((e) => (e.id === dup.id ? Object.assign({}, e, { id: keep.id, label: keep.label }) : e));
+      app.saveDraft(r, { silent: true, defer: true }); moved++;
+    }
+    for (const c of app.children(dup.id)) { const r = app.clone(c); r.parent_id = keep.id; app.saveDraft(r, { silent: true, defer: true }); moved++; }
+    app.refresh(); app.goTo(keep.id);
+    app.toast(`Merged into ${keep.label}; ${moved} linked records repointed`);
+  }, "Pick the record to keep. Likely matches are listed first.");
+}
+
+function duplicates(app) {
+  const groups = [];
+  for (const type of ["person", "organization"]) {
+    const by = new Map();
+    const add = (key, r) => { if (!key) return; if (!by.has(key)) by.set(key, new Set()); by.get(key).add(r); };
+    for (const r of app.byType(type).filter((x) => x.status !== "superseded")) {
+      add("name:" + norm(r.label), r);
+      for (const d of (r.identifiers || {}).domain || []) add("domain:" + String(d).toLowerCase().replace(/^www\./, ""), r);
+      for (const c of cps(r)) if (/email/.test(c.kind)) add("email:" + c.value.toLowerCase().trim(), r); else if (/phone|mobile/.test(c.kind)) { const d = c.value.replace(/\D/g, "").slice(-10); if (d.length === 10) add("phone:" + d, r); }
+    }
+    const seen = new Set();
+    for (const [key, set] of by) {
+      if (set.size < 2) continue;
+      const ids = [...set].map((r) => r.id).sort().join();
+      if (seen.has(ids)) continue; seen.add(ids);
+      groups.push({ type, why: key.split(":")[0], key: key.slice(key.indexOf(":") + 1), recs: [...set] });
+    }
+  }
+  return groups;
+}
+
+MDMApp.start({
+  id: "org-people",
+  title: "Org / People",
+  subtitle: "organizations · people · employments · family",
+  types: ["organization", "person", "employment", "relationship", "location", "place", "taxonomy_scheme"],
+  views: [
+    { id: "people", group: "People", label: "People", type: "person", facets: ["category.realm", "category.role", "category.kind"],
+      columns: [
+        { label: "Name", get: "label" },
+        { label: "Works at", get: (r, app) => worksAt(app, r) },
+        { label: "Email", get: (r) => cp(r, /email/) },
+        { label: "Phone", get: (r) => cp(r, /phone|mobile/) },
+        { label: "Realm", get: "category.realm" },
+        { label: "Status", get: "status" },
+      ] },
+    { id: "relationships", group: "People", label: "Family and relationships", type: "relationship",
+      intro: "Relationship records (subject IS kind OF object). Simple family links live on the person records themselves: use <b>Add family link</b> on a person.",
+      columns: [{ label: "Subject", get: (r) => edgeTo(r, "subject").label }, { label: "Kind", get: "data.kind" }, { label: "Object", get: (r) => edgeTo(r, "object").label }] },
+    { id: "orgs", group: "Organizations", label: "Organization tree", type: "organization", kind: "tree", facets: ["category.kind", "category.role"],
+      nodeNote: (r, app) => { const n = employments(app, r).filter(isCurrent).length; return n ? `${n} people` : ""; } },
+    { id: "orglist", group: "Organizations", label: "All organizations", type: "organization", facets: ["category.kind", "category.role", "category.realm"],
+      filter: (r) => r.status !== "superseded",
+      columns: [
+        { label: "Name", get: "label" },
+        { label: "Kind", get: "category.kind" },
+        { label: "Role", get: "category.role" },
+        { label: "People", get: (r, app) => employments(app, r).length || "", num: true },
+        { label: "Part of", get: (r, app) => (r.parent_id ? app.label(r.parent_id) : "") },
+      ] },
+    { id: "employments", group: "Organizations", label: "Employments", type: "employment", facets: ["status", "data.employment_type"],
+      newTemplate: () => employmentTemplate(),
+      columns: [
+        { label: "Person", get: (r) => edgeTo(r, "person").label },
+        { label: "Organization", get: (r) => edgeTo(r, "organization").label },
+        { label: "Title", get: "data.job_title" },
+        { label: "Department", get: "data.department" },
+        { label: "From", get: "valid_from", date: true },
+        { label: "To", get: "valid_to", date: true },
+      ] },
+    { id: "dupes", group: "Quality", label: "Possible duplicates", kind: "custom", records: (app) => duplicates(app).flatMap((g) => g.recs),
+      intro: "People and organizations that share a name, email, phone or web domain. Merging keeps both records: the duplicate is marked <i>superseded</i> and its links move to the one you keep.",
+      render: (box, app) => {
+        const groups = duplicates(app);
+        if (!groups.length) { box.append(app.h("p", { class: "mdm-muted" }, "No likely duplicates.")); return; }
+        for (const g of groups.slice(0, 300)) {
+          box.append(app.h("div", { class: "mdm-sec" },
+            app.h("h4", {}, `${app.humanize(g.type)} · same ${g.why}: ${g.key}`),
+            ...g.recs.map((r) => app.h("div", { class: "mdm-rel" },
+              app.h("a", { href: "#", onclick: (e) => { e.preventDefault(); app.select(r.id); } }, r.label),
+              app.h("small", {}, [r.source_system, worksAt(app, r)].filter(Boolean).join(" · ")),
+              app.h("button", { class: "mdm-btn small", onclick: () => merge(r, app, g.recs.filter((x) => x.id !== r.id)) }, "Merge…")))));
+        }
+      } },
+    { id: "locations", group: "Places", label: "Locations", type: "location",
+      columns: [{ label: "Name", get: "label" }, { label: "City", get: "geo.address.address_locality" }, { label: "State", get: "geo.address.address_region" }, { label: "Owner", get: (r) => edgeTo(r, "owned_by").label }] },
+    { id: "places", group: "Places", label: "Places (gazetteer)", type: "place", kind: "tree", allowNew: false },
+  ],
+  actions: [
+    { label: "Add employment", when: (r) => r.type === "person" || r.type === "organization", run: addEmployment },
+    { label: "Add family link", when: (r) => r.type === "person", run: addFamily },
+    { label: "Merge into…", when: (r) => (r.type === "person" || r.type === "organization") && r.status !== "superseded", run: merge },
+  ],
+  detailExtras: (r, app) => {
+    const h = app.h;
+    const out = [];
+    if (r.type === "person" || r.type === "organization") {
+      const emps = employments(app, r).sort((a, b) => String(b.valid_from || "").localeCompare(String(a.valid_from || "")));
+      if (emps.length) out.push({ title: r.type === "person" ? "Work history" : `People (${emps.length})`, el: h("div", {}, emps.slice(0, 80).map((e) => {
+        const other = edgeTo(e, r.type === "person" ? "organization" : "person");
+        const when = [e.valid_from && e.valid_from.slice(0, 7), e.valid_to ? e.valid_to.slice(0, 7) : "now"].filter(Boolean).join(" → ");
+        return h("div", { class: "mdm-rel" }, h("a", { href: "#", onclick: (ev) => { ev.preventDefault(); app.goTo(other.id); } }, other.label || "?"),
+          h("small", {}, [(e.data || {}).job_title, when].filter(Boolean).join(" · ")),
+          h("a", { href: "#", class: "mdm-muted", onclick: (ev) => { ev.preventDefault(); app.goTo(e.id); } }, "open"));
+      })) });
+    }
+    if (r.type === "person") {
+      const fam = (r.relations || []).filter((e) => FAMILY.includes(e.rel));
+      const recs = app.incoming(r.id, "subject").concat(app.incoming(r.id, "object")).filter((x) => x.rec.type === "relationship");
+      if (fam.length || recs.length) out.push({ title: "Family", el: h("div", {},
+        fam.map((e) => h("div", { class: "mdm-rel" }, h("a", { href: "#", onclick: (ev) => { ev.preventDefault(); app.goTo(e.id); } }, e.label || e.id), h("small", {}, e.rel))),
+        recs.map((x) => h("div", { class: "mdm-rel" }, h("a", { href: "#", onclick: (ev) => { ev.preventDefault(); app.goTo(x.rec.id); } }, x.rec.label), h("small", {}, (x.rec.data || {}).kind || "relationship")))) });
+    }
+    if (r.status === "superseded" && r.superseded_by) out.push({ title: "Merged", el: h("div", {}, "Superseded by ", h("a", { href: "#", onclick: (ev) => { ev.preventDefault(); app.goTo(r.superseded_by); } }, app.label(r.superseded_by))) });
+    return out;
+  },
+});
+</script>
+</body>
+</html>

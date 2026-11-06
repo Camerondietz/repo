@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product manager</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../data/marts/product-manager.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+<script>
+  // Opened somewhere without the MASTER folder around it: use the published shared library instead.
+  if (!window.MDMApp) document.write('<link rel="stylesheet" href="https://repo.cameron-dietz.com/lib/mdm-app.css">' +
+    ["mdm-client", "mdm-registry", "mdm-store", "mdm-app"].map((f) => '<script src="https://repo.cameron-dietz.com/lib/' + f + '.js"><\/script>').join(""));
+</script>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * Master Product Manager (registry id: product-manager, ceiling C2).
+ * Products with taxonomy facets, the product and ETIM trees, ETIM -> product mappings, part numbers,
+ * manufacturers and vendors, an unclassified queue and BOM links (rel "component", props.qty).
+ * Part numbers (manufacturer, vendor, distributor, customer) live on the product: data.part_numbers.
+ * Older separate part_number records are still shown until they are moved onto their products.
+ */
+const edgeTo = (r, rel) => (r.relations || []).find((e) => e.rel === rel) || {};
+const scheme = (t) => (t.data || {}).scheme;
+const termsOf = (app, s) => app.byType("taxonomy_term").filter((t) => scheme(t) === s);
+const productPath = (r) => [].concat((r.category || {}).product || [])[0] || "";
+const isClassified = (r) => !!productPath(r) || (r.relations || []).some((e) => e.rel === "classified_as");
+const STOP = new Set(["and", "for", "with", "the", "other", "product", "products", "part", "parts", "accessories", "spare", "systems", "system", "equipment", "material", "materials", "general", "unknown", "status"]);
+const words = (s) => String(s || "").toLowerCase().split(/[^a-z0-9]+/).filter((w) => w.length > 2 && !STOP.has(w));
+
+function pathLabel(app, path) {
+  if (!path) return "";
+  const t = termsOf(app, "product").find((x) => x.data.path === path);
+  return t ? t.label : path;
+}
+// every part number of a product: the entries on it, then any older part_number records pointing at it
+function partNumbers(app, p) {
+  const own = ((p.data || {}).part_numbers || []).map((x, i) => Object.assign({ _i: i }, x));
+  const legacy = app.incoming(p.id, "product").map((x) => x.rec).filter((x) => x.type === "part_number")
+    .map((x) => ({ pn: (x.data || {}).pn || x.label, kind: (x.data || {}).pn_type, org: edgeTo(x, "issuer").label, _legacy: x }));
+  return own.concat(legacy);
+}
+function allPartNumbers(app) { return app.byType("product").flatMap((p) => partNumbers(app, p).map((x) => Object.assign({ product: p }, x))); }
+function classifiedCount(app, term) { return app.incoming(term.id, "classified_as").length; }
+
+// Suggest product classes from the vendor's category and the product's own words.
+function suggestions(app, p) {
+  const bag = new Set(words([p.label, p.summary, (p.category || {}).vendor_category, (p.data || {}).specs && Object.keys(p.data.specs).join(" ")].join(" ")));
+  return termsOf(app, "product").map((t) => ({ t, score: words(t.label).filter((w) => bag.has(w) || bag.has(w.replace(/s$/, ""))).length }))
+    .filter((x) => x.score).sort((a, b) => b.score - a.score).slice(0, 6).map((x) => x.t);
+}
+
+function classify(p, app) {
+  const sug = suggestions(app, p);
+  const leaves = termsOf(app, "product").filter((t) => !app.children(t.id).length);
+  app.pick(`Classify "${p.label}"`, sug.concat(leaves.filter((t) => !sug.includes(t))), (t) => {
+    const c = app.clone(p);
+    c.relations = (c.relations || []).filter((e) => !(e.rel === "classified_as" && scheme(app.get(e.id) || {}) === "product")).concat([app.edge("classified_as", t)]);
+    c.category = Object.assign({}, c.category, { product: t.data.path });
+    app.saveDraft(c, { silent: true });
+    app.toast(`${p.label} → ${t.label}`);
+  }, sug.length ? `Best matches first (${sug.map((t) => t.label).join(", ")}), then every product class.` : "Pick a product class.");
+}
+
+const PN_KINDS = ["manufacturer", "vendor", "distributor", "customer", "internal", "gtin", "other"];
+// Adds an entry to the product's data.part_numbers (no separate record).
+function addPartNumber(p, app) {
+  const pn = prompt(`Part number for ${p.label}`); if (!pn || !pn.trim()) return;
+  let kind = (prompt(`Whose number is it? ${PN_KINDS.join(", ")}`, "vendor") || "vendor").trim().toLowerCase();
+  if (!PN_KINDS.includes(kind)) kind = "other";
+  const finish = (issuer) => {
+    const c = app.clone(p);
+    c.data = Object.assign({}, c.data);
+    const entry = { kind, pn: pn.trim() };
+    if (issuer) { entry.org = issuer.label; entry.org_id = issuer.id; }
+    c.data.part_numbers = [].concat(c.data.part_numbers || [], [entry]);
+    app.saveDraft(c);
+    app.toast(`${pn.trim()} added to ${p.label}. Edit the product to add pack size, price or lead time.`);
+  };
+  if (kind === "internal" || kind === "gtin") return finish(null);
+  app.pick("Which company's number is it?", app.byType("organization"), finish, "Skip with Cancel and edit the product to type a name instead.");
+}
+// Moves an older part_number record onto its product as a data.part_numbers entry and marks the record superseded.
+function movePartNumber(rec, app) {
+  const prod = app.get(edgeTo(rec, "product").id);
+  if (!prod) return app.toast("Its product is not loaded");
+  const d = rec.data || {};
+  const entry = app.prune({ kind: PN_KINDS.includes(d.pn_type) ? d.pn_type : "other", pn: d.pn || rec.label, org: edgeTo(rec, "issuer").label, org_id: edgeTo(rec, "issuer").id,
+    description: rec.summary, pack_qty: d.pack_qty, uom: d.uom, preferred: d.preferred, commercial: d.commercial });
+  const c = app.clone(prod); c.data = Object.assign({}, c.data);
+  c.data.part_numbers = [].concat(c.data.part_numbers || [], [entry]);
+  const old = app.clone(rec); old.status = "superseded"; old.superseded_by = prod.id;
+  app.saveDraft(c, { silent: true, defer: true }); app.saveDraft(old, { silent: true });
+  app.toast(`${entry.pn} moved onto ${prod.label}`);
+}
+
+function addComponent(p, app) {
+  app.pick(`Add a component to ${p.label}`, app.byType("product").filter((x) => x.id !== p.id), (part) => {
+    const qty = Number(prompt(`How many ${part.label} per ${p.label}?`, "1")) || 1;
+    const c = app.clone(p);
+    c.relations = (c.relations || []).concat([app.edge("component", part, { props: { qty } })]);
+    app.saveDraft(c);
+  });
+}
+
+MDMApp.start({
+  id: "product-manager",
+  title: "Product manager",
+  subtitle: "products · part numbers · taxonomy · BOMs",
+  types: ["product", "part_number", "taxonomy_term", "taxonomy_scheme", "mapping", "organization"],
+  views: [
+    { id: "products", group: "Products", label: "Products", type: "product", facets: ["category.product", "category.vendor_category", "data.lifecycle", "data.brand"],
+      columns: [
+        { label: "Product", get: "label" },
+        { label: "MPN", get: "data.mpn" },
+        { label: "Manufacturer", get: (r) => edgeTo(r, "manufacturer").label || (r.data || {}).brand },
+        { label: "Class", get: (r, app) => pathLabel(app, productPath(r)) },
+        { label: "Lifecycle", get: "data.lifecycle" },
+        { label: "Part numbers", get: (r, app) => partNumbers(app, r).length || "", num: true },
+      ] },
+    { id: "unclassified", group: "Products", label: "Needs a class", type: "product", filter: (r) => !isClassified(r), allowNew: false,
+      intro: "Products without a product-taxonomy class. Open one and use <b>Classify</b>: it adds a <code>classified_as</code> link and fills <code>category.product</code>.",
+      columns: [
+        { label: "Product", get: "label" },
+        { label: "Vendor's category", get: "category.vendor_category" },
+        { label: "Suggested", get: (r, app) => suggestions(app, r).slice(0, 2).map((t) => t.label).join(", ") },
+      ] },
+    { id: "parts", group: "Products", label: "Part numbers", kind: "custom", records: (app) => app.byType("product").filter((p) => partNumbers(app, p).length),
+      intro: "Every company's number for every product. They are stored on the product (<code>data.part_numbers</code>); add one with <b>Add part number</b> on a product, or edit the product.",
+      render: (box, app) => {
+        const h = app.h;
+        const q = (app.state.q || "").toLowerCase();
+        const rows = allPartNumbers(app).filter((x) => !q || [x.pn, x.org, x.kind, x.product.label].join(" ").toLowerCase().includes(q));
+        const t = h("table", { class: "mdm-table" }, h("thead", {}, h("tr", {}, ["Part number", "Whose", "Company", "Product", "Pack", "Price", ""].map((x) => h("th", {}, x)))));
+        const tb = h("tbody");
+        rows.sort((a, b) => String(a.pn).localeCompare(String(b.pn))).slice(0, 2000).forEach((x) => {
+          const price = x.commercial && x.commercial.price ? app.fmtMoney(x.commercial.price) : "";
+          tb.append(h("tr", { onclick: () => app.goTo(x._legacy ? x._legacy.id : x.product.id) }, h("td", {}, x.pn || ""), h("td", {}, x.kind || ""), h("td", {}, x.org || ""), h("td", {}, x.product.label),
+            h("td", {}, x.pack_qty ? `${x.pack_qty} ${x.uom || ""}` : ""), h("td", {}, price || ""), h("td", { class: "mdm-muted" }, x._legacy ? "older record" : "")));
+        });
+        t.append(tb); box.append(t);
+        if (!rows.length) box.append(h("p", { class: "mdm-muted" }, "No part numbers yet."));
+      } },
+    { id: "legacy-parts", group: "Products", label: "Older part number records", type: "part_number", filter: (r) => r.status !== "superseded", allowNew: false,
+      intro: "Separate <code>part_number</code> records from before part numbers moved onto the product. Open one and use <b>Move onto product</b>.",
+      columns: [
+        { label: "Part number", get: "data.pn" },
+        { label: "Type", get: "data.pn_type" },
+        { label: "Product", get: (r) => edgeTo(r, "product").label },
+        { label: "Issuer", get: (r) => edgeTo(r, "issuer").label },
+      ] },
+    { id: "bom", group: "Products", label: "Assemblies (BOM)", type: "product", filter: (r) => (r.relations || []).some((e) => e.rel === "component"), allowNew: false,
+      intro: "Products with components. Add one with <b>Add component</b> on a product; quantity goes in the link's <code>props.qty</code>.",
+      columns: [{ label: "Assembly", get: "label" }, { label: "Components", get: (r) => (r.relations || []).filter((e) => e.rel === "component").map((e) => `${(e.props || {}).qty || 1}× ${e.label}`).join(", ") }] },
+    { id: "ptree", group: "Taxonomy", label: "Product taxonomy", type: "taxonomy_term", kind: "tree", filter: (r) => scheme(r) === "product",
+      newTemplate: () => ({ data: { scheme: "product" } }), nodeNote: (r, app) => { const n = classifiedCount(app, r); return n ? `${n} products` : ""; } },
+    { id: "etree", group: "Taxonomy", label: "ETIM classes", type: "taxonomy_term", kind: "tree", filter: (r) => scheme(r) === "etim", allowNew: false,
+      intro: "ETIM groups and classes, read-only reference. ETIM's license is checked before any of this is published publicly." },
+    { id: "mappings", group: "Taxonomy", label: "ETIM → product mappings", type: "mapping", facets: ["data.match", "data.method"],
+      columns: [
+        { label: "ETIM", get: (r) => edgeTo(r, "source").label },
+        { label: "Product class", get: (r) => edgeTo(r, "target").label },
+        { label: "Match", get: "data.match" },
+        { label: "Confidence", get: "data.confidence", num: true },
+      ] },
+    { id: "makers", group: "Companies", label: "Manufacturers and vendors", type: "organization",
+      filter: (r, app) => [].concat((r.category || {}).role || []).some((x) => /manufacturer|vendor|distributor|supplier/.test(x)) || app.incoming(r.id, "manufacturer").length || app.incoming(r.id, "issuer").length,
+      newTemplate: () => ({ category: { role: ["manufacturer"], realm: "aventrek" } }),
+      columns: [
+        { label: "Company", get: "label" },
+        { label: "Role", get: "category.role" },
+        { label: "Products made", get: (r, app) => app.incoming(r.id, "manufacturer").length || "", num: true },
+        { label: "Part numbers issued", get: (r, app) => app.incoming(r.id, "issuer").length || "", num: true },
+      ] },
+  ],
+  actions: [
+    { label: "Classify", when: (r) => r.type === "product", run: classify },
+    { label: "Add part number", when: (r) => r.type === "product", run: addPartNumber },
+    { label: "Move onto product", when: (r) => r.type === "part_number" && r.status !== "superseded", run: movePartNumber },
+    { label: "Add component", when: (r) => r.type === "product", run: addComponent },
+  ],
+  detailExtras: (r, app) => {
+    const h = app.h, out = [];
+    const link = (id, text) => h("a", { href: "#", onclick: (e) => { e.preventDefault(); app.goTo(id); } }, text);
+    if (r.type === "product") {
+      const pns = partNumbers(app, r);
+      if (pns.length) out.push({ title: "Part numbers", el: h("div", {}, pns.map((x) => h("div", { class: "mdm-rel" },
+        h("span", {}, x._legacy ? link(x._legacy.id, x.pn) : x.pn, x.org_id && app.get(x.org_id) ? h("span", {}, " · ", link(x.org_id, x.org || app.label(x.org_id))) : x.org ? " · " + x.org : ""),
+        h("small", {}, [x.kind, x.pack_qty ? `${x.pack_qty} ${x.uom || ""}` : "", x.commercial && x.commercial.price ? app.fmtMoney(x.commercial.price) : "", x._legacy ? "older record" : ""].filter(Boolean).join(" · "))))) });
+      const comps = (r.relations || []).filter((e) => e.rel === "component");
+      const usedIn = app.incoming(r.id, "component");
+      if (comps.length || usedIn.length) out.push({ title: "Bill of materials", el: h("div", {},
+        comps.map((e) => h("div", { class: "mdm-rel" }, link(e.id, e.label), h("small", {}, `× ${(e.props || {}).qty || 1}`))),
+        usedIn.map((x) => h("div", { class: "mdm-rel" }, link(x.rec.id, x.rec.label), h("small", {}, "uses this")))) });
+      const specs = (r.data || {}).specs;
+      if (specs && Object.keys(specs).length) out.push({ title: "Specifications", el: app.kv(specs) });
+    }
+    if (r.type === "taxonomy_term") {
+      const prods = app.incoming(r.id, "classified_as").map((x) => x.rec);
+      const maps = app.incoming(r.id, "source").concat(app.incoming(r.id, "target")).map((x) => x.rec).filter((m) => m.type === "mapping");
+      if (maps.length) out.push({ title: "Mapped to", el: h("div", {}, maps.map((m) => { const other = edgeTo(m, scheme(r) === "etim" ? "target" : "source"); return h("div", { class: "mdm-rel" }, link(other.id, other.label || "?"), h("small", {}, (m.data || {}).match)); })) });
+      if (prods.length) out.push({ title: `Products (${prods.length})`, el: h("div", {}, prods.slice(0, 100).map((p) => h("div", { class: "mdm-rel" }, link(p.id, p.label)))) });
+      if ((r.data || {}).attributes) out.push({ title: "Attributes for this class", el: h("div", {}, [].concat(r.data.attributes).map((a) => h("div", {}, typeof a === "object" ? (a.label || a.key) + (a.unit ? ` (${a.unit})` : "") : String(a)))) });
+    }
+    return out;
+  },
+});
+</script>
+</body>
+</html>

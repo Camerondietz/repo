@@ -1,0 +1,1700 @@
+{
+  "$schema": "../../schema/collection.schema.json",
+  "meta": {
+    "type": "place",
+    "count": 53,
+    "generated": "2026-10-27T00:23:53Z",
+    "tool": "mdm.py",
+    "schema_version": "2.1"
+  },
+  "items": [
+    {
+      "id": "00b371fb-245d-56dd-af4f-2b058e01c7c3",
+      "uri": "https://mdm.cameron-dietz.com/id/place/00b371fb-245d-56dd-af4f-2b058e01c7c3",
+      "type": "place",
+      "slug": "us-ak",
+      "label": "Alaska",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "02"
+        ],
+        "usps": [
+          "AK"
+        ],
+        "iso3166_2": [
+          "US-AK"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#2:state",
+      "checksum_sha256": "e5324a04daf4417046f755ee69972a48bd285d78e6478b6456d39344d49248cc",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "027a4b2e-32e5-5170-b684-6921b6c3eaf3",
+      "uri": "https://mdm.cameron-dietz.com/id/place/027a4b2e-32e5-5170-b684-6921b6c3eaf3",
+      "type": "place",
+      "slug": "us-md",
+      "label": "Maryland",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "24"
+        ],
+        "usps": [
+          "MD"
+        ],
+        "iso3166_2": [
+          "US-MD"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#21:state",
+      "checksum_sha256": "6f145e2b839024b00ca0334a3a86b74869a70153d57723c3b9808205eae15821",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "0bd59b08-5186-5094-8c03-8fbdd5945f12",
+      "uri": "https://mdm.cameron-dietz.com/id/place/0bd59b08-5186-5094-8c03-8fbdd5945f12",
+      "type": "place",
+      "slug": "us-oh",
+      "label": "Ohio",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "39"
+        ],
+        "usps": [
+          "OH"
+        ],
+        "iso3166_2": [
+          "US-OH"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#36:state",
+      "checksum_sha256": "e8876606de2c4f039a889b1810b895aefaec3a229b81aac39a7cfe27bd673a43",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "187801f7-2e2d-5271-8297-e7cf6fc4c7bd",
+      "uri": "https://mdm.cameron-dietz.com/id/place/187801f7-2e2d-5271-8297-e7cf6fc4c7bd",
+      "type": "place",
+      "slug": "us-ms",
+      "label": "Mississippi",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "28"
+        ],
+        "usps": [
+          "MS"
+        ],
+        "iso3166_2": [
+          "US-MS"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#25:state",
+      "checksum_sha256": "9385212723e86ad2ae02418ef835962f6227ab20930227e43e57481c295045f3",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "1b0afed7-5b07-5867-b776-265c10b30460",
+      "uri": "https://mdm.cameron-dietz.com/id/place/1b0afed7-5b07-5867-b776-265c10b30460",
+      "type": "place",
+      "slug": "us-wa",
+      "label": "Washington",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "53"
+        ],
+        "usps": [
+          "WA"
+        ],
+        "iso3166_2": [
+          "US-WA"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#48:state",
+      "checksum_sha256": "398d84f38b36011f21319ed5b95e2f5ed1d34d95a43cf7725ed17332ad0c4130",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "208df884-dbf8-5617-8493-e768a8044ee3",
+      "uri": "https://mdm.cameron-dietz.com/id/place/208df884-dbf8-5617-8493-e768a8044ee3",
+      "type": "place",
+      "slug": "us-ks",
+      "label": "Kansas",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "20"
+        ],
+        "usps": [
+          "KS"
+        ],
+        "iso3166_2": [
+          "US-KS"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#17:state",
+      "checksum_sha256": "4b38c39e4d36c957ed09be92b9f9056e6e6078bfc7bee57350307a5f9158ce1c",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "24c03a85-872c-5a6f-957d-34663a7d62c2",
+      "uri": "https://mdm.cameron-dietz.com/id/place/24c03a85-872c-5a6f-957d-34663a7d62c2",
+      "type": "place",
+      "slug": "us-nm",
+      "label": "New Mexico",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "35"
+        ],
+        "usps": [
+          "NM"
+        ],
+        "iso3166_2": [
+          "US-NM"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#32:state",
+      "checksum_sha256": "d4de2141a0257c826acd0f1d6d898306abf094482475f831f0ef12f2f2057342",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "261268de-3fa4-5238-9edb-e164852b6dac",
+      "uri": "https://mdm.cameron-dietz.com/id/place/261268de-3fa4-5238-9edb-e164852b6dac",
+      "type": "place",
+      "slug": "us-nc",
+      "label": "North Carolina",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "37"
+        ],
+        "usps": [
+          "NC"
+        ],
+        "iso3166_2": [
+          "US-NC"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#34:state",
+      "checksum_sha256": "5e155509e830acbd4f51fac82f8ae01468fbedead0fce407a991df49e1c0345c",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "291d20ed-4ec9-5526-bc90-d6295a320458",
+      "uri": "https://mdm.cameron-dietz.com/id/place/291d20ed-4ec9-5526-bc90-d6295a320458",
+      "type": "place",
+      "slug": "us-co",
+      "label": "Colorado",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "08"
+        ],
+        "usps": [
+          "CO"
+        ],
+        "iso3166_2": [
+          "US-CO"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#6:state",
+      "checksum_sha256": "496e2298dd5eaf96ea84080b754f42d7fedb5591973f7e176885f31afa8879c1",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "2e142b1d-623c-5262-b940-6a17f9bebd12",
+      "uri": "https://mdm.cameron-dietz.com/id/place/2e142b1d-623c-5262-b940-6a17f9bebd12",
+      "type": "place",
+      "slug": "us-nj",
+      "label": "New Jersey",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "34"
+        ],
+        "usps": [
+          "NJ"
+        ],
+        "iso3166_2": [
+          "US-NJ"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#31:state",
+      "checksum_sha256": "cca618057ee614ae22e3b6438c450dde5289452508aa9f1997998c0fc36000e0",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "356cff1b-212a-593e-834a-e69f8c142f4f",
+      "uri": "https://mdm.cameron-dietz.com/id/place/356cff1b-212a-593e-834a-e69f8c142f4f",
+      "type": "place",
+      "slug": "us-ny",
+      "label": "New York",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "36"
+        ],
+        "usps": [
+          "NY"
+        ],
+        "iso3166_2": [
+          "US-NY"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#33:state",
+      "checksum_sha256": "087991326ba9ddbfc0756366281b0240e3fcdd6b5788af76186638a970ad3804",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "385f36c8-9675-5c56-812d-753b7e4212e6",
+      "uri": "https://mdm.cameron-dietz.com/id/place/385f36c8-9675-5c56-812d-753b7e4212e6",
+      "type": "place",
+      "slug": "us-pa",
+      "label": "Pennsylvania",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "42"
+        ],
+        "usps": [
+          "PA"
+        ],
+        "iso3166_2": [
+          "US-PA"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#39:state",
+      "checksum_sha256": "aa59068384223c1beb920061ccff33272f9a7c564a192e9ab16558d493ecddc8",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "3896a2c7-9d76-582e-9faf-465ef27675f7",
+      "uri": "https://mdm.cameron-dietz.com/id/place/3896a2c7-9d76-582e-9faf-465ef27675f7",
+      "type": "place",
+      "slug": "us-sc",
+      "label": "South Carolina",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "45"
+        ],
+        "usps": [
+          "SC"
+        ],
+        "iso3166_2": [
+          "US-SC"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#41:state",
+      "checksum_sha256": "6cd36fa209c5f0f80efee62249a153d0f7ad394a593d70aa8e32eb3c36ee2dea",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "4eb09a14-06c3-5724-90f2-3aa528d6976a",
+      "uri": "https://mdm.cameron-dietz.com/id/place/4eb09a14-06c3-5724-90f2-3aa528d6976a",
+      "type": "place",
+      "slug": "us-la",
+      "label": "Louisiana",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "22"
+        ],
+        "usps": [
+          "LA"
+        ],
+        "iso3166_2": [
+          "US-LA"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#19:state",
+      "checksum_sha256": "083e8abee5663c36eeb027d697622097b863c2bfbcbdff671a0bb27e65eb84ce",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "4f17aba2-9866-5c05-a092-48b7f3ad1555",
+      "uri": "https://mdm.cameron-dietz.com/id/place/4f17aba2-9866-5c05-a092-48b7f3ad1555",
+      "type": "place",
+      "slug": "us-ar",
+      "label": "Arkansas",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "05"
+        ],
+        "usps": [
+          "AR"
+        ],
+        "iso3166_2": [
+          "US-AR"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#4:state",
+      "checksum_sha256": "e7d4cfb1ece1680b409a0752a703364bdccff2430da02b15e00d57ba83545524",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "4fb725ce-995e-589c-ad22-759d275a9a03",
+      "uri": "https://mdm.cameron-dietz.com/id/place/4fb725ce-995e-589c-ad22-759d275a9a03",
+      "type": "place",
+      "slug": "us-ne",
+      "label": "Nebraska",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "31"
+        ],
+        "usps": [
+          "NE"
+        ],
+        "iso3166_2": [
+          "US-NE"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#28:state",
+      "checksum_sha256": "0978a524527c4ad6c5a4c0e0b76c8353da75a8ac1e5d0fca6937558c5b7f127f",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "519547f9-120e-5cde-93f6-ab95f548e122",
+      "uri": "https://mdm.cameron-dietz.com/id/place/519547f9-120e-5cde-93f6-ab95f548e122",
+      "type": "place",
+      "slug": "us-wv",
+      "label": "West Virginia",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "54"
+        ],
+        "usps": [
+          "WV"
+        ],
+        "iso3166_2": [
+          "US-WV"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#49:state",
+      "checksum_sha256": "f9f26932bafa7310f2d0696906c650a21814ba70226dd4f26b15d0b83aa9b1ee",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "572dd605-d102-5e6d-82f4-400cbb3bbbd5",
+      "uri": "https://mdm.cameron-dietz.com/id/place/572dd605-d102-5e6d-82f4-400cbb3bbbd5",
+      "type": "place",
+      "slug": "us-nd",
+      "label": "North Dakota",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "38"
+        ],
+        "usps": [
+          "ND"
+        ],
+        "iso3166_2": [
+          "US-ND"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#35:state",
+      "checksum_sha256": "9354b072b27446b25119f3624caa9350cb0d666e83e828cfdfd890ffa9ac60dc",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "57406eb4-fcaf-512b-8bdc-98b1fea49d9a",
+      "uri": "https://mdm.cameron-dietz.com/id/place/57406eb4-fcaf-512b-8bdc-98b1fea49d9a",
+      "type": "place",
+      "slug": "us-ky",
+      "label": "Kentucky",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "21"
+        ],
+        "usps": [
+          "KY"
+        ],
+        "iso3166_2": [
+          "US-KY"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#18:state",
+      "checksum_sha256": "cc10a58d68bb68858827603ef1d94fe7fbddc5ad8e09a44d9a0608da32b546ab",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "57fa0130-1662-5f03-b434-92c45aadc23a",
+      "uri": "https://mdm.cameron-dietz.com/id/place/57fa0130-1662-5f03-b434-92c45aadc23a",
+      "type": "place",
+      "slug": "us-il",
+      "label": "Illinois",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "17"
+        ],
+        "usps": [
+          "IL"
+        ],
+        "iso3166_2": [
+          "US-IL"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#14:state",
+      "checksum_sha256": "a22db2eb52959eb870ba66e7dbd2a96b9ad46f6bb299ddbb75d7ee6c7f6da05a",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "610fada5-09f8-55dd-94d0-580bc4304196",
+      "uri": "https://mdm.cameron-dietz.com/id/place/610fada5-09f8-55dd-94d0-580bc4304196",
+      "type": "place",
+      "slug": "us-wy",
+      "label": "Wyoming",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "56"
+        ],
+        "usps": [
+          "WY"
+        ],
+        "iso3166_2": [
+          "US-WY"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#51:state",
+      "checksum_sha256": "4a3bbb4f00657a783357414e80e7223a4c67218c61655fe8dd41ee202d167c28",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "659321d5-0132-5592-b90d-f8f30655d092",
+      "uri": "https://mdm.cameron-dietz.com/id/place/659321d5-0132-5592-b90d-f8f30655d092",
+      "type": "place",
+      "slug": "us-ma",
+      "label": "Massachusetts",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "25"
+        ],
+        "usps": [
+          "MA"
+        ],
+        "iso3166_2": [
+          "US-MA"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#22:state",
+      "checksum_sha256": "0893495aa83161c4b14ad3cde98a3199b596f1b48dbd07550397729306bff46d",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "66f967e3-fd74-5b58-b70e-7fe7f039245b",
+      "uri": "https://mdm.cameron-dietz.com/id/place/66f967e3-fd74-5b58-b70e-7fe7f039245b",
+      "type": "place",
+      "slug": "us-ok",
+      "label": "Oklahoma",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "40"
+        ],
+        "usps": [
+          "OK"
+        ],
+        "iso3166_2": [
+          "US-OK"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#37:state",
+      "checksum_sha256": "a21055cb0401421f9517976497226c77f1040694a945d3cd4bc1eadf0b68a733",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "6e3ddbfa-1b33-515d-958a-9d37679b6cad",
+      "uri": "https://mdm.cameron-dietz.com/id/place/6e3ddbfa-1b33-515d-958a-9d37679b6cad",
+      "type": "place",
+      "slug": "us-nv",
+      "label": "Nevada",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "32"
+        ],
+        "usps": [
+          "NV"
+        ],
+        "iso3166_2": [
+          "US-NV"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#29:state",
+      "checksum_sha256": "8687ba8d325d96e6da2b1e4d15b724125721a5fbdd0296f6d39173c72eaf545e",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "733203ab-2798-5ae1-981a-5dca8a265eb8",
+      "uri": "https://mdm.cameron-dietz.com/id/place/733203ab-2798-5ae1-981a-5dca8a265eb8",
+      "type": "place",
+      "slug": "us-vt",
+      "label": "Vermont",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "50"
+        ],
+        "usps": [
+          "VT"
+        ],
+        "iso3166_2": [
+          "US-VT"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#46:state",
+      "checksum_sha256": "9ab11961d2439dfe4f79f62d7fea6d69d28e2fa8a5ab357dc6b17a58a3d678d5",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "77ff7ed4-91b6-5235-b95e-37786b933cd8",
+      "uri": "https://mdm.cameron-dietz.com/id/place/77ff7ed4-91b6-5235-b95e-37786b933cd8",
+      "type": "place",
+      "slug": "us-mi",
+      "label": "Michigan",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "26"
+        ],
+        "usps": [
+          "MI"
+        ],
+        "iso3166_2": [
+          "US-MI"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#23:state",
+      "checksum_sha256": "670273be2928d9547b66f445e850318ac7743e7295d752186b3c0a5c50901ff0",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "7a1227ac-4045-557c-8831-bceb747e2c6a",
+      "uri": "https://mdm.cameron-dietz.com/id/place/7a1227ac-4045-557c-8831-bceb747e2c6a",
+      "type": "place",
+      "slug": "us-wi",
+      "label": "Wisconsin",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "55"
+        ],
+        "usps": [
+          "WI"
+        ],
+        "iso3166_2": [
+          "US-WI"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#50:state",
+      "checksum_sha256": "c1f5712be3ffffccf713ed6651f3de26e2fbc995ce9ba5663bfea7c16fd30b01",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "7b4e4553-af7b-5098-8695-4944e3ab8d54",
+      "uri": "https://mdm.cameron-dietz.com/id/place/7b4e4553-af7b-5098-8695-4944e3ab8d54",
+      "type": "place",
+      "slug": "us-mt",
+      "label": "Montana",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "30"
+        ],
+        "usps": [
+          "MT"
+        ],
+        "iso3166_2": [
+          "US-MT"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#27:state",
+      "checksum_sha256": "72d49522c3e247c99a80cf701380eb4ede15d01329f5535941bc89faf8ee6cc5",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "81e5e30f-37a1-5f71-9c3c-c50622f78c99",
+      "uri": "https://mdm.cameron-dietz.com/id/place/81e5e30f-37a1-5f71-9c3c-c50622f78c99",
+      "type": "place",
+      "slug": "us-pr",
+      "label": "Puerto Rico",
+      "category": {
+        "kind": "territory",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "72"
+        ],
+        "usps": [
+          "PR"
+        ],
+        "iso3166_2": [
+          "US-PR"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#52:state",
+      "checksum_sha256": "8e00ca23a060f96f8f9031655682fbb4937eb0fcbbb6db232c2bcfba47dff834",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "83f55228-d5d3-571d-bda8-558fab9709bd",
+      "uri": "https://mdm.cameron-dietz.com/id/place/83f55228-d5d3-571d-bda8-558fab9709bd",
+      "type": "place",
+      "slug": "us-id",
+      "label": "Idaho",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "16"
+        ],
+        "usps": [
+          "ID"
+        ],
+        "iso3166_2": [
+          "US-ID"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#13:state",
+      "checksum_sha256": "6c2d78cf68dc1a1ac893e6b2ef32379aa81e0a25ddd2b064b7dcfe1b983dcd7e",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "864b6b74-638a-5783-8bfe-68abcaa50fbf",
+      "uri": "https://mdm.cameron-dietz.com/id/place/864b6b74-638a-5783-8bfe-68abcaa50fbf",
+      "type": "place",
+      "slug": "us-mo",
+      "label": "Missouri",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "29"
+        ],
+        "usps": [
+          "MO"
+        ],
+        "iso3166_2": [
+          "US-MO"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#26:state",
+      "checksum_sha256": "d00339bde1ae6edb0453213c4cfa3308dd10d1d7b7c500638926817f7600039d",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "899084af-6944-5812-ab35-124d184c83cf",
+      "uri": "https://mdm.cameron-dietz.com/id/place/899084af-6944-5812-ab35-124d184c83cf",
+      "type": "place",
+      "slug": "us-ut",
+      "label": "Utah",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "49"
+        ],
+        "usps": [
+          "UT"
+        ],
+        "iso3166_2": [
+          "US-UT"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#45:state",
+      "checksum_sha256": "706c6cad7021bda8587bd105420796ad2d36fe93c1bb7b4232e7754c31db90a3",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "907b29bb-dd34-5d16-857b-ec8c0d7dc0f8",
+      "uri": "https://mdm.cameron-dietz.com/id/place/907b29bb-dd34-5d16-857b-ec8c0d7dc0f8",
+      "type": "place",
+      "slug": "us-ct",
+      "label": "Connecticut",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "09"
+        ],
+        "usps": [
+          "CT"
+        ],
+        "iso3166_2": [
+          "US-CT"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#7:state",
+      "checksum_sha256": "3d9eeef9dcd3360ee6d2c47eb14a9949ebcbf9fc285582aa32e3113394ac3e49",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "90eb7512-c889-556c-a769-347384914a31",
+      "uri": "https://mdm.cameron-dietz.com/id/place/90eb7512-c889-556c-a769-347384914a31",
+      "type": "place",
+      "slug": "us-hi",
+      "label": "Hawaii",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "15"
+        ],
+        "usps": [
+          "HI"
+        ],
+        "iso3166_2": [
+          "US-HI"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#12:state",
+      "checksum_sha256": "508d23fed0eee69d5b0a670d8dc3494ffc82ebf3acff565ae9b57896f53cdf89",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "91515e9e-09e4-5880-8618-c956f41f18ed",
+      "uri": "https://mdm.cameron-dietz.com/id/place/91515e9e-09e4-5880-8618-c956f41f18ed",
+      "type": "place",
+      "slug": "us-de",
+      "label": "Delaware",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "10"
+        ],
+        "usps": [
+          "DE"
+        ],
+        "iso3166_2": [
+          "US-DE"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#8:state",
+      "checksum_sha256": "3e4a95686e320ac5d9017bd3119f811cabac1750cd7d9831bf4000a36d735b56",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "uri": "https://mdm.cameron-dietz.com/id/place/9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "type": "place",
+      "slug": "us-tx",
+      "label": "Texas",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "48"
+        ],
+        "usps": [
+          "TX"
+        ],
+        "iso3166_2": [
+          "US-TX"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#44:state",
+      "checksum_sha256": "7030150ab55f23bdf610fd05bfcb7cbe6a211786e6ed1c940bdd88907141cbba",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "9e1313ea-1f6b-5941-bab6-748952c53c03",
+      "uri": "https://mdm.cameron-dietz.com/id/place/9e1313ea-1f6b-5941-bab6-748952c53c03",
+      "type": "place",
+      "slug": "us-mn",
+      "label": "Minnesota",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "27"
+        ],
+        "usps": [
+          "MN"
+        ],
+        "iso3166_2": [
+          "US-MN"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#24:state",
+      "checksum_sha256": "fcc66fa9c3feca8431961c4bc4a78f9d5d3505f8a0fa8637f8bbc878fec9c7a9",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "9ef2a99a-b101-58dc-916a-bbe842ced74b",
+      "uri": "https://mdm.cameron-dietz.com/id/place/9ef2a99a-b101-58dc-916a-bbe842ced74b",
+      "type": "place",
+      "slug": "us-va",
+      "label": "Virginia",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "51"
+        ],
+        "usps": [
+          "VA"
+        ],
+        "iso3166_2": [
+          "US-VA"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#47:state",
+      "checksum_sha256": "3e48810131487f07d515f224eeb5489dfb1ba1094ed012cdc38fe1bc5128d6b1",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "a0ff3246-f78f-55cd-9348-b641f9a61f5c",
+      "uri": "https://mdm.cameron-dietz.com/id/place/a0ff3246-f78f-55cd-9348-b641f9a61f5c",
+      "type": "place",
+      "slug": "us-az",
+      "label": "Arizona",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "04"
+        ],
+        "usps": [
+          "AZ"
+        ],
+        "iso3166_2": [
+          "US-AZ"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#3:state",
+      "checksum_sha256": "35185d61ab9aaa85ba42e2b18a3c38fff193368534770b6c778b60d4d4280f73",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "a8a1b72c-35c4-514e-8e32-045cc522389a",
+      "uri": "https://mdm.cameron-dietz.com/id/place/a8a1b72c-35c4-514e-8e32-045cc522389a",
+      "type": "place",
+      "slug": "us-sd",
+      "label": "South Dakota",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "46"
+        ],
+        "usps": [
+          "SD"
+        ],
+        "iso3166_2": [
+          "US-SD"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#42:state",
+      "checksum_sha256": "71f3eb29060a2d1f997a1ec1e2736e03cf3e0b5f2b1aff832ed91b2be8aca665",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "aaf691c2-5c6d-57f5-8684-81d491e97e96",
+      "uri": "https://mdm.cameron-dietz.com/id/place/aaf691c2-5c6d-57f5-8684-81d491e97e96",
+      "type": "place",
+      "slug": "us-fl",
+      "label": "Florida",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "12"
+        ],
+        "usps": [
+          "FL"
+        ],
+        "iso3166_2": [
+          "US-FL"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#10:state",
+      "checksum_sha256": "0167323abe542ae2d6e5b03dcc25760e9a6f22c65e73dfa07509823f8f9cd581",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "b06769fd-c38f-5d98-b436-dec94bd245a4",
+      "uri": "https://mdm.cameron-dietz.com/id/place/b06769fd-c38f-5d98-b436-dec94bd245a4",
+      "type": "place",
+      "slug": "us-ga",
+      "label": "Georgia",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "13"
+        ],
+        "usps": [
+          "GA"
+        ],
+        "iso3166_2": [
+          "US-GA"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#11:state",
+      "checksum_sha256": "8b3c4a3e9310621725ce4972ca963e165c2eafafba758e3ede497f0fe1f04dbe",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "b593f6f2-aaa1-5954-bde2-c5b1b9dd010f",
+      "uri": "https://mdm.cameron-dietz.com/id/place/b593f6f2-aaa1-5954-bde2-c5b1b9dd010f",
+      "type": "place",
+      "slug": "us-tn",
+      "label": "Tennessee",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "47"
+        ],
+        "usps": [
+          "TN"
+        ],
+        "iso3166_2": [
+          "US-TN"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#43:state",
+      "checksum_sha256": "c00af138dc09332e01678d03d619c6adeb9c40c038219b92f47314d288e02cd7",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "ba90d05c-374c-5ac1-9f12-f7200f997578",
+      "uri": "https://mdm.cameron-dietz.com/id/place/ba90d05c-374c-5ac1-9f12-f7200f997578",
+      "type": "place",
+      "slug": "us-dc",
+      "label": "District of Columbia",
+      "category": {
+        "kind": "federal_district",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "11"
+        ],
+        "usps": [
+          "DC"
+        ],
+        "iso3166_2": [
+          "US-DC"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#9:state",
+      "checksum_sha256": "50f494e6b3fc2f42fe6564af6c091ca193e23614eb3ff88843009ef4ac3ae890",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "c172d2c7-003d-59e2-97af-5d0be1d743c5",
+      "uri": "https://mdm.cameron-dietz.com/id/place/c172d2c7-003d-59e2-97af-5d0be1d743c5",
+      "type": "place",
+      "slug": "us-or",
+      "label": "Oregon",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "41"
+        ],
+        "usps": [
+          "OR"
+        ],
+        "iso3166_2": [
+          "US-OR"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#38:state",
+      "checksum_sha256": "c3b9b70f1d39cf246833bdd84cd66df3988f925ddb5d9db45e3a879ce0153a27",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "c392d02d-b515-5fb0-be75-e93a804b431b",
+      "uri": "https://mdm.cameron-dietz.com/id/place/c392d02d-b515-5fb0-be75-e93a804b431b",
+      "type": "place",
+      "slug": "us-ri",
+      "label": "Rhode Island",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "44"
+        ],
+        "usps": [
+          "RI"
+        ],
+        "iso3166_2": [
+          "US-RI"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#40:state",
+      "checksum_sha256": "244f989033cfdfa188380f2e76ada3779de370136bd2ae9b56a6f491453f5e0c",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "d3ee7072-4704-5696-a4e9-76e4bfe90327",
+      "uri": "https://mdm.cameron-dietz.com/id/place/d3ee7072-4704-5696-a4e9-76e4bfe90327",
+      "type": "place",
+      "slug": "us-in",
+      "label": "Indiana",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "18"
+        ],
+        "usps": [
+          "IN"
+        ],
+        "iso3166_2": [
+          "US-IN"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#15:state",
+      "checksum_sha256": "79140d6f010cb5057f9d5379869c0c075c6f4888c9dc0435974575fb4b16b51f",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "da2b994c-f595-5942-8b98-a8a966d46cfa",
+      "uri": "https://mdm.cameron-dietz.com/id/place/da2b994c-f595-5942-8b98-a8a966d46cfa",
+      "type": "place",
+      "slug": "us-me",
+      "label": "Maine",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "23"
+        ],
+        "usps": [
+          "ME"
+        ],
+        "iso3166_2": [
+          "US-ME"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#20:state",
+      "checksum_sha256": "c72f89e4ed8b78353896cfce9fa03588f8a5a29c31db676a099bf47521cf12c3",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "df5d0f8e-8436-5a1c-9811-0ed6810e2457",
+      "uri": "https://mdm.cameron-dietz.com/id/place/df5d0f8e-8436-5a1c-9811-0ed6810e2457",
+      "type": "place",
+      "slug": "us-ca",
+      "label": "California",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "06"
+        ],
+        "usps": [
+          "CA"
+        ],
+        "iso3166_2": [
+          "US-CA"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#5:state",
+      "checksum_sha256": "e2b2dffe372fbe92d1c91d654fb0c4142f1a34259da27c33abc419b40de8dc73",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "uri": "https://mdm.cameron-dietz.com/id/place/eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "type": "place",
+      "slug": "us",
+      "label": "United States",
+      "category": {
+        "kind": "country",
+        "realm": "public"
+      },
+      "identifiers": {
+        "iso3166_1": [
+          "US"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#1:us",
+      "checksum_sha256": "7a65dc0dc547da01da8abd9eb7dd3db2917f43a890626487b0e636f5bcd4437e",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 0
+      }
+    },
+    {
+      "id": "f0932ef6-ae67-56e7-8afd-b707e9c36b19",
+      "uri": "https://mdm.cameron-dietz.com/id/place/f0932ef6-ae67-56e7-8afd-b707e9c36b19",
+      "type": "place",
+      "slug": "us-ia",
+      "label": "Iowa",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "19"
+        ],
+        "usps": [
+          "IA"
+        ],
+        "iso3166_2": [
+          "US-IA"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#16:state",
+      "checksum_sha256": "4139e262e997cd3a05c19a3ba8ec300c84051e60625a02ad87e458ea51e9707c",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "f1c04af0-ada5-50b3-bd7f-0b01917044a4",
+      "uri": "https://mdm.cameron-dietz.com/id/place/f1c04af0-ada5-50b3-bd7f-0b01917044a4",
+      "type": "place",
+      "slug": "us-al",
+      "label": "Alabama",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "01"
+        ],
+        "usps": [
+          "AL"
+        ],
+        "iso3166_2": [
+          "US-AL"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#1:state",
+      "checksum_sha256": "f60ba0a1ddb0c480c8c1dcfb258ae44b706e2a7f7c196ba34ef6197ad2fbd066",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    },
+    {
+      "id": "f8a39a7a-4e01-53d1-8a30-78dd7816eebe",
+      "uri": "https://mdm.cameron-dietz.com/id/place/f8a39a7a-4e01-53d1-8a30-78dd7816eebe",
+      "type": "place",
+      "slug": "us-nh",
+      "label": "New Hampshire",
+      "category": {
+        "kind": "state",
+        "jurisdiction": "state",
+        "realm": "public"
+      },
+      "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
+      "identifiers": {
+        "fips_state": [
+          "33"
+        ],
+        "usps": [
+          "NH"
+        ],
+        "iso3166_2": [
+          "US-NH"
+        ]
+      },
+      "source_system": "gazetteer",
+      "source_record_id": "us-states.csv#30:state",
+      "checksum_sha256": "4f8c031b4f6ef5e9121194a64c70dccffa10768294394e3cef6b0bf1c5315091",
+      "created_at": "2026-10-27T00:19:53Z",
+      "updated_at": "2026-10-27T00:19:53Z",
+      "data": {
+        "adm_level": 1
+      }
+    }
+  ]
+}

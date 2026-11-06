@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taxonomy manager</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+<style>
+  .tx-val { display: grid; grid-template-columns: minmax(160px, 1.4fr) 70px minmax(120px, 1fr) minmax(140px, 1.2fr) auto; gap: 8px; align-items: center; padding: 6px 4px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .tx-val.head { font-weight: 600; color: var(--muted); font-size: 12px; }
+  .tx-ok { color: var(--ok); } .tx-no { color: var(--warn); }
+  .tx-dim { margin: 18px 0 4px; }
+  .tx-tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 6px 0 10px; }
+  .tx-tools select { padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); }
+</style>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * Taxonomy manager (registry id: taxonomy, ceiling C3).
+ * One place for every taxonomy and category the MDM manages:
+ *   - schemes (taxonomy_scheme) and their term trees (taxonomy_term): add, rename, move, recompute paths
+ *   - term links: broader (extra parent) and related
+ *   - crosswalks (mapping records) between schemes, and from app-specific values to terms
+ *   - categories in use: every category value on every record in the warehouse, whether it is in a
+ *     taxonomy, and tools to stitch it in: map it to a term, add it as a term, or replace it everywhere
+ * It loads the whole warehouse (both stores) so it sees every value in use.
+ */
+const edgeTo = (r, rel) => (r.relations || []).find((e) => e.rel === rel) || {};
+const scheme = (t) => (t.data || {}).scheme;
+const slugify = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 128) || "x";
+const TAXO_TYPES = ["taxonomy_scheme", "taxonomy_term", "mapping"];
+const ui = { dim: "", onlyMissing: false };
+
+function schemes(app) { return app.byType("taxonomy_scheme"); }
+function schemeBySlug(app, slug) { return schemes(app).find((s) => s.slug === slug); }
+function dimOf(s) { return (s.data || {}).dimension || s.slug; }
+function termsIn(app, slug) { return app.byType("taxonomy_term").filter((t) => scheme(t) === slug); }
+
+// same rule as tools/mdm.py derive: segment = data.path_segment or slug or slugified label
+function pathOf(app, t, depth = 0) {
+  const seg = (t.data || {}).path_segment || t.slug || slugify(t.label);
+  const p = t.parent_id && app.get(t.parent_id);
+  if (p && p.type === "taxonomy_term" && depth < 32) { const pp = pathOf(app, p, depth + 1); return { path: pp.path + "." + seg, level: pp.level + 1 }; }
+  return { path: seg, level: 0 };
+}
+/** Recompute data.path and data.level for terms (default: all in a scheme); saves only the ones that changed. */
+function recomputePaths(app, list) {
+  let n = 0;
+  for (const t of list) {
+    const { path, level } = pathOf(app, t);
+    if ((t.data || {}).path === path && (t.data || {}).level === level) continue;
+    const c = app.clone(t); c.data = Object.assign({}, c.data, { path, level });
+    app.saveDraft(c, { silent: true, defer: true }); n++;
+  }
+  app.refresh();
+  return n;
+}
+function subtree(app, t) { const out = [t]; for (const k of app.children(t.id)) if (k.type === "taxonomy_term") out.push(...subtree(app, k)); return out; }
+
+function newTerm(app, sch, parent, labelText) {
+  const label = labelText || prompt(parent ? `New term under "${parent.label}"` : `New top-level term in ${sch.label}`);
+  if (!label || !label.trim()) return null;
+  const seg = slugify(label);
+  let slug = `${sch.slug}-${seg}`, i = 2;
+  while (app.byType("taxonomy_term").some((x) => x.slug === slug)) slug = `${sch.slug}-${seg}-${i++}`;
+  const path = parent ? (parent.data || {}).path + "." + seg : seg;
+  const rec = app.newRecord("taxonomy_term", {
+    label: label.trim(), slug, parent_id: parent ? parent.id : undefined,
+    relations: [app.edge("in_scheme", sch)],
+    data: { scheme: sch.slug, path_segment: seg, path, level: parent ? ((parent.data || {}).level || 0) + 1 : 0 },
+  });
+  if (!rec.parent_id) delete rec.parent_id;
+  return app.saveDraft(rec);
+}
+function addChild(r, app) {
+  const sch = r.type === "taxonomy_scheme" ? r : schemeBySlug(app, scheme(r));
+  if (!sch) return app.toast("This term's scheme is not loaded");
+  const t = newTerm(app, sch, r.type === "taxonomy_term" ? r : null);
+  if (t) app.goTo(t.id);
+}
+function moveTerm(t, app) {
+  const sch = scheme(t);
+  const banned = new Set(subtree(app, t).map((x) => x.id));
+  const top = { id: "_top", label: "(top level)", type: sch, summary: "", aliases: [] };
+  app.pick(`Move "${t.label}" under…`, [top].concat(termsIn(app, sch).filter((x) => !banned.has(x.id))), (p) => {
+    const c = app.clone(t);
+    if (p.id === "_top") delete c.parent_id; else c.parent_id = p.id;
+    app.saveDraft(c, { silent: true, defer: true });
+    const n = recomputePaths(app, subtree(app, app.get(t.id)));
+    app.toast(`Moved; ${n} path${n === 1 ? "" : "s"} updated`);
+  }, "Its children move with it, and their paths are recomputed. Records that use the old paths keep them until you replace them in Categories in use.");
+}
+function linkTerm(t, app) {
+  const rel = (prompt("Link kind: broader (an extra parent) or related (see also)", "related") || "").trim();
+  if (!["broader", "related"].includes(rel)) return;
+  app.pick(`"${t.label}" ${rel}…`, app.byType("taxonomy_term").filter((x) => x.id !== t.id), (o) => {
+    const c = app.clone(t); c.relations = (c.relations || []).concat([app.edge(rel, o)]);
+    app.saveDraft(c);
+  });
+}
+function mapTerm(src, app) {
+  app.pick(`Map "${src.label}" (${scheme(src)}) to a term in another scheme`, app.byType("taxonomy_term").filter((x) => scheme(x) !== scheme(src)), (tgt) => {
+    const match = askMatch(); if (!match) return;
+    const rec = app.newRecord("mapping", {
+      label: `${scheme(src)} ${src.label} = ${tgt.label}`,
+      relations: [app.edge("source", src), app.edge("target", tgt)],
+      data: { source: { scheme: scheme(src), notation: (src.data || {}).notation || (src.data || {}).path, label: src.label }, target: { scheme: scheme(tgt), notation: (tgt.data || {}).notation || (tgt.data || {}).path, label: tgt.label }, match, method: "manual", confidence: 1 },
+    });
+    app.saveDraft(rec); app.toast("Mapping saved");
+  });
+}
+function askMatch() {
+  const m = (prompt("How close is the match? exact, close, broad, narrow, related", "exact") || "").trim();
+  return ["exact", "close", "broad", "narrow", "related"].includes(m) ? m : null;
+}
+
+// ------------------------------------------------------------------ categories in use
+function inUse(app) {
+  const tx = app.terms();
+  const dims = new Map(); // dim -> Map(value -> { n, types:Set })
+  for (const r of app.all()) {
+    if (TAXO_TYPES.includes(r.type)) continue;
+    for (const [dim, v] of Object.entries(r.category || {})) for (const x of [].concat(v)) {
+      if (typeof x !== "string" || !x) continue;
+      if (!dims.has(dim)) dims.set(dim, new Map());
+      const m = dims.get(dim);
+      if (!m.has(x)) m.set(x, { n: 0, types: new Set() });
+      const e = m.get(x); e.n++; e.types.add(r.type);
+    }
+  }
+  const maps = valueMappings(app);
+  const out = [];
+  for (const [dim, m] of dims) for (const [value, e] of m) {
+    const d = tx.dims.get(dim);
+    const term = d && d.terms.get(value);
+    out.push({ dim, value, n: e.n, types: [...e.types], term, hasTaxonomy: !!(d && d.terms.size), mapped: maps.get(dim + "\u0000" + value) });
+  }
+  return out.sort((a, b) => a.dim.localeCompare(b.dim) || b.n - a.n || a.value.localeCompare(b.value));
+}
+// mapping records whose source is a category value (data.source.scheme "category:<dim>")
+function valueMappings(app) {
+  const m = new Map();
+  for (const r of app.byType("mapping")) {
+    const s = (r.data || {}).source || {};
+    if (String(s.scheme || "").startsWith("category:")) m.set(s.scheme.slice(9) + "\u0000" + (s.notation || s.label), r);
+  }
+  return m;
+}
+function mapValue(app, row) {
+  app.pick(`Map ${row.dim} "${row.value}" to a term`, app.byType("taxonomy_term"), (tgt) => {
+    const match = askMatch(); if (!match) return;
+    app.saveDraft(app.newRecord("mapping", {
+      label: `${row.dim}: ${row.value} = ${tgt.label}`,
+      relations: [app.edge("target", tgt)],
+      data: { source: { scheme: "category:" + row.dim, notation: row.value, label: row.value }, target: { scheme: scheme(tgt), notation: (tgt.data || {}).path, label: tgt.label }, match, method: "manual", confidence: 1 },
+    }));
+    app.toast("Mapping saved. Use Replace to also change the records themselves.");
+  }, "Records keep their value; the mapping says which term it means, so apps and publishing can translate it.");
+}
+function addValueAsTerm(app, row) {
+  const fit = schemes(app).filter((s) => dimOf(s) === row.dim);
+  const choose = (sch) => {
+    const top = { id: "_top", label: "(top level)", type: sch.slug, aliases: [] };
+    app.pick(`Add "${row.value}" to ${sch.label} under…`, [top].concat(termsIn(app, sch.slug)), (p) => {
+      const label = prompt("Term name", row.value.split(".").pop().replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()));
+      if (!label) return;
+      const t = newTerm(app, sch, p.id === "_top" ? null : p, label);
+      if (t && t.data.path !== row.value && confirm(`The new term's path is "${t.data.path}". Replace "${row.value}" with it on the ${row.n} record(s) that use it?`)) replaceValue(app, row, t.data.path);
+    });
+  };
+  if (fit.length === 1) return choose(fit[0]);
+  app.pick(fit.length ? `Which ${row.dim} taxonomy?` : `No taxonomy uses "${row.dim}" yet: pick one, or make a scheme first`, fit.length ? fit : schemes(app), choose);
+}
+function replaceValue(app, row, to) {
+  const target = to != null ? to : prompt(`Replace ${row.dim} "${row.value}" on ${row.n} record(s) with (a term path or value; empty removes it):`, row.value);
+  if (target == null || target === row.value) return;
+  let n = 0;
+  for (const r of app.all()) {
+    if (TAXO_TYPES.includes(r.type)) continue;
+    const cur = [].concat((r.category || {})[row.dim] || []);
+    if (!cur.includes(row.value)) continue;
+    const next = [...new Set(cur.map((x) => (x === row.value ? target : x)).filter(Boolean))];
+    const c = app.clone(r); c.category = Object.assign({}, c.category);
+    if (!next.length) delete c.category[row.dim]; else c.category[row.dim] = next.length === 1 ? next[0] : next;
+    app.saveDraft(c, { silent: true, defer: true }); n++;
+  }
+  app.refresh();
+  app.toast(`${n} record${n === 1 ? "" : "s"} updated`);
+}
+function renderInUse(box, app) {
+  const h = app.h;
+  const rows = inUse(app);
+  const dims = [...new Set(rows.map((r) => r.dim))];
+  const sel = h("select", { onchange: (e) => { ui.dim = e.target.value; app.refresh(); } }, h("option", { value: "" }, "All dimensions"), dims.map((d) => h("option", { value: d, selected: d === ui.dim ? true : null }, d)));
+  const cb = h("input", { type: "checkbox", checked: ui.onlyMissing ? true : null, onchange: (e) => { ui.onlyMissing = e.target.checked; app.refresh(); } });
+  box.append(h("div", { class: "tx-tools" }, sel, h("label", {}, cb, " only values that are not a term and not mapped")));
+  const q = (app.state.q || "").toLowerCase();
+  let shown = rows.filter((r) => (!ui.dim || r.dim === ui.dim) && (!ui.onlyMissing || (!r.term && !r.mapped)) && (!q || (r.dim + " " + r.value).toLowerCase().includes(q)));
+  if (!shown.length) { box.append(h("p", { class: "mdm-muted" }, rows.length ? "Nothing matches." : "No category values found. Connect the folder so every warehouse file is loaded.")); return; }
+  let cur = null;
+  for (const r of shown.slice(0, 1500)) {
+    if (r.dim !== cur) {
+      cur = r.dim;
+      const fit = schemes(app).filter((s) => dimOf(s) === cur);
+      box.append(h("h3", { class: "tx-dim" }, cur, " ", h("small", { class: "mdm-muted" }, fit.length ? "taxonomy: " + fit.map((s) => s.label).join(", ") : "no taxonomy (app or free values)")),
+        h("div", { class: "tx-val head" }, h("span", {}, "Value"), h("span", {}, "Records"), h("span", {}, "Used on"), h("span", {}, "Meaning"), h("span", {})));
+    }
+    const meaning = r.term ? h("span", { class: "tx-ok" }, "✓ ", h("a", { href: "#", onclick: (e) => { e.preventDefault(); app.goTo(r.term.id); } }, r.term.label))
+      : r.mapped ? h("span", { class: "tx-ok" }, "→ ", h("a", { href: "#", onclick: (e) => { e.preventDefault(); app.goTo(r.mapped.id); } }, ((r.mapped.data || {}).target || {}).label || "mapped"))
+      : h("span", { class: "tx-no" }, r.hasTaxonomy ? "not a term" : "free value");
+    box.append(h("div", { class: "tx-val" }, h("code", {}, r.value), h("span", {}, r.n), h("small", { class: "mdm-muted" }, r.types.join(", ")), meaning,
+      h("span", {}, h("button", { class: "mdm-btn small", onclick: () => mapValue(app, r), title: "Say which term this value means" }, "Map…"), " ",
+        h("button", { class: "mdm-btn small", onclick: () => addValueAsTerm(app, r), title: "Add it to a taxonomy" }, "Add as term…"), " ",
+        h("button", { class: "mdm-btn small", onclick: () => replaceValue(app, r), title: "Change it on every record that uses it" }, "Replace…"))));
+  }
+  if (shown.length > 1500) box.append(h("p", { class: "mdm-muted" }, `${shown.length - 1500} more: pick a dimension or search`));
+}
+
+MDMApp.start({
+  id: "taxonomy",
+  title: "Taxonomy manager",
+  subtitle: "schemes · terms · crosswalks · categories in use",
+  types: ["*"],
+  acceptAnyType: true,
+  views: [
+    { id: "schemes", group: "Taxonomies", label: "Schemes", type: "taxonomy_scheme",
+      intro: "Each scheme is one classification system. Its <b>dimension</b> is the <code>category</code> key records use for it (category.product, category.subject).",
+      newTemplate: () => ({ data: { authority: "internal" } }),
+      columns: [
+        { label: "Scheme", get: "label" },
+        { label: "Key", get: "slug" },
+        { label: "Dimension", get: (r) => dimOf(r) },
+        { label: "Authority", get: "data.authority" },
+        { label: "Applies to", get: "data.applies_to" },
+        { label: "Terms", get: (r, app) => termsIn(app, r.slug).length || "", num: true },
+      ] },
+    { id: "terms", group: "Taxonomies", label: "Terms", type: "taxonomy_term", kind: "tree", facets: ["data.scheme"], facetDepth: 0,
+      intro: "Pick a scheme above to narrow the tree. Open a term to add children, move it, link it, or map it to another scheme.",
+      nodeNote: (r) => ((r.data || {}).notation && (r.data || {}).notation !== r.slug ? r.data.notation : ""),
+      buttons: [{ label: "Recompute paths", run: (app, rs) => { if (!confirm(`Recompute data.path and data.level for ${rs.length} terms shown from their parents?`)) return; const n = recomputePaths(app, rs); app.toast(`${n} path${n === 1 ? "" : "s"} updated`); } }] },
+    { id: "termlist", group: "Taxonomies", label: "All terms (list)", type: "taxonomy_term", facets: ["data.scheme"], facetDepth: 0, allowNew: false,
+      columns: [{ label: "Term", get: "label" }, { label: "Scheme", get: "data.scheme" }, { label: "Path", get: "data.path" }, { label: "Code", get: "data.notation" }, { label: "Level", get: "data.level", num: true }] },
+    { id: "inuse", group: "Stitching", label: "Categories in use", kind: "custom",
+      intro: "Every category value on every record in the warehouse. Values that are not a term in a taxonomy can be <b>mapped</b> to a term, <b>added</b> as a term, or <b>replaced</b> on the records. Apps with their own categories are stitched in this way.",
+      render: renderInUse },
+    { id: "crosswalks", group: "Stitching", label: "Crosswalks", type: "mapping", facets: ["data.match", "data.method"], allowNew: false,
+      intro: "Mapping records: a term (or an app's category value) in one scheme means a term in another. Make one with <b>Map to…</b> on a term or <b>Map…</b> in Categories in use.",
+      columns: [
+        { label: "From", get: (r) => ((r.data || {}).source || {}).label || edgeTo(r, "source").label },
+        { label: "From scheme", get: "data.source.scheme" },
+        { label: "To", get: (r) => edgeTo(r, "target").label || ((r.data || {}).target || {}).label },
+        { label: "To scheme", get: "data.target.scheme" },
+        { label: "Match", get: "data.match" },
+        { label: "Method", get: "data.method" },
+      ] },
+    { id: "links", group: "Stitching", label: "Term links", type: "taxonomy_term", allowNew: false,
+      filter: (r) => (r.relations || []).some((e) => e.rel !== "in_scheme"),
+      intro: "Terms with an extra parent (<b>broader</b>) or a see-also (<b>related</b>). Add one with <b>Link to…</b> on a term.",
+      columns: [{ label: "Term", get: "label" }, { label: "Scheme", get: "data.scheme" }, { label: "Links", get: (r) => (r.relations || []).filter((e) => e.rel !== "in_scheme").map((e) => `${e.rel}: ${e.label}`).join("; ") }] },
+  ],
+  actions: [
+    { label: "Add term", when: (r) => r.type === "taxonomy_scheme", run: addChild, primary: true },
+    { label: "Add child term", when: (r) => r.type === "taxonomy_term", run: addChild },
+    { label: "Move under…", when: (r) => r.type === "taxonomy_term", run: moveTerm },
+    { label: "Link to…", when: (r) => r.type === "taxonomy_term", run: linkTerm },
+    { label: "Map to…", when: (r) => r.type === "taxonomy_term", run: mapTerm },
+  ],
+  detailExtras: (r, app) => {
+    const h = app.h, out = [];
+    const link = (id, text) => h("a", { href: "#", onclick: (e) => { e.preventDefault(); app.goTo(id); } }, text);
+    if (r.type === "taxonomy_term") {
+      const chain = []; let p = r.parent_id && app.get(r.parent_id);
+      while (p && chain.length < 32) { chain.unshift(p); p = p.parent_id && app.get(p.parent_id); }
+      const sch = schemeBySlug(app, scheme(r));
+      out.push({ title: "Where", el: h("div", {}, sch ? link(sch.id, sch.label) : scheme(r), chain.map((x) => h("span", {}, " › ", link(x.id, x.label))), " › ", h("b", {}, r.label),
+        h("div", { class: "mdm-muted" }, "path ", h("code", {}, (r.data || {}).path || "")), sch ? h("div", { class: "mdm-muted" }, "records use it as ", h("code", {}, `category.${dimOf(sch)} = "${(r.data || {}).path}"`)) : null) });
+      const kids = app.children(r.id).filter((x) => x.type === "taxonomy_term");
+      if (kids.length) out.push({ title: `Children (${kids.length})`, el: h("div", {}, kids.slice(0, 80).map((k) => h("div", { class: "mdm-rel" }, link(k.id, k.label), h("small", {}, (k.data || {}).notation || "")))) });
+      const maps = app.incoming(r.id, "source").concat(app.incoming(r.id, "target")).map((x) => x.rec).filter((m) => m.type === "mapping");
+      if (maps.length) out.push({ title: "Crosswalks", el: h("div", {}, maps.map((m) => { const s = (m.data || {}).source || {}, t = (m.data || {}).target || {}; return h("div", { class: "mdm-rel" }, link(m.id, `${s.label || "?"} → ${t.label || "?"}`), h("small", {}, `${s.scheme || ""} → ${t.scheme || ""} · ${(m.data || {}).match || ""}`)); })) });
+      const dim = sch ? dimOf(sch) : null, path = (r.data || {}).path;
+      if (dim && path) {
+        const users = app.all().filter((x) => !TAXO_TYPES.includes(x.type) && [].concat((x.category || {})[dim] || []).some((v) => v === path || String(v).startsWith(path + ".")));
+        if (users.length) out.push({ title: `Records in this category (${users.length})`, el: h("div", {}, users.slice(0, 60).map((u) => h("div", { class: "mdm-rel" }, link(u.id, u.label), h("small", {}, app.humanize(u.type))))) });
+      }
+    }
+    if (r.type === "taxonomy_scheme") {
+      const tops = termsIn(app, r.slug).filter((t) => !t.parent_id || !app.get(t.parent_id));
+      out.push({ title: `Top terms (${tops.length})`, el: h("div", {}, tops.slice(0, 80).map((t) => h("div", { class: "mdm-rel" }, link(t.id, t.label), h("small", {}, app.children(t.id).length || "")))) });
+    }
+    return out;
+  },
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All records</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * All records (registry id: records, ceiling C3).
+ * Every type in the warehouse, both stores, in one place: browse, search, edit, paste raw JSON.
+ * Useful for types no other app manages yet (C2's internal org units, personnel and plan elements
+ * until C2 itself moves onto this shell).
+ */
+const REGT = (window.MDM_REGISTRY || {}).types || {};
+const FAMILY = { party: "People and organizations", product: "Products", place: "Places", time: "Time", work: "Work and plans", knowledge: "Knowledge", taxonomy: "Taxonomy", marketing: "Marketing", career: "Career", commerce: "Commerce" };
+// starting values for types whose schema requires a kind
+const NEW = { plan_element: { category: { kind: "task" }, state: "not_started" }, org_unit: { category: { kind: "team" } }, personnel: { pii: true, data: { duty_status: "active" } } };
+const views = Object.entries(REGT).map(([type, t]) => ({
+  id: type, group: (FAMILY[t.family] || t.family || "Other") + (t.store === "internal" ? " (internal)" : ""),
+  label: type.replace(/_/g, " ") + (t.deprecated ? " (old)" : ""), type, facets: ["category.kind", "status"],
+  columns: [{ label: "Name", get: "label" }, { label: "Kind", get: "category.kind" }, { label: "Status", get: "status" }, { label: "Updated", get: "updated_at", date: true }],
+  newTemplate: () => (NEW[type] ? JSON.parse(JSON.stringify(NEW[type])) : {}),
+}));
+views.sort((a, b) => a.group.localeCompare(b.group) || a.label.localeCompare(b.label));
+MDMApp.start({ id: "records", title: "All records", subtitle: "every warehouse file, shared and internal", types: ["*"], acceptAnyType: true, views });
+</script>
+</body>
+</html>

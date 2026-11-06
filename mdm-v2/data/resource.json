@@ -1,0 +1,2789 @@
+{
+  "$schema": "../../schema/collection.schema.json",
+  "meta": {
+    "type": "resource",
+    "count": 79,
+    "generated": "2026-10-27T00:23:53Z",
+    "tool": "mdm.py",
+    "schema_version": "2.1"
+  },
+  "items": [
+    {
+      "id": "03d489cf-f114-58a6-b64f-4e2f3165b869",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/03d489cf-f114-58a6-b64f-4e2f3165b869",
+      "type": "resource",
+      "slug": "belt-pulley-tool",
+      "label": "Belt & Pulley",
+      "summary": "Calculate drive ratios, belt length, wrap angle, belt speed, torque, and estimated belt requirements.",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a5c63e45-cc0c-5f82-9e84-7fe5675844a9",
+          "label": "Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#350:tool",
+      "checksum_sha256": "74160b943ba5d3f85082336bca0c816b740ddf6b83d348dc43e9b49c3d404598",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "0400e880-a027-5dbf-854c-d22b52f244b8",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/0400e880-a027-5dbf-854c-d22b52f244b8",
+      "type": "resource",
+      "slug": "operating-systems",
+      "label": "Operating Systems",
+      "summary": "System software and resource management",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.operating-systems"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "18620566-b3a9-56e7-abe4-b83b2d4bbc3c",
+          "label": "Operating Systems"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#367:page",
+      "checksum_sha256": "8ad66bbc852b4a9363e88e8157744e570be2277b6fb4ca752115aa7b021af369",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "05af55b2-0297-50c8-82d7-71d9f89dd5c6",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/05af55b2-0297-50c8-82d7-71d9f89dd5c6",
+      "type": "resource",
+      "slug": "algorithms",
+      "label": "Algorithms",
+      "summary": "Computational problem solving methods",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.algorithms"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "e4f234cb-076d-5d23-8c83-44406baf6770",
+          "label": "Algorithms"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#364:page",
+      "checksum_sha256": "f1b4ba6f28d4b6da08be55461dd61ad3b8b854301eb615b98891012af4d1057b",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "08289a4d-5633-5bde-a852-dcb9cc077743",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/08289a4d-5633-5bde-a852-dcb9cc077743",
+      "type": "resource",
+      "slug": "ux-ui-design",
+      "label": "UX/UI Design",
+      "summary": "User experience and interface design",
+      "category": {
+        "kind": "reference_page",
+        "subject": "design.ux-ui-design"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "2cdb4bed-7a53-50d8-91b3-4778def9b2a4",
+          "label": "UX/UI Design"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#392:page",
+      "checksum_sha256": "1d7606ca9b080385c71f37f07e620664f076014f79b7331079b0c096da62b6bb",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "0a079258-87eb-5bdb-9c81-dfe10cfc3177",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/0a079258-87eb-5bdb-9c81-dfe10cfc3177",
+      "type": "resource",
+      "slug": "databases",
+      "label": "Databases",
+      "summary": "Structured and unstructured data systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.databases"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "0374c923-64a8-5297-83bf-5a9e62dcff1b",
+          "label": "Databases"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#366:page",
+      "checksum_sha256": "632a80066715beb29fc843bc0ee220695cbbc1da8728e55c12b8d67a7436ef56",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "0d63c435-7c47-50eb-964a-a1a3fc5f80ea",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/0d63c435-7c47-50eb-964a-a1a3fc5f80ea",
+      "type": "resource",
+      "slug": "universal-robots",
+      "label": "Universal Robots",
+      "summary": "Collaborative robot systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.robotics.industrial-robotics.universal-robots"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "83ea1008-e0ea-5582-b949-15e4d34f6f12",
+          "label": "Universal Robots"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#411:page",
+      "checksum_sha256": "f9030c61e1e097e287b1afc42dab607e08b3080d442ea27bd7ac3154f96f82ae",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "12e2ae66-78e1-517e-9a28-e54378994b2f",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/12e2ae66-78e1-517e-9a28-e54378994b2f",
+      "type": "resource",
+      "slug": "data-structures",
+      "label": "Data Structures",
+      "summary": "Data organization and storage methods",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.data-structures"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "da20f4a2-6b35-52b5-9401-834a2b010499",
+          "label": "Data Structures"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#365:page",
+      "checksum_sha256": "c808e8e0c32835359276d0f28d7535c7345e34490e3b3217dafcce3e4f1b84a9",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "1803ef1a-8cb2-5359-b04c-1269570af4c5",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/1803ef1a-8cb2-5359-b04c-1269570af4c5",
+      "type": "resource",
+      "slug": "opc-ua",
+      "label": "OPC UA",
+      "summary": "Industrial interoperability protocol",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-networking.opc-ua"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "6e2f75c0-2e09-5e7b-ae6e-1077293f2861",
+          "label": "OPC UA"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#402:page",
+      "checksum_sha256": "f20f71a733f7ca0f4254e695685dcc60f91961764215b6c3da5dbbfabdc05c9d",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "1c25f42d-1864-506c-98cf-17880a7fa01e",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/1c25f42d-1864-506c-98cf-17880a7fa01e",
+      "type": "resource",
+      "slug": "artificial-intelligence",
+      "label": "Artificial Intelligence",
+      "summary": "Machine intelligence and learning systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.artificial-intelligence"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a10c6645-0f97-5a09-a608-57c769097f98",
+          "label": "Artificial Intelligence"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#372:page",
+      "checksum_sha256": "2c933ec07ac37c116d89d836c7d1d0719b34a2e69c02f13cda3099d7fc9aa67c",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "1ccbd1ad-6807-580c-af89-bdca6c80dd82",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/1ccbd1ad-6807-580c-af89-bdca6c80dd82",
+      "type": "resource",
+      "slug": "control-loops",
+      "label": "Control Loops",
+      "summary": "Feedback control systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.controls-engineering.control-loops"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "bacf578f-71fb-579f-a593-f76f989ec0fb",
+          "label": "Control Loops"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#413:page",
+      "checksum_sha256": "893f26d6addd632d9ea54f36518b0db072083475e20ef24b94b86d21242a44cc",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "1dae2f60-5053-550a-a3a0-a2a3637951cf",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/1dae2f60-5053-550a-a3a0-a2a3637951cf",
+      "type": "resource",
+      "slug": "kuka-robots",
+      "label": "KUKA Robots",
+      "summary": "KUKA industrial robot systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.robotics.industrial-robotics.kuka-robots"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "c25fce0d-9670-5886-9560-53fb25f3c83e",
+          "label": "KUKA Robots"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#410:page",
+      "checksum_sha256": "8b9ea4950f2fcb063f5bfe61f44f487bb57e27c3d029a75f0722a44b12879738",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "20d7a9ae-df65-5d5c-b247-4927fa2602d6",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/20d7a9ae-df65-5d5c-b247-4927fa2602d6",
+      "type": "resource",
+      "slug": "motion-control",
+      "label": "Motion Control",
+      "summary": "Servo and drive systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.motion-control"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "23e00f14-d1a3-5b78-b77e-5ef258cdf8e0",
+          "label": "Motion Control"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#385:page",
+      "checksum_sha256": "7558ccd779098da6b6d48af7b111b7641001cf69a359ce8fb682564252d40d7c",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "27c363e2-7dc6-5fd4-8363-d5f7359c46a5",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/27c363e2-7dc6-5fd4-8363-d5f7359c46a5",
+      "type": "resource",
+      "slug": "hydraulic-filtration",
+      "label": "Hydraulic Filtration",
+      "summary": "Hydraulic contamination control",
+      "category": {
+        "kind": "reference_page",
+        "subject": "hydraulic-filtration"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "04adeb40-589d-513b-a5c3-83b36497b846",
+          "label": "Hydraulic Filtration"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#406:page",
+      "checksum_sha256": "cdd7a49ef1c79034c03cc2e6601030962b30eadfb7d7eeb840d9b7f8067def32",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "28ebfe6e-742b-56a4-9dfe-fc4df6a35f2f",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/28ebfe6e-742b-56a4-9dfe-fc4df6a35f2f",
+      "type": "resource",
+      "slug": "instrumentation",
+      "label": "Instrumentation",
+      "summary": "Measurement and control instruments",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.instrumentation"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "8996f559-33f8-547c-8b10-6363e0d6afdd",
+          "label": "Instrumentation"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#387:page",
+      "checksum_sha256": "490b45ca0efda518c31f622be5e4f04d64effa360302f3d1c9745384409ae883",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "2a0936b6-4b73-529c-a7f0-f1ee528ffe00",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/2a0936b6-4b73-529c-a7f0-f1ee528ffe00",
+      "type": "resource",
+      "slug": "actuators",
+      "label": "Actuators",
+      "summary": "Motion and control devices",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.actuators"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "2234e550-f65d-5fe1-9d92-0fe265dda8e2",
+          "label": "Actuators"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#384:page",
+      "checksum_sha256": "7c6fce4dee8f1d4f7445ee03f75f5762221b0c6200b3e77945c9479fbd4d1186",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "336d67ef-4d36-581d-be80-a38eb1456c3a",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/336d67ef-4d36-581d-be80-a38eb1456c3a",
+      "type": "resource",
+      "slug": "robotics",
+      "label": "Robotics",
+      "summary": "Industrial robotics and automation systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.robotics"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "f56c4720-9cbd-5f89-9e44-173788694513",
+          "label": "Robotics"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#382:page",
+      "checksum_sha256": "74070ba82fe72e914074b6dde1531551ed3eed04f003f7ee0224356f9c9afb05",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "3508c9f3-a94c-51fc-8400-6abc96a2e044",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/3508c9f3-a94c-51fc-8400-6abc96a2e044",
+      "type": "resource",
+      "slug": "industrial-networking",
+      "label": "Industrial Networking",
+      "summary": "Industrial communication protocols",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-networking"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "f8c895bf-78ea-5923-b40a-002c37da8af5",
+          "label": "Industrial Networking"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#381:page",
+      "checksum_sha256": "b761384d7b29a8e3d08f76b168c02e7585fdf11ca922adff818677479472726c",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "35e9cec3-73b4-5943-be12-eda2e80d1a2f",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/35e9cec3-73b4-5943-be12-eda2e80d1a2f",
+      "type": "resource",
+      "slug": "subnet-tool",
+      "label": "Subnet Calculator",
+      "summary": "Calculate networks, host ranges, broadcasts, CIDR blocks, binary values, and subnet splits for industrial and OT systems.",
+      "category": {
+        "kind": "tool",
+        "subject": "computer-science"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "0235f865-570c-59cb-963a-7533d9fe1063",
+          "label": "Computer Science"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#345:tool",
+      "checksum_sha256": "d3dfbb3956b4d06f90bb0ae44eb0b2b0d22bf4d604ccd71c285d1bfd1dbd64ec",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "37327df9-a3b6-51c2-9dd4-5c1431d74541",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/37327df9-a3b6-51c2-9dd4-5c1431d74541",
+      "type": "resource",
+      "slug": "qr-tool",
+      "label": "QR Code Generator",
+      "summary": "Create offline QR codes for links, Wi-Fi, contacts, asset tags, and text with customizable output and downloads.",
+      "category": {
+        "kind": "tool",
+        "subject": "computer-science"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "0235f865-570c-59cb-963a-7533d9fe1063",
+          "label": "Computer Science"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#349:tool",
+      "checksum_sha256": "c0b8a7522130ea0d4d8865f0867f28b5393bd027ea4b8f1f900b643d8fa710ca",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "3d5860ba-9783-56f6-868d-c8095fb236c3",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/3d5860ba-9783-56f6-868d-c8095fb236c3",
+      "type": "resource",
+      "slug": "industrial-engineering",
+      "label": "Industrial Engineering",
+      "summary": "System optimization and efficiency",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.industrial-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "445f6ec6-df7c-581e-b325-df143ad700c5",
+          "label": "Industrial Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#357:page",
+      "checksum_sha256": "fe56e79a260bc11b19f4d3b17377c7d553de363b3e95a1be03089092cbafc162",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "3fb27f03-daa2-52d0-8d85-93c530f56685",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/3fb27f03-daa2-52d0-8d85-93c530f56685",
+      "type": "resource",
+      "slug": "devops",
+      "label": "DevOps",
+      "summary": "Infrastructure automation and CI/CD",
+      "category": {
+        "kind": "reference_page",
+        "subject": "information-technology.devops"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "b1069b54-e5f1-5b9f-9d55-ddae3f08082d",
+          "label": "DevOps"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#377:page",
+      "checksum_sha256": "2302cbd45429ba1328aadbdefdb283a14c9d6183be4469117756c77b01cf1c95",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "43feae57-e1a2-5554-8987-b3c2be9f15f8",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/43feae57-e1a2-5554-8987-b3c2be9f15f8",
+      "type": "resource",
+      "slug": "ethernet-ip",
+      "label": "EtherNet/IP",
+      "summary": "Industrial Ethernet protocol",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-networking.ethernet-ip"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "dcf4471b-0165-582d-a4c2-2a4b4bec11ec",
+          "label": "EtherNet/IP"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#397:page",
+      "checksum_sha256": "3e22e296b607bf69b3226226ddb1ef15b9e145bf9d0770132ca07e03add27836",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "45b6f9b7-3b9a-5a06-8881-c8e4ffd25cdd",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/45b6f9b7-3b9a-5a06-8881-c8e4ffd25cdd",
+      "type": "resource",
+      "slug": "cylinders",
+      "label": "Cylinders",
+      "summary": "Linear motion actuators",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.actuators.cylinders"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "9050b614-2032-57ea-a0be-1e7001f51a36",
+          "label": "Cylinders"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#388:page",
+      "checksum_sha256": "399c4d6c1ac53699aaa194aac825128d8fe89755ad7f77468304ba001894fd8c",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "4831066a-d5a5-5c0a-8da6-f4efee5305aa",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/4831066a-d5a5-5c0a-8da6-f4efee5305aa",
+      "type": "resource",
+      "slug": "industrial-electrical",
+      "label": "Industrial Electrical",
+      "summary": "Industrial electrical systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.electrical-engineering.industrial-electrical"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "e4f92dbd-afbf-5ee7-a4e6-0b814ac0419e",
+          "label": "Industrial Electrical"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#394:page",
+      "checksum_sha256": "81fd550cef9eb6218f1814d47e58d24db1013f5e8d6f6669cfc4f8282e536ac5",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "49bec900-31ac-54b2-a086-a09df92929a3",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/49bec900-31ac-54b2-a086-a09df92929a3",
+      "type": "resource",
+      "slug": "modbus",
+      "label": "Modbus",
+      "summary": "Industrial serial and Ethernet protocol",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-networking.modbus"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "d821bec1-4c8d-5fb3-bff6-b050bc2f9cf2",
+          "label": "Modbus"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#399:page",
+      "checksum_sha256": "b381a5eda005000a73b96c0ad8f5eeabd8f8ef7f83a886d1f4a12f1dfba938cb",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "4aeb8856-2cd9-5af0-b246-12057e0de388",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/4aeb8856-2cd9-5af0-b246-12057e0de388",
+      "type": "resource",
+      "slug": "character-tool",
+      "label": "Character Conversion Tool",
+      "summary": "Provides the capability to convert between rich tect and see hidden characters",
+      "category": {
+        "kind": "tool",
+        "subject": "computer-science"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "0235f865-570c-59cb-963a-7533d9fe1063",
+          "label": "Computer Science"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#338:tool",
+      "checksum_sha256": "25cc9ef52345620baeacbd81196d7ac4a2ebf6118d4d83ce5ae83c11f52d1b3c",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "4b72b242-1e6c-58a6-842d-392f673edde0",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/4b72b242-1e6c-58a6-842d-392f673edde0",
+      "type": "resource",
+      "slug": "electrical-engineering",
+      "label": "Electrical Engineering",
+      "summary": "Electrical systems and electronics",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.electrical-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "9166f2d8-fd5d-55db-b478-36eda2ccb0e9",
+          "label": "Electrical Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#354:page",
+      "checksum_sha256": "aa939fec536ad8847ebc311438ef838f42363a68317a25858008b62a20faa5d1",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "4d14c98a-8f77-5d33-820d-6705fb5d0f8b",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/4d14c98a-8f77-5d33-820d-6705fb5d0f8b",
+      "type": "resource",
+      "slug": "windows-server",
+      "label": "Windows Server",
+      "summary": "Microsoft infrastructure systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "information-technology.windows-server"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "9e573ff1-41e6-5443-a067-e4b6107518b1",
+          "label": "Windows Server"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#374:page",
+      "checksum_sha256": "382675644bfdee511f913358cea13d252da7103af6899a506f3f4af36ea168c2",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "4ef047f1-b7ae-5a25-8551-37e5ae839951",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/4ef047f1-b7ae-5a25-8551-37e5ae839951",
+      "type": "resource",
+      "slug": "cylinder-sizing-tool",
+      "label": "Cylinder Sizing",
+      "summary": "Estimate force, speed, flow, and stroke times for hydraulic and pneumatic cylinders, including rod stability checks.",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a5c63e45-cc0c-5f82-9e84-7fe5675844a9",
+          "label": "Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#348:tool",
+      "checksum_sha256": "8ce2b14cb7dfd7897e9cec1b6c588f7fd4c2436b073c10ea6cbba3b495586cad",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "52e876a5-c0ec-5397-8326-d03e20a5e921",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/52e876a5-c0ec-5397-8326-d03e20a5e921",
+      "type": "resource",
+      "slug": "email-tool",
+      "label": "Email Tool",
+      "summary": "Help to automate email generation",
+      "category": {
+        "kind": "tool"
+      },
+      "status": "active",
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#341:tool",
+      "checksum_sha256": "983dab97acd2f8d8d613274a1af9765e1ad8f78c9bcf99fb923aa161ef67b7e5",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "5370081e-b989-5fd2-932b-7c7aeaa91290",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/5370081e-b989-5fd2-932b-7c7aeaa91290",
+      "type": "resource",
+      "slug": "motor-speed-tool",
+      "label": "Motor & VFD Calculator",
+      "summary": "Calculate motor speed, full-load RPM, VFD scaling, gear reduction, belt ratios, and three-phase current values.",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a5c63e45-cc0c-5f82-9e84-7fe5675844a9",
+          "label": "Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#347:tool",
+      "checksum_sha256": "e9dd233d8de8bed09216a59fe4ddcb0ed416a20472560a8fc4077be6e9803b72",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "557467e2-9e41-532d-88f1-5a4e45c3f119",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/557467e2-9e41-532d-88f1-5a4e45c3f119",
+      "type": "resource",
+      "slug": "virtualization",
+      "label": "Virtualization",
+      "summary": "Virtual machines and hypervisors",
+      "category": {
+        "kind": "reference_page",
+        "subject": "information-technology.virtualization"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "21635296-22fd-571a-a55a-8e4c736cdac8",
+          "label": "Virtualization"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#376:page",
+      "checksum_sha256": "dfa803bbcda5c8ae10bdda990c3db755b0d272da31348959274e0d55728cbd65",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "55eec757-206d-5653-995a-2efcc125e80b",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/55eec757-206d-5653-995a-2efcc125e80b",
+      "type": "resource",
+      "slug": "scada",
+      "label": "SCADA",
+      "summary": "Supervisory monitoring and control systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.scada"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "5ed68fd5-e6b2-50cf-aa98-70d794b8d93e",
+          "label": "SCADA"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#380:page",
+      "checksum_sha256": "bec2dff7e11430b47a67b4f9ae838a59b4ba3c22e9a2e635e5bb488938346753",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "56f541d0-8be1-5491-aa3f-c86883be1195",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/56f541d0-8be1-5491-aa3f-c86883be1195",
+      "type": "resource",
+      "slug": "devicenet",
+      "label": "DeviceNet",
+      "summary": "CAN based industrial network",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-networking.devicenet"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "3bd58ec3-47b1-536d-8a4c-36a3935ca946",
+          "label": "DeviceNet"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#400:page",
+      "checksum_sha256": "579dae440fa4e3decea1f1dcae8f85616262aa90bbf29e08db2024bb4c26be01",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "58b5dc6e-2576-5ef1-9ceb-85c2cd475d8c",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/58b5dc6e-2576-5ef1-9ceb-85c2cd475d8c",
+      "type": "resource",
+      "slug": "hydraulic-cylinders",
+      "label": "Hydraulic Cylinders",
+      "summary": "Fluid powered linear actuators",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.actuators.cylinders.hydraulic-cylinders"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "65771032-0b09-5f50-bbfd-423dc75ec3d4",
+          "label": "Hydraulic Cylinders"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#405:page",
+      "checksum_sha256": "a2570fb9bc1ecf726742182d4d3fb6b54e3c6b9624c685c31b1e81866c1fa4f7",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "5c9d425d-bffb-5814-9c39-8ff3bdd0a85a",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/5c9d425d-bffb-5814-9c39-8ff3bdd0a85a",
+      "type": "resource",
+      "slug": "hydraulic-schematics",
+      "label": "Hydraulic Schematics",
+      "summary": "Hydraulic symbols and diagrams",
+      "category": {
+        "kind": "reference_page",
+        "subject": "hydraulic-schematics"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "d7ce6910-cb30-57b7-b63b-4e90e75cfed1",
+          "label": "Hydraulic Schematics"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#407:page",
+      "checksum_sha256": "7965586b9dd8047bf439f1fa143f22b49ec2265ea7736b44587fb46e70907cfe",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "62245426-7b1e-5f3d-afe7-505bd7c59f4d",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/62245426-7b1e-5f3d-afe7-505bd7c59f4d",
+      "type": "resource",
+      "slug": "web-development",
+      "label": "Web Development",
+      "summary": "Internet applications and websites",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.web-development"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "3cdc9fcd-5184-5197-9c30-2ba1d8c86014",
+          "label": "Web Development"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#371:page",
+      "checksum_sha256": "c3811b52633a666764134272d8a78c64d1f26e950cc3fb03455670c039ea7892",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "640a062d-7681-5223-98d0-0f103992f955",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/640a062d-7681-5223-98d0-0f103992f955",
+      "type": "resource",
+      "slug": "graphic-design",
+      "label": "Graphic Design",
+      "summary": "Visual communication and branding",
+      "category": {
+        "kind": "reference_page",
+        "subject": "design.graphic-design"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a15fee80-2d51-52df-8164-647611cecac1",
+          "label": "Graphic Design"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#390:page",
+      "checksum_sha256": "4a5bbb3eb822ea620f08f402cd70df35596dda005903eb055ee4c41d386bdb4e",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "651efcf3-64d4-5fe7-9682-0c3c7022f8fd",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/651efcf3-64d4-5fe7-9682-0c3c7022f8fd",
+      "type": "resource",
+      "slug": "time-tool",
+      "label": "Time Calculator",
+      "summary": "A tool to help convert and calculate time",
+      "category": {
+        "kind": "tool"
+      },
+      "status": "active",
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#339:tool",
+      "checksum_sha256": "d35f5f93ebf9216dab00b5e123549409b2d21b64982808b77d54b5641b2da185",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "66a86d2e-d619-5167-a3b1-a002c7d10b17",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/66a86d2e-d619-5167-a3b1-a002c7d10b17",
+      "type": "resource",
+      "slug": "mechanical-engineering",
+      "label": "Mechanical Engineering",
+      "summary": "Machines mechanics and thermodynamics",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.mechanical-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "870183f4-04b7-5cfa-9e1a-b0e5bb19d9fa",
+          "label": "Mechanical Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#353:page",
+      "checksum_sha256": "d85777d4596b5532945bda9e7c26213ce94bba270cbaab48661b74e71213d8c2",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "7055b2b7-0258-52ed-a8b1-9be635e69841",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/7055b2b7-0258-52ed-a8b1-9be635e69841",
+      "type": "resource",
+      "slug": "materials-engineering",
+      "label": "Materials Engineering",
+      "summary": "Material properties and applications",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.materials-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "6a76460c-0bd6-5be4-ad69-58f8efec3c5f",
+          "label": "Materials Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#358:page",
+      "checksum_sha256": "072d57d6a563bf6d7ed276bd8937333cc1eb5bad7f1c33332e70d3eab3b5e11b",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "71534c73-6b05-52a3-a6a2-1feda93e3841",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/71534c73-6b05-52a3-a6a2-1feda93e3841",
+      "type": "resource",
+      "slug": "machine-guarding",
+      "label": "Machine Guarding",
+      "summary": "Physical machine protection systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "safety.industrial-safety.machine-guarding"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "76b1ee4c-231b-59bb-897c-e2f33f5b3777",
+          "label": "Machine Guarding"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#415:page",
+      "checksum_sha256": "7ce0839f11e8c7ab7218855243761b2c05988d29a243961ed227fd7bc767d2a4",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "761e17f6-56b8-52c6-a5a2-167f83c86a34",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/761e17f6-56b8-52c6-a5a2-167f83c86a34",
+      "type": "resource",
+      "slug": "industrial-automation",
+      "label": "Industrial Automation",
+      "summary": "Integrated automation systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-automation"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "ef8d92b6-d69d-5bac-bcf2-989d2420efea",
+          "label": "Industrial Automation"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#393:page",
+      "checksum_sha256": "fdbeccdb4f04566f7a2620c573382a6b8c9a4daef11f765ef433c7d7d5bb4fff",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "793d0c7d-ebe9-5819-8197-1ad9ab2df1be",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/793d0c7d-ebe9-5819-8197-1ad9ab2df1be",
+      "type": "resource",
+      "slug": "cloud-computing",
+      "label": "Cloud Computing",
+      "summary": "Cloud platforms and services",
+      "category": {
+        "kind": "reference_page",
+        "subject": "information-technology.cloud-computing"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "f3a432b7-58ec-5335-b6fa-d92681bf483f",
+          "label": "Cloud Computing"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#375:page",
+      "checksum_sha256": "ec7b73477ad255772f5a7b40a450939ad94fc357dd0522a6e188dae3eaa4fefa",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "79d1f274-c271-5e4a-bda5-0995eda2db83",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/79d1f274-c271-5e4a-bda5-0995eda2db83",
+      "type": "resource",
+      "slug": "biomedical-engineering",
+      "label": "Biomedical Engineering",
+      "summary": "Medical technology engineering",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.biomedical-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "09b3810b-88c8-58b0-a425-2d71078550fd",
+          "label": "Biomedical Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#362:page",
+      "checksum_sha256": "8a0afe675f166b037fd28b697fc3364b793541117de501eb194d6687d24820c4",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "7bd83c9b-d4ea-5a8f-ae56-9284bc5cb658",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/7bd83c9b-d4ea-5a8f-ae56-9284bc5cb658",
+      "type": "resource",
+      "slug": "date-tool",
+      "label": "Date Calculator",
+      "summary": "Helps in logistical planning and lead time analysis",
+      "category": {
+        "kind": "tool"
+      },
+      "status": "active",
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#337:tool",
+      "checksum_sha256": "6aaf2b42f6072e1cfd98ee93c8a02672d1c0d36209f18cc6b15ffcffeddbe5ba",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "7c674b35-37c0-5b02-9e45-83c9862ff095",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/7c674b35-37c0-5b02-9e45-83c9862ff095",
+      "type": "resource",
+      "slug": "power-units",
+      "label": "Power Units",
+      "summary": "Hydraulic power systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.actuators.power-units"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "0811cddd-da60-5677-81d7-5f8cac014738",
+          "label": "Power Units"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#389:page",
+      "checksum_sha256": "03e59b26a5e09b324a7b9df8598da857597d7c3b447dccb2ac392fa5a90cde83",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "7ea4cf56-1b2b-5154-9ec9-aa119075f3b6",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/7ea4cf56-1b2b-5154-9ec9-aa119075f3b6",
+      "type": "resource",
+      "slug": "fanuc-robots",
+      "label": "FANUC Robots",
+      "summary": "FANUC industrial robotics systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.robotics.industrial-robotics.fanuc-robots"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "fa12879b-bc22-527d-a35f-273bab847c6e",
+          "label": "FANUC Robots"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#408:page",
+      "checksum_sha256": "a83ae44398747e45e37bcb0f80ff2193e7aebd3b021c6c8a81b663d7c4921fe5",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "88ea41b1-1dd9-5e9c-946f-595e48272df8",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/88ea41b1-1dd9-5e9c-946f-595e48272df8",
+      "type": "resource",
+      "slug": "profinet",
+      "label": "PROFINET",
+      "summary": "Siemens industrial Ethernet protocol",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-networking.profinet"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "58e4bf2c-0c95-5afe-8c70-d3d693c94c3d",
+          "label": "PROFINET"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#398:page",
+      "checksum_sha256": "991a0ead308dee0826226bb2b44dc8bf6209f117baec0aa1fc2effc2e6f63075",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "8a5a130b-0a9f-57f4-82bd-8c4edd1bda2b",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/8a5a130b-0a9f-57f4-82bd-8c4edd1bda2b",
+      "type": "resource",
+      "slug": "plc",
+      "label": "PLC Systems",
+      "summary": "Programmable logic controllers",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.plc"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "39630c44-3f61-56f9-87ea-6be1de53d832",
+          "label": "PLC Systems"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#379:page",
+      "checksum_sha256": "0499fd3aea83bf551c7cc900ecb310d109d46e9fa9a8dd088c2c62511a1b883b",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "8aab857b-37aa-5968-8e5f-70859f2f9cb3",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/8aab857b-37aa-5968-8e5f-70859f2f9cb3",
+      "type": "resource",
+      "slug": "industrial-it",
+      "label": "Industrial IT",
+      "summary": "Industrial computing and infrastructure",
+      "category": {
+        "kind": "reference_page",
+        "subject": "information-technology.industrial-it"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "0f5617c0-52ad-5927-a55e-50a3a013084e",
+          "label": "Industrial IT"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#395:page",
+      "checksum_sha256": "6fd2bf3de3aea8a55d1cdc41c033babbca4ce6d80f57194ddc09252863b38134",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "903d0fc6-de9c-57c5-8f3f-39cb297c96c8",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/903d0fc6-de9c-57c5-8f3f-39cb297c96c8",
+      "type": "resource",
+      "slug": "serial-communications",
+      "label": "Serial Communications",
+      "summary": "RS232 RS485 and serial systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-networking.serial-communications"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "7cf0a739-1215-560a-bae1-72547840c1ae",
+          "label": "Serial Communications"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#403:page",
+      "checksum_sha256": "85ff31c905cdb09c686f50a441befc30c8a5cb2d0530be4d6da591ab7e4585f2",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "9534c58a-451a-59b9-b08d-2c3e5885e205",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/9534c58a-451a-59b9-b08d-2c3e5885e205",
+      "type": "resource",
+      "slug": "hydraulic-systems",
+      "label": "Hydraulic Systems",
+      "summary": "Industrial hydraulic machinery",
+      "category": {
+        "kind": "reference_page",
+        "subject": "hydraulic-systems"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "fdae87e5-eda9-5a46-9f1c-b4db410d7c7e",
+          "label": "Hydraulic Systems"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#404:page",
+      "checksum_sha256": "33ff1dddb949f8853a31ad06d4e7dc0a4791a639c9f04507cd85a26010bc425d",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "96f3becb-c380-5a3d-8b18-c8419569bfbe",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/96f3becb-c380-5a3d-8b18-c8419569bfbe",
+      "type": "resource",
+      "slug": "civil-engineering",
+      "label": "Civil Engineering",
+      "summary": "Infrastructure and structural systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.civil-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "c4a1bd07-077f-5f06-8d3c-b13c0d812f71",
+          "label": "Civil Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#355:page",
+      "checksum_sha256": "ba977d8a472876646c722cd147cce7a8c49172509b73b7287c5d456a33e14c03",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "9e7620d3-6597-5e94-910c-3040ec884076",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/9e7620d3-6597-5e94-910c-3040ec884076",
+      "type": "resource",
+      "slug": "networking",
+      "label": "Networking",
+      "summary": "Computer communications and protocols",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.networking"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "941b804b-802b-546d-bfe7-ef35e35db20c",
+          "label": "Networking"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#368:page",
+      "checksum_sha256": "38e246287e3a2ea25263003ca95a70dad0cde1d160556769f76862f5bebb4a4c",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "9e7bd227-4baf-5eb9-af03-08df8a0d4bff",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/9e7bd227-4baf-5eb9-af03-08df8a0d4bff",
+      "type": "resource",
+      "slug": "wire-ampacity-tool",
+      "label": "Wire Gauge & Ampacity",
+      "summary": "Convert AWG and metric wire sizes, estimate ampacity, resistance, and voltage drop, and find the recommended conductor size.",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a5c63e45-cc0c-5f82-9e84-7fe5675844a9",
+          "label": "Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#344:tool",
+      "checksum_sha256": "bf6430862e73f458ff8f4e8c793206f78dc2815ff447beb5237fb2c9e43741d8",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "9f8904f8-a23c-5e4f-a190-5d73c840aa21",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/9f8904f8-a23c-5e4f-a190-5d73c840aa21",
+      "type": "resource",
+      "slug": "lockout-tagout",
+      "label": "Lockout Tagout",
+      "summary": "Energy isolation safety procedures",
+      "category": {
+        "kind": "reference_page",
+        "subject": "safety.industrial-safety.lockout-tagout"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "70f64d0a-db1e-5626-af2c-a74787c69b37",
+          "label": "Lockout Tagout"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#414:page",
+      "checksum_sha256": "6dc102a43bd80a5803af8ccbe8ddc35b3d96ad164540bb391bb510235a12c8e9",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "a1a231a2-2d88-5db9-ae8d-613580375f81",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/a1a231a2-2d88-5db9-ae8d-613580375f81",
+      "type": "resource",
+      "slug": "programming",
+      "label": "Programming",
+      "summary": "Software development and coding",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.programming"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "d76d2ed3-2c87-588c-94a0-5c0fe85bc2f6",
+          "label": "Programming"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#363:page",
+      "checksum_sha256": "361d2cc1c64f8ae7f2ea2d6e9d0021db450ad22a29061a7d0366cb260c948ff5",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "a47d04f6-471a-5a5b-8d2a-67b74e6326ea",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/a47d04f6-471a-5a5b-8d2a-67b74e6326ea",
+      "type": "resource",
+      "slug": "pricing-tool",
+      "label": "Pricing Tool",
+      "summary": "Helps in complex pricing with BOMs, or tiered pricing",
+      "category": {
+        "kind": "tool"
+      },
+      "status": "active",
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#340:tool",
+      "checksum_sha256": "876326e6d1348b8d38ac37a7a1fd406ce7c9f39cab3952faea5abe63db5e6573",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "a4ab7279-4dd0-5d22-92b1-7692c5471e6e",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/a4ab7279-4dd0-5d22-92b1-7692c5471e6e",
+      "type": "resource",
+      "slug": "embedded-systems",
+      "label": "Embedded Systems",
+      "summary": "Hardware integrated software systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.embedded-systems"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "e16ea927-d157-5f3a-accf-62e70fb905fc",
+          "label": "Embedded Systems"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#370:page",
+      "checksum_sha256": "268abfe209189623fcd33774c227a08219d7f7a971ca0b3a8642a58e4edbc1ec",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "a51c7778-f63c-532e-9ef6-bee6954a5180",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/a51c7778-f63c-532e-9ef6-bee6954a5180",
+      "type": "resource",
+      "slug": "can-bus",
+      "label": "CAN Bus",
+      "summary": "Controller area network systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.industrial-networking.can-bus"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "09c6ae38-dda9-57a6-be44-1dc6ce369b4f",
+          "label": "CAN Bus"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#401:page",
+      "checksum_sha256": "e07a2797c06420ca14f017cd859760b91214fee4d23d3cf20b21da1adc6515d0",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "a56af00a-0b53-55db-bec9-6f53615a6b71",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/a56af00a-0b53-55db-bec9-6f53615a6b71",
+      "type": "resource",
+      "slug": "systems-engineering",
+      "label": "Systems Engineering",
+      "summary": "Complex integrated systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.systems-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "321b1ca3-c3f2-5a40-ba57-72be257ed33f",
+          "label": "Systems Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#359:page",
+      "checksum_sha256": "c635fa4c84c8f1aadb3f6e96fb1e8ffe02e94b30573204aa1facaa269e8986f0",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "a5a4141d-ab1c-5b82-8058-7f4c34d61a24",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/a5a4141d-ab1c-5b82-8058-7f4c34d61a24",
+      "type": "resource",
+      "slug": "pid-control",
+      "label": "PID Control",
+      "summary": "Proportional integral derivative control",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.controls-engineering.pid-control"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "2f773f30-e1f6-50d7-939a-6bd6c174df43",
+          "label": "PID Control"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#412:page",
+      "checksum_sha256": "9507c22142df0a71003d3c860dfc9c762583f6ce958e83f40e677a30ab98f7f0",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "a9dace40-a050-5e13-89b8-34c2d94af257",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/a9dace40-a050-5e13-89b8-34c2d94af257",
+      "type": "resource",
+      "slug": "it-support",
+      "label": "IT Support",
+      "summary": "Technical support and troubleshooting",
+      "category": {
+        "kind": "reference_page",
+        "subject": "information-technology.it-support"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "4a78a90a-13c1-535e-9324-ddadf8f4b4ad",
+          "label": "IT Support"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#378:page",
+      "checksum_sha256": "975db1585d8c6fc6e9d7ad0ba51e9057c6574c51196afd03dcde8145693af2b8",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "b6eaac2c-6679-5124-a80e-a3461a480587",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/b6eaac2c-6679-5124-a80e-a3461a480587",
+      "type": "resource",
+      "slug": "sensors",
+      "label": "Sensors",
+      "summary": "Industrial sensing technologies",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.sensors"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "0186dacd-7f1a-537e-bc22-3a071e0dd8f9",
+          "label": "Sensors"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#383:page",
+      "checksum_sha256": "641dbcdbdbd7f8a09e88ece08b3ba5941bf6398c7a45e40a8d784b8a8172c139",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "bbcab0d1-9702-522c-bdcc-4e2457e3b25e",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/bbcab0d1-9702-522c-bdcc-4e2457e3b25e",
+      "type": "resource",
+      "slug": "gear-tool",
+      "label": "Spur Gear Calculator",
+      "summary": "Calculate gear dimensions, ratios, center distances, output speed, and torque from standard gear parameters.",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a5c63e45-cc0c-5f82-9e84-7fe5675844a9",
+          "label": "Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#351:tool",
+      "checksum_sha256": "07ee21fdce0fdb73e041d05256bdafd0516773badfd27373ffc61ce8ec02c38a",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "bf599ff4-93c4-5f8c-9a6c-20df0d38e321",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/bf599ff4-93c4-5f8c-9a6c-20df0d38e321",
+      "type": "resource",
+      "slug": "modbus-tool",
+      "label": "Modbus Reference & Decoder",
+      "summary": "Translate register addresses, browse function codes, decode registers, and convert between common word and byte orders.",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a5c63e45-cc0c-5f82-9e84-7fe5675844a9",
+          "label": "Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#346:tool",
+      "checksum_sha256": "0fe61ae579d308c3e4820a1083188a9e82f4a63b62c83f0bbae69465d676f646",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "c10c8ff8-f5d8-5008-a6a8-285b9b08f5db",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/c10c8ff8-f5d8-5008-a6a8-285b9b08f5db",
+      "type": "resource",
+      "slug": "linux",
+      "label": "Linux",
+      "summary": "System administration and shell usage",
+      "category": {
+        "kind": "reference_page",
+        "subject": "information-technology.linux"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "ae883990-a05b-595b-b3cc-ce3c2c104406",
+          "label": "Linux"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#373:page",
+      "checksum_sha256": "06166ccdd53403da5fd13d06e1c40941539ba85fa722d5070f933717db90ee76",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "c7f43c56-5ff4-53c6-85db-48fe09d4018c",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/c7f43c56-5ff4-53c6-85db-48fe09d4018c",
+      "type": "resource",
+      "slug": "unit-converter-tool",
+      "label": "Unit Converter",
+      "summary": "Convert length, mass, volume, temperature, pressure, force, energy, power, area, speed, torque, flow, angle, and frequency units with live category-wide results.",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a5c63e45-cc0c-5f82-9e84-7fe5675844a9",
+          "label": "Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#342:tool",
+      "checksum_sha256": "79c9e049b05e5ae41c35c7ac831101140149ee9dcd414993ae137ebf2e3fe49f",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "cea0b93e-9008-5963-a6c8-5a900757e493",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/cea0b93e-9008-5963-a6c8-5a900757e493",
+      "type": "resource",
+      "slug": "chemical-engineering",
+      "label": "Chemical Engineering",
+      "summary": "Industrial chemical processes",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.chemical-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "7f01030e-de4d-53dc-bffe-7929078ac7ee",
+          "label": "Chemical Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#356:page",
+      "checksum_sha256": "ec2de9217714b8f826686f01cedbb7007e20c2458ebdf51b45eefd84e9363021",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "d04c906e-aa82-58a3-b35a-b6cdc9ccc88a",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/d04c906e-aa82-58a3-b35a-b6cdc9ccc88a",
+      "type": "resource",
+      "slug": "mechatronics",
+      "label": "Mechatronics",
+      "summary": "Mechanical electrical and software integration",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.mechatronics"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "9d36a8d1-5ea2-520e-9bb7-fae5807c4ea4",
+          "label": "Mechatronics"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#360:page",
+      "checksum_sha256": "6774372acb68105b9d2db37778980690c1d0d123c720a68375bdbc1f4fd00c1f",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "d31333c5-40d2-5c81-a261-647411697598",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/d31333c5-40d2-5c81-a261-647411697598",
+      "type": "resource",
+      "slug": "controls-engineering",
+      "label": "Controls Engineering",
+      "summary": "Automation and control theory",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.controls-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a31c278c-1fb0-5176-855d-ab76221e5860",
+          "label": "Controls Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#396:page",
+      "checksum_sha256": "48998b1d394975b4aa7fc796e177c0cef24d2c39e1c6a9cd4fb6ff3db027e2fb",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "d9850377-a167-5dbc-a975-ab54c6c9cb05",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/d9850377-a167-5dbc-a975-ab54c6c9cb05",
+      "type": "resource",
+      "slug": "aerospace-engineering",
+      "label": "Aerospace Engineering",
+      "summary": "Aircraft and spacecraft systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "engineering.aerospace-engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "c3fb8202-44ca-5632-9418-1d2749fbc16c",
+          "label": "Aerospace Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#361:page",
+      "checksum_sha256": "7c7914f2e73db9b61e51b638392da3defca47738d48d4b1985f146f8ee98055f",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "dbbe3203-d386-5f60-9bcc-fba87bebea64",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/dbbe3203-d386-5f60-9bcc-fba87bebea64",
+      "type": "resource",
+      "slug": "bolt-torque-tool",
+      "label": "Bolt Torque Calculator",
+      "summary": "Calculate bolt torque and clamp force for metric and SAE fasteners with drill sizes, strength data, and sizing references.",
+      "category": {
+        "kind": "tool",
+        "subject": "engineering"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "a5c63e45-cc0c-5f82-9e84-7fe5675844a9",
+          "label": "Engineering"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#343:tool",
+      "checksum_sha256": "487a1a370ba5faf607c41af8dc641cc15335072d6c83716f03b633708689faad",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "ddb66b50-3ce1-5d23-a772-a939f9b792ee",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/ddb66b50-3ce1-5d23-a772-a939f9b792ee",
+      "type": "resource",
+      "slug": "process-control",
+      "label": "Process Control",
+      "summary": "Industrial process regulation systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.process-control"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "610154a1-59fe-54ff-88f0-4483bea0b424",
+          "label": "Process Control"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#386:page",
+      "checksum_sha256": "4f48ccde25ad335a63ee1a091c27c0fd16f8ea1ec57f148924002faa0f92c291",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "e18a0d28-416c-5b32-a4c2-ef923a24dc3a",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/e18a0d28-416c-5b32-a4c2-ef923a24dc3a",
+      "type": "resource",
+      "slug": "industrial-design",
+      "label": "Industrial Design",
+      "summary": "Product and manufacturing design",
+      "category": {
+        "kind": "reference_page",
+        "subject": "design.industrial-design"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "8c6e9447-5e84-5677-8e57-726589c1a910",
+          "label": "Industrial Design"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#391:page",
+      "checksum_sha256": "095ceb38391e046a5916d13c0b8e26782597bf41dd8875fab9297bbb54482d3a",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "e833e4c1-9281-56c4-a893-2cec9adb7eba",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/e833e4c1-9281-56c4-a893-2cec9adb7eba",
+      "type": "resource",
+      "slug": "abb-robots",
+      "label": "ABB Robots",
+      "summary": "ABB robotic automation systems",
+      "category": {
+        "kind": "reference_page",
+        "subject": "automation.robotics.industrial-robotics.abb-robots"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "efd23e6f-7fa6-59d8-bbc0-48a39fbcf46e",
+          "label": "ABB Robots"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#409:page",
+      "checksum_sha256": "f431fc4fbc86161f9cf0ef0594501c76debfbe97f573e042ca50dd310f5d66c1",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    },
+    {
+      "id": "f05cdffc-478c-5dfb-957d-c3241b414a2b",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/f05cdffc-478c-5dfb-957d-c3241b414a2b",
+      "type": "resource",
+      "slug": "json-tool",
+      "label": "JSON Tool",
+      "summary": "Validate, format, minify, query, convert, and analyze JSON with detailed error reporting and statistics.",
+      "category": {
+        "kind": "tool",
+        "subject": "computer-science"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "0235f865-570c-59cb-963a-7533d9fe1063",
+          "label": "Computer Science"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#352:tool",
+      "checksum_sha256": "3ec7f5598221d39a66a7d4ac7a52a9b57e8e7777ed1856318060f1757303752d",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "tool",
+        "embed": {
+          "kind": "component"
+        }
+      }
+    },
+    {
+      "id": "f143dde9-bcca-5e87-8e5b-05b0d42f13a6",
+      "uri": "https://mdm.cameron-dietz.com/id/resource/f143dde9-bcca-5e87-8e5b-05b0d42f13a6",
+      "type": "resource",
+      "slug": "cybersecurity",
+      "label": "Cybersecurity",
+      "summary": "Information and system security",
+      "category": {
+        "kind": "reference_page",
+        "subject": "computer-science.cybersecurity"
+      },
+      "status": "active",
+      "relations": [
+        {
+          "rel": "classified_as",
+          "type": "taxonomy_term",
+          "id": "2e7cb79e-5b5c-5a92-afd5-569de116bd36",
+          "label": "Cybersecurity"
+        }
+      ],
+      "source_system": "subjects",
+      "source_record_id": "subjects.csv#369:page",
+      "checksum_sha256": "2d3a035181c363a354d7f3a5abd62b51f3f450e9b0ef545abff8bd884b95806a",
+      "apps": [
+        "engineering-reference"
+      ],
+      "created_at": "2026-10-27T00:19:44Z",
+      "updated_at": "2026-10-27T00:19:45Z",
+      "metadata": {
+        "publish": true
+      },
+      "data": {
+        "resource_kind": "article"
+      }
+    }
+  ]
+}

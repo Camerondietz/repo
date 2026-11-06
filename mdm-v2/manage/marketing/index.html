@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marketing manager</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../data/marts/marketing.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+<script>
+  // Opened somewhere without the MASTER folder around it: use the published shared library instead.
+  if (!window.MDMApp) document.write('<link rel="stylesheet" href="https://repo.cameron-dietz.com/lib/mdm-app.css">' +
+    ["mdm-client", "mdm-registry", "mdm-store", "mdm-app"].map((f) => '<script src="https://repo.cameron-dietz.com/lib/' + f + '.js"><\/script>').join(""));
+</script>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * Master Marketing Manager (registry id: marketing, ceiling C2).
+ * Create content once (content_item), route it to channels (one publication per channel),
+ * group it in campaigns, and follow it from idea to published. Quick capture works on a phone.
+ */
+const AVENUES = ["business_reviews", "emergency", "better_society", "engineering", "tech_cyber"];
+const PLATFORMS = ["website", "instagram", "facebook", "x", "linkedin", "youtube", "tiktok", "threads", "bluesky", "nextdoor", "email", "rss", "github_repo"];
+const edgeTo = (r, rel) => (r.relations || []).find((e) => e.rel === rel) || {};
+const pubsOf = (app, item) => app.incoming(item.id, "content").map((x) => x.rec).filter((p) => p.type === "publication");
+const localInput = (d) => { const t = new Date(d.getTime() - d.getTimezoneOffset() * 60000); return t.toISOString().slice(0, 16); };
+
+function publishTo(item, app) {
+  const done = new Set(pubsOf(app, item).map((p) => edgeTo(p, "channel").id));
+  const channels = app.byType("channel").filter((c) => !done.has(c.id));
+  if (!channels.length) return app.toast(app.byType("channel").length ? "Already planned for every channel" : "Add a channel first (Channels → New channel, or Add standard channels)");
+  app.pick(`Publish "${item.label}" to…`, channels, (ch) => {
+    const d = item.data || {};
+    const rels = [app.edge("content", item), app.edge("channel", ch)];
+    const camp = edgeTo(item, "campaign"); if (camp.id) rels.push(Object.assign({}, camp));
+    app.openEditor(app.newRecord("publication", {
+      label: `${item.label} → ${ch.label}`, relations: rels, category: Object.assign({}, item.category && item.category.avenue ? { avenue: item.category.avenue } : {}),
+      data: { variant_text: d.excerpt || (d.body_md || "").slice(0, 280), pub_state: "planned", hashtags: (item.tags || []).map((t) => "#" + t.replace(/-/g, "")) },
+    }), true);
+  }, "Each channel gets its own publication, so the text can be tailored per platform.");
+}
+
+function markPublished(pub, app) {
+  const url = prompt("Live URL (blank if none)", (pub.data || {}).live_url || "");
+  if (url == null) return;
+  const p = app.clone(pub); p.data = Object.assign({}, p.data, { pub_state: "published", published_at: app.nowIso() });
+  if (url) p.data.live_url = url;
+  app.saveDraft(p, { silent: true, defer: true });
+  const item = app.get(edgeTo(pub, "content").id);
+  if (item && (item.data || {}).workflow !== "published") { const c = app.clone(item); c.data = Object.assign({}, c.data, { workflow: "published" }); app.saveDraft(c, { silent: true, defer: true }); }
+  app.refresh(); app.toast("Marked published");
+}
+
+function addToCampaign(item, app) {
+  app.pick(`Add "${item.label}" to a campaign`, app.byType("campaign"), (camp) => {
+    const c = app.clone(item);
+    c.relations = (c.relations || []).filter((e) => e.rel !== "campaign").concat([app.edge("campaign", camp)]);
+    app.saveDraft(c);
+  });
+}
+
+function addStandardChannels(app) {
+  const have = new Set(app.byType("channel").map((c) => (c.data || {}).platform));
+  const pick = prompt(`Platforms to add (comma-separated). You fill in handles and posting rules after.\nAvailable: ${PLATFORMS.filter((p) => !have.has(p)).join(", ")}`, "website");
+  if (!pick) return;
+  let n = 0;
+  for (const p of pick.split(",").map((x) => x.trim().toLowerCase()).filter((x) => x && !have.has(x))) {
+    app.saveDraft(app.newRecord("channel", { label: app.humanize(p).replace(/^\w/, (c) => c.toUpperCase()), category: { realm: "aventrek" }, data: { platform: p, connector: { kind: "manual" } } }), { silent: true, defer: true }); n++;
+  }
+  app.refresh(); app.toast(`${n} channels added`);
+}
+
+function captureForm(box, app) {
+  const h = app.h;
+  const f = {
+    kind: h("select", {}, ["review", "post", "article", "alert", "photo_set", "video", "thread", "newsletter", "other"].map((k) => h("option", { value: k }, app.humanize(k)))),
+    avenue: h("select", {}, h("option", { value: "" }, "—"), AVENUES.map((a) => h("option", { value: a }, app.humanize(a)))),
+    headline: h("input", { type: "text", placeholder: "Headline or name of the place" }),
+    body: h("textarea", { placeholder: "Notes, first draft, what happened…", style: "min-height:140px" }),
+    rating: h("input", { type: "number", min: 0, max: 5, step: 0.5, placeholder: "0–5 (reviews)" }),
+    link: h("input", { type: "url", placeholder: "Source link (optional)" }),
+    tags: h("input", { type: "text", placeholder: "tags, comma-separated" }),
+  };
+  const field = (l, el) => h("div", { class: "mdm-field" }, h("label", {}, l), el);
+  let about = null;
+  const aboutBtn = h("button", { class: "mdm-btn small", type: "button", onclick: () => app.pick("What is it about?", app.byType("location", "organization", "place"), (r) => { about = r; aboutBtn.textContent = r.label; }) }, "Pick a place or company");
+  const save = () => {
+    const headline = f.headline.value.trim(); if (!headline) return app.toast("Add a headline");
+    const data = { content_kind: f.kind.value, headline, body_md: f.body.value.trim() || undefined, workflow: f.body.value.trim() ? "drafting" : "captured",
+      captured: { at: app.nowIso(), method: innerWidth < 700 ? "mobile_quick_capture" : "desk", device: navigator.platform || undefined } };
+    if (f.rating.value) data.rating = Number(f.rating.value);
+    if (f.link.value.trim()) data.source_links = [f.link.value.trim()];
+    const rels = about ? [app.edge(about.type === "organization" ? "about" : "located_at", about)] : [];
+    const rec = app.newRecord("content_item", { label: headline, relations: rels, category: Object.assign({ realm: "aventrek" }, f.avenue.value ? { avenue: f.avenue.value } : {}),
+      tags: f.tags.value.split(",").map((t) => t.trim().toLowerCase().replace(/\s+/g, "-")).filter(Boolean), data });
+    app.saveDraft(app.prune(rec), { silent: true });
+    app.toast("Captured. It is on the board under " + data.workflow + ".");
+    Object.values(f).forEach((el) => { if (el.tagName !== "SELECT") el.value = ""; }); about = null; aboutBtn.textContent = "Pick a place or company";
+  };
+  box.append(h("div", { class: "mdm-form", style: "max-width:640px" },
+    field("Kind", f.kind), field("Avenue", f.avenue), field("Headline", f.headline), field("About", aboutBtn), field("Notes / draft", f.body),
+    field("Rating", f.rating), field("Link", f.link), field("Tags", f.tags),
+    h("div", {}, h("button", { class: "mdm-btn primary", onclick: save }, "Capture"))));
+}
+
+MDMApp.start({
+  id: "marketing",
+  title: "Marketing manager",
+  subtitle: "content · channels · campaigns · schedule",
+  types: ["content_item", "channel", "campaign", "publication", "location", "organization", "taxonomy_term", "taxonomy_scheme"],
+  headerButtons: [{ label: "Add standard channels", run: addStandardChannels }],
+  views: [
+    { id: "board", group: "Content", label: "Content board", type: "content_item", kind: "board", groupBy: "data.workflow", emptyGroup: "idea",
+      facets: ["category.avenue", "data.content_kind"],
+      intro: "Drag a card to move it along. Open an item and use <b>Publish to…</b> to plan it for a channel.",
+      card: (r, app) => app.esc([app.humanize((r.data || {}).content_kind || ""), (r.category || {}).avenue && app.humanize(r.category.avenue), pubsOf(app, r).length ? pubsOf(app, r).length + " channel(s)" : ""].filter(Boolean).join(" · ")) },
+    { id: "capture", group: "Content", label: "Quick capture", kind: "custom", render: (box, app) => captureForm(box, app),
+      intro: "Capture content as a by-product of the day: a restaurant visit, a news item, an idea. It lands on the board as <i>captured</i> (or <i>drafting</i> if you wrote notes)." },
+    { id: "items", group: "Content", label: "All content", type: "content_item", facets: ["data.workflow", "data.content_kind", "category.avenue"],
+      columns: [
+        { label: "Headline", get: "label" },
+        { label: "Kind", get: "data.content_kind" },
+        { label: "Avenue", get: "category.avenue" },
+        { label: "Stage", get: "data.workflow" },
+        { label: "Rating", get: "data.rating", num: true },
+        { label: "Channels", get: (r, app) => pubsOf(app, r).map((p) => edgeTo(p, "channel").label + (p.data && p.data.pub_state === "published" ? " ✓" : "")).join(", ") },
+      ] },
+    { id: "schedule", group: "Publishing", label: "Schedule", type: "publication", kind: "board", groupBy: "data.pub_state", emptyGroup: "planned",
+      card: (r, app) => app.esc([edgeTo(r, "channel").label, (r.data || {}).scheduled_for && app.fmtDate(r.data.scheduled_for)].filter(Boolean).join(" · ")),
+      onMove: (p, state, app) => { if (state === "published" && !(p.data || {}).published_at) p.data.published_at = app.nowIso(); } },
+    { id: "publications", group: "Publishing", label: "Publications", type: "publication", facets: ["data.pub_state"],
+      sort: (a, b) => String((b.data || {}).scheduled_for || (b.data || {}).published_at || "").localeCompare(String((a.data || {}).scheduled_for || (a.data || {}).published_at || "")),
+      columns: [
+        { label: "Content", get: (r) => edgeTo(r, "content").label },
+        { label: "Channel", get: (r) => edgeTo(r, "channel").label },
+        { label: "State", get: "data.pub_state" },
+        { label: "Scheduled", get: "data.scheduled_for", date: true },
+        { label: "Published", get: "data.published_at", date: true },
+        { label: "Link", get: "data.live_url", html: (r, app) => (r.data || {}).live_url ? `<a href="${app.esc(r.data.live_url)}" target="_blank" rel="noopener">open</a>` : "" },
+      ] },
+    { id: "channels", group: "Setup", label: "Channels", type: "channel", newTemplate: () => ({ category: { realm: "aventrek" }, data: { connector: { kind: "manual" } } }),
+      intro: "Where content goes. API keys are never stored here: a connector names its secret (<code>secret_ref</code>) and the value lives in your vault or <code>.env</code>.",
+      columns: [
+        { label: "Channel", get: "label" },
+        { label: "Platform", get: "data.platform" },
+        { label: "Handle", get: "data.handle" },
+        { label: "Avenues", get: "data.avenues" },
+        { label: "Published", get: (r, app) => app.incoming(r.id, "channel").filter((x) => (x.rec.data || {}).pub_state === "published").length || "", num: true },
+      ] },
+    { id: "campaigns", group: "Setup", label: "Campaigns", type: "campaign",
+      columns: [
+        { label: "Campaign", get: "label" },
+        { label: "Objective", get: "data.objective" },
+        { label: "Start", get: "data.start", date: true },
+        { label: "End", get: "data.end", date: true },
+        { label: "Items", get: (r, app) => app.incoming(r.id, "campaign").length || "", num: true },
+      ] },
+  ],
+  actions: [
+    { label: "Publish to…", primary: false, when: (r) => r.type === "content_item", run: publishTo },
+    { label: "Add to campaign", when: (r) => r.type === "content_item", run: addToCampaign },
+    { label: "Mark published", when: (r) => r.type === "publication" && (r.data || {}).pub_state !== "published", run: markPublished },
+    { label: "Schedule", when: (r) => r.type === "publication", run: (r, app) => {
+      const cur = (r.data || {}).scheduled_for; const v = prompt("When? (YYYY-MM-DD HH:MM, your local time)", localInput(cur ? new Date(cur) : new Date(Date.now() + 86400000)).replace("T", " "));
+      if (!v) return; const d = new Date(v.replace(" ", "T")); if (isNaN(d)) return app.toast("Not a date");
+      const p = app.clone(r); p.data = Object.assign({}, p.data, { scheduled_for: d.toISOString().replace(/\.\d{3}Z$/, "Z"), pub_state: "scheduled" }); app.saveDraft(p);
+    } },
+  ],
+  detailExtras: (r, app) => {
+    const h = app.h, out = [];
+    const link = (id, text) => h("a", { href: "#", onclick: (e) => { e.preventDefault(); app.goTo(id); } }, text);
+    if (r.type === "content_item") {
+      const pubs = pubsOf(app, r);
+      out.push({ title: "Channels", el: pubs.length ? h("div", {}, pubs.map((p) => h("div", { class: "mdm-rel" }, link(p.id, edgeTo(p, "channel").label || p.label), h("small", {}, [(p.data || {}).pub_state, (p.data || {}).scheduled_for && app.fmtDate(p.data.scheduled_for)].filter(Boolean).join(" · ")))))
+        : h("button", { class: "mdm-btn primary", onclick: () => publishTo(r, app) }, "Publish to a channel") });
+      if ((r.data || {}).body_md) out.push({ title: "Draft", el: h("div", { style: "white-space:pre-wrap" }, r.data.body_md) });
+    }
+    if (r.type === "channel" || r.type === "campaign") {
+      const items = app.incoming(r.id, r.type === "channel" ? "channel" : "campaign").map((x) => x.rec);
+      if (items.length) out.push({ title: r.type === "channel" ? "Publications" : "In this campaign", el: h("div", {}, items.slice(0, 100).map((x) => h("div", { class: "mdm-rel" }, link(x.id, x.label), h("small", {}, (x.data || {}).pub_state || (x.data || {}).workflow || x.type)))) });
+    }
+    return out;
+  },
+});
+</script>
+</body>
+</html>

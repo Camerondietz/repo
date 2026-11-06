@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job manager</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../data/marts/job.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+<script>
+  // Opened somewhere without the MASTER folder around it: use the published shared library instead.
+  if (!window.MDMApp) document.write('<link rel="stylesheet" href="https://repo.cameron-dietz.com/lib/mdm-app.css">' +
+    ["mdm-client", "mdm-registry", "mdm-store", "mdm-app"].map((f) => '<script src="https://repo.cameron-dietz.com/lib/' + f + '.js"><\/script>').join(""));
+</script>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * Master Job Application Manager (registry id: job, ceiling C2).
+ * Pipeline board of job_application records by data.stage, listings with an Apply action,
+ * companies, contacts at those companies, and a follow-up list. Saves go straight to data/warehouse when the folder is connected.
+ */
+// The applicant on new applications: your own person record (it is C3, so it is linked by id, not loaded here).
+const ME = { rel: "applicant", type: "person", id: "adb63725-6df2-505e-8f5c-09a127834571", label: "Cameron Dietz" };
+const CLOSED = ["accepted", "rejected", "withdrawn", "ghosted"];
+const edgeTo = (r, rel) => (r.relations || []).find((e) => e.rel === rel) || {};
+const today = () => new Date().toISOString().slice(0, 10);
+
+function listingOf(app, a) { return app.get(edgeTo(a, "listing").id); }
+function companyOf(app, a) {
+  const l = listingOf(app, a);
+  const org = edgeTo(a, "organization").id ? edgeTo(a, "organization") : l ? edgeTo(l, "organization") : {};
+  return org;
+}
+function applicationsFor(app, listing) { return app.incoming(listing.id, "listing").map((x) => x.rec); }
+const COMPANY_COLUMNS = [
+  { label: "Company", get: "label" },
+  { label: "Listings", get: (r, app) => app.incoming(r.id, "organization").filter((x) => x.rec.type === "job_listing").length, num: true },
+  { label: "Applications", get: (r, app) => app.incoming(r.id, "organization").filter((x) => x.rec.type === "job_application").length || "", num: true },
+  { label: "People you know", get: (r, app) => app.incoming(r.id, "organization").filter((x) => x.rec.type === "employment").length || "", num: true },
+];
+
+function apply(listing, app) {
+  const existing = applicationsFor(app, listing);
+  if (existing.length && !confirm(`You already have ${existing.length} application(s) for this listing. Start another?`)) return app.goTo(existing[0].id);
+  const org = edgeTo(listing, "organization");
+  const rels = [app.edge("listing", listing), Object.assign({}, ME)];
+  if (org.id) rels.push({ rel: "organization", type: "organization", id: org.id, label: org.label });
+  const a = app.newRecord("job_application", {
+    label: listing.label, status: "active",
+    relations: rels,
+    data: { stage: "interested", next_action: "Tailor resume", next_action_on: today(), history: [{ at: app.nowIso(), stage: "interested" }] },
+  });
+  app.openEditor(a, true);
+}
+
+function stageMoved(rec, stage, app) {
+  rec.data = rec.data || {};
+  rec.data.history = (rec.data.history || []).concat([{ at: app.nowIso(), stage }]);
+  if (stage === "applied" && !rec.data.applied_on) rec.data.applied_on = today();
+}
+
+MDMApp.start({
+  id: "job",
+  title: "Job manager",
+  subtitle: "applications · listings · companies",
+  types: ["job_application", "job_listing", "organization", "person", "employment", "document", "location", "place"],
+  views: [
+    { id: "pipeline", group: "Applications", label: "Pipeline", type: "job_application", kind: "board", groupBy: "data.stage", emptyGroup: "interested",
+      filter: (r) => r.status !== "archived",
+      newTemplate: () => ({ relations: [Object.assign({}, ME)], data: { stage: "interested", history: [{ at: new Date().toISOString(), stage: "interested" }] } }),
+      intro: "Drag a card to change its stage. Each move is recorded in the application's history. To start one from a posting, open it under <b>Listings</b> and use <b>Apply</b>.",
+      card: (r, app) => app.esc([companyOf(app, r).label, (r.data || {}).next_action && "next: " + r.data.next_action + (r.data.next_action_on ? " (" + r.data.next_action_on + ")" : "")].filter(Boolean).join(" · ")),
+      onMove: stageMoved },
+    { id: "applications", group: "Applications", label: "All applications", type: "job_application", facets: ["data.stage", "status"],
+      columns: [
+        { label: "Role", get: "label" },
+        { label: "Company", get: (r, app) => companyOf(app, r).label },
+        { label: "Stage", get: "data.stage" },
+        { label: "Applied", get: "data.applied_on", date: true },
+        { label: "Next", get: "data.next_action" },
+        { label: "Due", get: "data.next_action_on", date: true },
+        { label: "Fit", get: "data.fit_score", num: true },
+      ] },
+    { id: "followups", group: "Applications", label: "Follow-ups", type: "job_application",
+      filter: (r) => (r.data || {}).next_action_on && !CLOSED.includes((r.data || {}).stage),
+      sort: (a, b) => String(a.data.next_action_on).localeCompare(String(b.data.next_action_on)),
+      columns: [
+        { label: "Due", get: "data.next_action_on", html: (r, app) => { const d = r.data.next_action_on; return d < today() ? `<b style="color:var(--bad)">${app.esc(d)}</b>` : app.esc(d); } },
+        { label: "Next action", get: "data.next_action" },
+        { label: "Role", get: "label" },
+        { label: "Company", get: (r, app) => companyOf(app, r).label },
+        { label: "Stage", get: "data.stage" },
+      ] },
+    { id: "listings", group: "Market", label: "Listings", type: "job_listing", facets: ["data.industry", "geo.address.address_region", "data.remote", "status"],
+      columns: [
+        { label: "Title", get: (r) => (r.data || {}).title || r.label },
+        { label: "Company", get: (r) => edgeTo(r, "organization").label },
+        { label: "Industry", get: "data.industry" },
+        { label: "Where", get: (r) => [r.geo && r.geo.address && r.geo.address.address_locality, r.geo && r.geo.address && r.geo.address.address_region].filter(Boolean).join(", ") },
+        { label: "Salary", get: (r, app) => { const s = (r.data || {}).salary; return s ? [app.fmtMoney(s.min), app.fmtMoney(s.max)].filter(Boolean).join(" – ") : ""; } },
+        { label: "Applied", get: (r, app) => applicationsFor(app, r).map((a) => a.data && a.data.stage).join(", ") },
+      ] },
+    // Companies is the one shared organization set, the same list Org / People shows. Hiring narrows it to companies with listings.
+    { id: "companies", group: "Market", label: "Companies", type: "organization", facets: ["category.kind", "source_system"],
+      filter: (r) => r.status !== "superseded",
+      newType: "organization",
+      columns: COMPANY_COLUMNS },
+    { id: "hiring", group: "Market", label: "Hiring companies", type: "organization",
+      records: (app) => { const ids = new Set(app.byType("job_listing", "job_application").map((r) => edgeTo(r, "organization").id).filter(Boolean)); return app.byType("organization").filter((o) => ids.has(o.id) && o.status !== "superseded"); },
+      intro: "Companies with at least one listing or application. Every company is under <b>Companies</b>.",
+      newType: "organization",
+      columns: COMPANY_COLUMNS },
+    { id: "contacts", group: "Market", label: "Contacts at companies", type: "person",
+      records: (app) => {
+        const orgs = new Set(app.byType("job_listing", "job_application").map((r) => edgeTo(r, "organization").id).filter(Boolean));
+        const ids = new Set(app.byType("employment").filter((e) => orgs.has(edgeTo(e, "organization").id)).map((e) => edgeTo(e, "person").id));
+        return app.byType("person").filter((p) => ids.has(p.id));
+      },
+      columns: [
+        { label: "Name", get: "label" },
+        { label: "Company", get: (r, app) => app.incoming(r.id, "person").filter((x) => x.rec.type === "employment").map((x) => edgeTo(x.rec, "organization").label).join(", ") },
+        { label: "Title", get: (r, app) => app.incoming(r.id, "person").filter((x) => x.rec.type === "employment").map((x) => (x.rec.data || {}).job_title).filter(Boolean).join(", ") },
+      ] },
+    { id: "documents", group: "Market", label: "Resumes and letters", type: "document",
+      filter: (r) => /resume|cv|cover/i.test([r.label, (r.category || {}).kind].join(" ")) || (r.apps || []).includes("job"),
+      newTemplate: () => ({ category: { kind: "resume", realm: "personal" } }),
+      columns: [{ label: "Document", get: "label" }, { label: "Kind", get: "category.kind" }, { label: "Version", get: "version" }, { label: "Updated", get: "updated_at", date: true }] },
+  ],
+  actions: [
+    { label: "Apply", when: (r) => r.type === "job_listing", run: apply },
+    { label: "Log follow-up", when: (r) => r.type === "job_application", run: (r, app) => {
+      const note = prompt("What happened? (saved to the history)"); if (!note) return;
+      const next = prompt("Next action (blank for none)", (r.data || {}).next_action || "");
+      const c = app.clone(r); c.data = c.data || {};
+      c.data.history = (c.data.history || []).concat([{ at: app.nowIso(), stage: c.data.stage, note }]);
+      if (next != null) { c.data.next_action = next || undefined; c.data.next_action_on = next ? prompt("Due date (YYYY-MM-DD)", today()) || undefined : undefined; }
+      app.saveDraft(app.prune(c));
+    } },
+  ],
+  detailExtras: (r, app) => {
+    const h = app.h, out = [];
+    const link = (rec) => h("a", { href: "#", onclick: (e) => { e.preventDefault(); app.goTo(rec.id); } }, rec.label);
+    if (r.type === "job_listing") {
+      const apps = applicationsFor(app, r);
+      out.push({ title: "Your applications", el: apps.length ? h("div", {}, apps.map((a) => h("div", { class: "mdm-rel" }, link(a), h("small", {}, (a.data || {}).stage)))) : h("button", { class: "mdm-btn primary", onclick: () => apply(r, app) }, "Apply to this") });
+    }
+    if (r.type === "job_application" && (r.data || {}).history) {
+      out.push({ title: "History", el: h("div", {}, [...r.data.history].reverse().map((x) => h("div", { class: "mdm-rel" }, h("span", {}, app.humanize(x.stage || "")), h("small", {}, [x.note, app.fmtDate(x.at)].filter(Boolean).join(" · ")))) ) });
+    }
+    if (r.type === "organization") {
+      const ls = app.incoming(r.id, "organization").filter((x) => x.rec.type === "job_listing").map((x) => x.rec);
+      if (ls.length) out.push({ title: `Listings (${ls.length})`, el: h("div", {}, ls.map((l) => h("div", { class: "mdm-rel" }, link(l), h("small", {}, applicationsFor(app, l).map((a) => a.data.stage).join(", ") || "not applied")))) });
+    }
+    return out;
+  },
+});
+</script>
+</body>
+</html>

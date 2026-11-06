@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event manager</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * Event manager (registry id: event, ceiling C2).
+ * Meetings, deadlines, trips, incidents and alerts: upcoming and past lists, a board by kind, and
+ * attendees as links (rel organizer / attendee -> person or personnel). Saves go straight to
+ * data/warehouse/event.json (internal events to data/warehouse/internal/event.json).
+ */
+const startOf = (r) => (r.data || {}).start || r.valid_from || "";
+const today = () => new Date().toISOString().slice(0, 10);
+const when = (r) => { const s = startOf(r); const e = (r.data || {}).end; return s ? s.replace("T", " ").slice(0, 16) + (e ? " → " + e.replace("T", " ").slice(0, 16) : "") : ""; };
+const people = (r) => (r.relations || []).filter((e) => ["organizer", "attendee"].includes(e.rel)).map((e) => e.label).join(", ");
+const cols = [
+  { label: "Event", get: "label" }, { label: "When", get: when }, { label: "Kind", get: "category.kind" },
+  { label: "Where", get: (r) => ((r.relations || []).find((e) => e.rel === "location") || {}).label || ((r.geo || {}).address || {}).address_locality || "" },
+  { label: "People", get: people },
+];
+function addPerson(r, app) {
+  const rel = (prompt("organizer or attendee?", "attendee") || "").trim();
+  if (!["organizer", "attendee"].includes(rel)) return;
+  app.pick(`Add ${rel}`, app.byType("person", "personnel"), (p) => { const c = app.clone(r); c.relations = (c.relations || []).concat([app.edge(rel, p)]); app.saveDraft(c); });
+}
+MDMApp.start({
+  id: "event",
+  title: "Event manager",
+  subtitle: "meetings · deadlines · incidents · alerts",
+  types: ["event", "location", "place", "person", "personnel", "organization", "org_unit"],
+  views: [
+    { id: "upcoming", group: "Events", label: "Upcoming", type: "event", filter: (r) => startOf(r).slice(0, 10) >= today(), sort: (a, b) => startOf(a).localeCompare(startOf(b)), facets: ["category.kind", "category.domain"], columns: cols,
+      newTemplate: () => ({ category: { kind: "meeting" }, data: { start: new Date(Date.now() + 864e5).toISOString().slice(0, 10) + "T09:00:00Z" } }) },
+    { id: "past", group: "Events", label: "Past", type: "event", filter: (r) => startOf(r) && startOf(r).slice(0, 10) < today(), sort: (a, b) => startOf(b).localeCompare(startOf(a)), facets: ["category.kind", "category.domain"], columns: cols },
+    { id: "all", group: "Events", label: "All events", type: "event", facets: ["category.kind", "category.domain", "status"], columns: cols },
+    { id: "board", group: "Events", label: "By kind", type: "event", kind: "board", groupBy: "category.kind", emptyGroup: "(no kind)", card: (r) => when(r) },
+  ],
+  actions: [{ label: "Add person", when: (r) => r.type === "event", run: addPerson }],
+});
+</script>
+</body>
+</html>

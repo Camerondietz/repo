@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Document records</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * Document records (registry id: document-records, ceiling C2).
+ * Edits the warehouse's document, resource and procedure records directly (data/warehouse).
+ * The Document repository (document/index.html, document/manage.html) keeps its own catalog file;
+ * it moves onto the warehouse in a later step.
+ */
+const subject = (r) => [].concat((r.category || {}).subject || [])[0] || "";
+MDMApp.start({
+  id: "document-records",
+  title: "Document records",
+  subtitle: "documents · resources · procedures (warehouse)",
+  types: ["document", "resource", "procedure", "organization", "person"],
+  views: [
+    { id: "documents", group: "Library", label: "Documents", type: "document", facets: ["category.kind", "category.subject", "category.realm"],
+      columns: [{ label: "Document", get: "label" }, { label: "Kind", get: "category.kind" }, { label: "Publisher", get: "data.publisher" }, { label: "Published", get: "data.publication_date" }, { label: "Subject", get: subject }] },
+    { id: "resources", group: "Library", label: "Resources", type: "resource", facets: ["category.kind", "category.subject"],
+      columns: [{ label: "Resource", get: "label" }, { label: "Kind", get: "category.kind" }, { label: "Web", get: "url" }, { label: "Subject", get: subject }] },
+    { id: "procedures", group: "Library", label: "Procedures and SOPs", type: "procedure", facets: ["category.kind", "category.domain", "category.audience"],
+      columns: [{ label: "Procedure", get: "label" }, { label: "Kind", get: "category.kind" }, { label: "Trigger", get: "data.trigger" }, { label: "Steps", get: (r) => ((r.data || {}).steps || []).length || "", num: true }] },
+  ],
+});
+</script>
+</body>
+</html>

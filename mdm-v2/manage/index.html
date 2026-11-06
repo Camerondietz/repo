@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MDM management</title>
+<link rel="stylesheet" href="../repo/lib/mdm-app.css">
+<script src="../repo/lib/mdm-registry.js"></script>
+<script src="../repo/lib/mdm-store.js"></script>
+<style>
+  body { background: var(--bg); color: var(--ink); font-family: var(--font); }
+  .hub { display: grid; grid-template-columns: 230px 1fr; height: 100vh; }
+  .rail { background: var(--panel); border-right: 1px solid var(--line); overflow: auto; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; }
+  .rail h1 { font-size: 15px; margin: 2px 6px 2px; }
+  .rail .sub { font-size: 12px; color: var(--muted); margin: 0 6px 10px; }
+  .rail h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 6px 4px; }
+  .rail button.app { all: unset; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 7px 8px; border-radius: 6px; font-size: 14px; }
+  .rail button.app:hover { background: var(--soft); }
+  .rail button.app.on { background: var(--accent); color: var(--accent-ink); }
+  .rail button.app small { font-size: 11px; opacity: .75; }
+  .rail .folder { margin-top: auto; padding: 10px 6px 4px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
+  .rail .folder b { color: var(--ink); word-break: break-all; }
+  .stage { position: relative; min-width: 0; }
+  .stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: var(--bg); }
+  .bar { position: absolute; right: 12px; bottom: 10px; z-index: 2; display: flex; gap: 6px; }
+  .bar a { font-size: 12px; text-decoration: none; padding: 4px 10px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); color: var(--muted); box-shadow: var(--shadow); }
+  .welcome { padding: 32px; max-width: 760px; line-height: 1.5; }
+  .welcome code { font-family: var(--mono); font-size: 13px; }
+  @media (max-width: 760px) {
+    .hub { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .rail { flex-direction: row; flex-wrap: wrap; border-right: 0; border-bottom: 1px solid var(--line); max-height: 40vh; }
+    .rail h4, .rail .sub { display: none; }
+    .rail .folder { margin-top: 0; border-top: 0; width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="hub">
+  <nav class="rail" id="rail"></nav>
+  <main class="stage" id="stage"></main>
+</div>
+<script>
+/*
+ * MDM management: one page that opens every management app. Each app is still its own page and works
+ * on its own; here they sit side by side and stay open while you switch, so nothing unsaved is lost.
+ * Add an app by adding a line to APPS. Apps on the shared shell live in manage/<app>/; apps with their own
+ * folder or GitHub repo (C2, Document repository, Map) stay where they are and are linked from here.
+ *
+ * Folder access: when this page is served from the MASTER folder by manage.bat (http://localhost:8765),
+ * connecting the folder once here connects every app. Opened straight from disk (file://), each app
+ * asks for the folder itself.
+ */
+const APPS = [
+  { group: "People and organizations", items: [
+    { id: "org-people", name: "Org / People", path: "org-people/index.html" },
+    { id: "c2", name: "Command and control", path: "../command/command/org-structure.html", note: "own data for now" },
+  ] },
+  { group: "Work", items: [
+    { id: "event", name: "Events", path: "event/index.html" },
+    { id: "job", name: "Job applications", path: "job/index.html" },
+  ] },
+  { group: "Products", items: [
+    { id: "product-manager", name: "Products", path: "product/index.html" },
+  ] },
+  { group: "Knowledge", items: [
+    { id: "document-records", name: "Documents", path: "documents/index.html" },
+    { id: "documents", name: "Document repository", path: "../document/manage.html", note: "own catalog for now" },
+    { id: "marketing", name: "Marketing / content", path: "marketing/index.html" },
+  ] },
+  { group: "Places", items: [
+    { id: "place-records", name: "Places", path: "places/index.html" },
+    { id: "map", name: "Map", path: "../map/index.html", note: "own data for now" },
+  ] },
+  { group: "Categories", items: [
+    { id: "taxonomy", name: "Taxonomy", path: "taxonomy/index.html" },
+  ] },
+  { group: "Everything", items: [
+    { id: "records", name: "All records", path: "records/index.html" },
+    { id: "home", name: "Home page", path: "../index.html" },
+  ] },
+];
+const all = APPS.flatMap((g) => g.items);
+const rail = document.getElementById("rail"), stage = document.getElementById("stage");
+const frames = new Map();
+let current = null;
+const ls = { get: (k) => { try { return localStorage.getItem("mdm-hub:" + k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem("mdm-hub:" + k, v); } catch (_) { /* blocked */ } } };
+try { const t = localStorage.getItem("mdm-app:org-people:theme"); if (t) document.documentElement.dataset.theme = JSON.parse(t); } catch (_) { /* none */ }
+
+function el(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) { if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else if (v != null && v !== false) e.setAttribute(k, v); }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+function drawRail() {
+  rail.innerHTML = "";
+  rail.append(el("h1", {}, "MDM management"), el("div", { class: "sub" }, "Edit the warehouse data"));
+  for (const g of APPS) {
+    rail.append(el("h4", {}, g.group));
+    for (const a of g.items) rail.append(el("button", { class: "app" + (current === a.id ? " on" : ""), onclick: () => open(a.id), title: a.note || "" }, a.name, a.note ? el("small", {}, "↗") : null));
+  }
+  rail.append(folderBox());
+}
+function folderBox() {
+  const box = el("div", { class: "folder" });
+  const st = MDMStore.status();
+  if (!MDMStore.supported()) box.append("This browser cannot open folders: each app uses Import / Export. Chrome or Edge can save straight to the files.");
+  else if (st.connected) box.append(el("span", {}, "Saving to ", el("b", {}, st.label)), el("button", { class: "mdm-btn small", onclick: async () => { await MDMStore.disconnect(); reloadFrames(); drawRail(); } }, "Disconnect"));
+  else box.append(el("span", {}, pending ? "The warehouse folder needs one click to reconnect." : "No folder connected."), el("button", { class: "mdm-btn small primary", onclick: connect }, pending ? "Reconnect folder" : "Connect folder"));
+  if (location.protocol === "file:") box.append(el("span", {}, "Opened from disk: each app asks for the folder itself. Start ", el("code", {}, "manage.bat"), " to connect once for all apps."));
+  return box;
+}
+let pending = false;
+async function connect() {
+  try { if (pending) await MDMStore.reconnect(); else await MDMStore.connect(); pending = false; for (const f of frames.values()) handOver(f); }
+  catch (e) { if (e && e.name !== "AbortError") alert(e.message || e); }
+  drawRail();
+}
+// Give the connected folder to an app (works when served from one origin, e.g. manage.bat; ignored otherwise).
+function handOver(f) {
+  const h = MDMStore.handle();
+  try { const s = f.contentWindow.MDMStore; if (h && s && !s.connected()) s.use(h.dir, h.label); } catch (_) { /* file:// frames are separate origins */ }
+}
+function reloadFrames() { for (const f of frames.values()) try { f.contentWindow.location.reload(); } catch (_) { f.src = f.src; } }
+function open(id) {
+  const a = all.find((x) => x.id === id) || all[0];
+  current = a.id; ls.set("app", a.id);
+  history.replaceState(null, "", "#" + a.id);
+  if (!frames.has(a.id)) { const f = el("iframe", { src: a.path, title: a.name }); f.addEventListener("load", () => handOver(f)); frames.set(a.id, f); stage.append(f); }
+  for (const [k, f] of frames) f.style.display = k === a.id ? "" : "none";
+  let bar = stage.querySelector(".bar");
+  if (!bar) { bar = el("div", { class: "bar" }); stage.append(bar); }
+  bar.innerHTML = ""; bar.append(el("a", { href: a.path, target: "_blank", rel: "noopener", title: "Open this app in its own tab" }, "Open alone ↗"));
+  document.title = a.name + " · MDM management";
+  drawRail();
+}
+(async () => {
+  if (MDMStore.supported()) { const st = await MDMStore.restore().catch(() => "none"); pending = st === "prompt"; }
+  MDMStore.onChange(() => drawRail());
+  open(location.hash.slice(1) || ls.get("app") || "org-people");
+})();
+</script>
+</body>
+</html>

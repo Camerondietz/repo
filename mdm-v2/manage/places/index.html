@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Place records</title>
+<link rel="stylesheet" href="../../repo/lib/mdm-app.css">
+<script src="../../repo/lib/mdm-client.js"></script>
+<script src="../../repo/lib/mdm-registry.js"></script>
+<script src="../../repo/lib/mdm-store.js"></script>
+<script src="../../repo/lib/mdm-app.js"></script>
+</head>
+<body>
+<p style="font:14px system-ui;padding:24px">Loading… (needs <code>repo/lib/mdm-app.js</code>; open this file from the MASTER folder)</p>
+<script>
+/*
+ * Place records (registry id: place-records, ceiling C2).
+ * Edits the warehouse's place (gazetteer: countries, states, counties, cities) and location (sites you
+ * know: offices, warehouses, homes) records directly. The Map app (map/index.html) keeps its own data;
+ * it moves onto the warehouse in a later step.
+ */
+const addr = (r) => (r.geo || {}).address || {};
+const pt = (r) => ((r.geo || {}).point || []).join(", ");
+MDMApp.start({
+  id: "place-records",
+  title: "Place records",
+  subtitle: "places · locations (warehouse)",
+  types: ["place", "location", "organization"],
+  views: [
+    { id: "locations", group: "Places", label: "Locations", type: "location", facets: ["category.kind", "category.realm"],
+      columns: [{ label: "Location", get: "label" }, { label: "Kind", get: "category.kind" }, { label: "City", get: (r) => addr(r).address_locality }, { label: "State", get: (r) => addr(r).address_region }, { label: "Point", get: pt }] },
+    { id: "gazetteer", group: "Places", label: "Gazetteer (tree)", type: "place", kind: "tree" },
+    { id: "placelist", group: "Places", label: "All places", type: "place", facets: ["category.kind", "category.jurisdiction"],
+      columns: [{ label: "Place", get: "label" }, { label: "Kind", get: "category.kind" }, { label: "Level", get: "data.adm_level" }, { label: "Part of", get: (r, app) => (r.parent_id ? app.label(r.parent_id) : "") }, { label: "Point", get: pt }] },
+  ],
+});
+</script>
+</body>
+</html>

@@ -1,11 +1,13 @@
 {
-  "$schema": "../../schema/collection.schema.json",
   "meta": {
-    "type": "document",
+    "profile": "repo-public",
+    "generated": "2026-11-11T06:50:14Z",
     "count": 12,
-    "generated": "2026-10-27T00:23:52Z",
-    "tool": "mdm.py",
-    "schema_version": "2.1"
+    "schema_version": "2.2",
+    "tool": "gateway",
+    "schema": "https://mdm.cameron-dietz.com/schema/v2/collection.schema.json",
+    "split_by": "type",
+    "split_key": "document"
   },
   "items": [
     {
@@ -20,6 +22,7 @@
       },
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -28,16 +31,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#3:doc",
       "checksum_sha256": "a978e13f12d663e227fa69a9763fbc9b03d84640febe6329a1b1143b16cac556",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "1129a3c4-7dea-53d6-92d0-d05e74f300d0",
@@ -56,6 +55,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -64,16 +64,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#5:doc",
       "checksum_sha256": "d9aa21cea9b6008fbce127cd403c57b15cb7c660eb9324c80952877993c7c198",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "2a54a47c-e0bc-51c3-9a3e-0e718dfb8051",
@@ -92,6 +88,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -100,16 +97,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#2:doc",
       "checksum_sha256": "61a292cd7b31e8eff38e1859cd1217f16775b065f945f28f223f1a925ea11104",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "340d9d71-7ac2-58e4-9dd6-61b712c50447",
@@ -127,6 +120,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -135,16 +129,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#4:doc",
       "checksum_sha256": "496e559ca0f9c32ba9f281c98ea0817713afb6dfbbbb5ac93c132bd28b0a473c",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "4c7a0e03-07f9-507e-aedb-d996e9a06339",
@@ -163,6 +153,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -171,16 +162,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#6:doc",
       "checksum_sha256": "490dd3f1d4cdff58453dd8fcb5e3868f1c150ba491c5518a340d89b0d19dcafc",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-22"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "7a1d3f84-e866-5533-be97-0b86e24147ea",
@@ -199,6 +186,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -207,16 +195,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#9:doc",
       "checksum_sha256": "6beb4f33d8d0ac6fd016b1d4e2ae45070409661803d8bbc222eb3a3e8c20a2c4",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "7b28c09f-abbd-592f-a857-e14c60b0de93",
@@ -234,6 +218,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -242,16 +227,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#1:doc",
       "checksum_sha256": "b48cb69736058707aa60c2d0eef9cc9fbec2034bb8042db69fc598d14ac5db99",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "817f74fe-39a2-549b-8d2c-496d09eaba4e",
@@ -269,6 +250,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -277,16 +259,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#12:doc",
       "checksum_sha256": "3e1eba30e6aef7afdc95ae81e6595cfd9009be6ad05f354801728f87ce390121",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "a285bae6-30be-5f34-86ca-8abb5b7077a5",
@@ -304,6 +282,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -312,16 +291,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#10:doc",
       "checksum_sha256": "af8256c17ff3633e461dc06b64d72afec6b8c13dd444f2148a48c67fc62f0966",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "be283cc0-8493-5e17-a743-dc00a54869b1",
@@ -340,6 +315,7 @@
       ],
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -348,16 +324,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#8:doc",
       "checksum_sha256": "6fdb929e1ee5c4c1dd7554e1ace2e833b515fde1c043e1f8d5c22f189df6b227",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "d35f7d94-327d-5d00-b3ab-5e3f2b79ff4c",
@@ -371,6 +343,7 @@
       },
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -379,16 +352,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#7:doc",
       "checksum_sha256": "c9a4fe0e9cadbfbb4f9fec307ba6d0584dc720b68a8530d1db1ef32c24b9a363",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     },
     {
       "id": "d5867c21-1ea0-58fd-bcbc-2de930e708f5",
@@ -402,6 +371,7 @@
       },
       "status": "active",
       "version": "1.0",
+      "visibility": "public",
       "attachments": [
         {
           "role": "primary",
@@ -410,16 +380,12 @@
         }
       ],
       "source_system": "documents",
-      "source_record_id": "index.json#11:doc",
       "checksum_sha256": "f5d378f6badf63e2d2e5e60bc2d0e102e482d6777c219d70b22687843018ea22",
       "apps": [
         "documents"
       ],
       "created_at": "2026-10-27T00:20:02Z",
-      "updated_at": "2026-10-27T00:20:02Z",
-      "metadata": {
-        "date_added": "2026-07-24"
-      }
+      "updated_at": "2026-10-27T00:20:02Z"
     }
   ]
 }

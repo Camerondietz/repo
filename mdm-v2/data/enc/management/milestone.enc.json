@@ -1,0 +1,28 @@
+{
+  "format": "c2-enc",
+  "version": 2,
+  "cipher": "AES-256-GCM",
+  "kdf": "PBKDF2-HMAC-SHA256",
+  "iterations": 600000,
+  "salt": "trvxfkOzBBN/tsBtpSsXUg==",
+  "keys": [
+    {
+      "name": "management",
+      "nonce": "+g7TEoUKd+OwKJtY",
+      "wrapped": "N11EayPYADv7RULSeT/EWoS5NyCdOFJaR7DbtWgDULV/y5UpQSNR6fQiTrNDFuwp"
+    },
+    {
+      "name": "highcom",
+      "nonce": "XQrZja/3ydxPQS96",
+      "wrapped": "JoeuCgpbeHTxUGZtGxJ2U4VM0EdU7cxJEZqbaiWMKK9Z6u4ShMOWKcjXtSPYb+h6"
+    },
+    {
+      "name": "owner",
+      "nonce": "vJXR4Uq51MiJTZre",
+      "wrapped": "keipVsYCLy3T1rBK207ylxn+tWkJT5IeGVXUp79F9Lr/tEe7WNpqckFQf6FvBrcC"
+    }
+  ],
+  "nonce": "eDj3sWtWRsP6iJAo",
+  "ciphertext": "age8+Qhlyny83GOSfHoFBOqModvtUc6aW0TI+pGk+tsbtYP9Ei5nZafui0spP92TokQ/kvb+UsYDntYrPbMlYzc7GW3GnbELHlAARK07Dhpui+4doLROzK2tBaqdVF19y79whJ4ykyULy51s8wrfxpsGx0nqGVAMUhUACuadPYbSpzqmWjIK/Ha1avycn13UEJN419RXikKMe9HYpABsTXiY0b7RXuRY0vXF9HcpWk6vtJM8kDuedy8gYdZ2pYcq/7rGKaXMB5Jg2/C2AVkFQ2g2CUqlRqv/Eat+KwSeVRSw+TZYA7XgzQxtaJ+gDdJjTt5KgU8NjocvMUgUAUoiemTGEFKYKK0zi0abquNZkdrGrG2YR+GAvNBAsXbE8ju6Sg3k/sXMo7p7PtnqqlZyiOB8bPg48yBXriAXMG4U59XDhWUCfvw4wtsnXa6RefMt0yj5r4dPQE8t1iYuPpxJrTphISu71X+/YB2k0ACEMrwdfXZU5xx2hOjnkffZp3nOK7qzX1902CWU1Idmi4RrwD09SOv21ZRQjozevtCzgI7nvh3V/4TQg0Amd0EOjia/hc5DfBzOCsn/4OjukmyjGfI3YWrJtWahxC+WWozAHHmfB3uLsaH+aBgrVBMLwUC0I2cFKEXB1YMwl6NFrrnMaD59WrG+yyhyi+hISE0Wshsfq8BMxrR7Yfla7LSny6J1A6X4Rc/YcYq6kG9ODJoOE8O5fftT17joUwGaOlPj2WszhJdt6yy7hlsuP4ugRQqoNPmd1vGFels8Q3XViaG63Bqn6z/+QSXk8FBENVLcM/oyq5I6jS25wrrGfT4QhsSCu+pZnvILlF06UOtAJA99oG0TvjuIE+ePzEtcq82HK07CF/dHzyEZc1wFQoljiQNXy2WbRJdU5DEjbb7eC8/NIv3dwaH43gSIIilgfvJVmWXlemiIOsVLAGgpyTUNtN6zuQ2OOBxyOXtSmy3L8Dzd+4DcgKUc8eA3L2paol/KdE3pc7xcFLMcwYjXrk6GZg==",
+  "created_at": "2026-11-11T06:50:17Z"
+}

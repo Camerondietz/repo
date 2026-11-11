@@ -1,0 +1,28 @@
+{
+  "format": "c2-enc",
+  "version": 2,
+  "cipher": "AES-256-GCM",
+  "kdf": "PBKDF2-HMAC-SHA256",
+  "iterations": 600000,
+  "salt": "trvxfkOzBBN/tsBtpSsXUg==",
+  "keys": [
+    {
+      "name": "management",
+      "nonce": "ddt8lyStuYoExhxh",
+      "wrapped": "xAsaKxGOW0jOxC/zTGfq/zSk7TU6l/cD+0jo/Og/aPZnFpyCJA7KAKdsDJnEJFNv"
+    },
+    {
+      "name": "highcom",
+      "nonce": "4JwlS/TxQOL8b1Tk",
+      "wrapped": "9HvBD1M1bYjI3Ai5vNlbbT7dzYqt1kmgrwUtdu9BbihSOEnZ1FK4lpSEmWolX08C"
+    },
+    {
+      "name": "owner",
+      "nonce": "0KADLQ6rLd4iAwFM",
+      "wrapped": "s6aYARHHhm1ttotUogZHC96eNVn+JzETtEV0hKtMfzhlE9I1yaQ4vo98uhfeM+dL"
+    }
+  ],
+  "nonce": "mXToX+KK35mWCI+p",
+  "ciphertext": "U+rjGK/hdm+wP4AtTuFaYn5960sFheHFiW9DAHLFvVWLDNhL2qsFy+V5ornerzUpWbo9I2lTyJYB7HeumHwA8FRZtqWlpAMxbN0sWM7dzgwhotz3FP0zQjyOM55+8H0F6sN5MO/P3gzJ4B6u7vwu8TkkKSF0YXTcq2VV+v+TTTqeYv7/w2iZypjkTA5i4ElF0txrkB6VQBBHud19dd0y4BwyDoXdS/tdXdB5je7ScyTac0t5hA89qvywHLSRPPQp74Kt6/2Q1eSllh3jnS6fzFlRZX/L7bSxvml1m/SxmKUUMJ5krGnVjUEZxeyiav6rmTWH039wqa7sdpVPOhuvI4PL2P8bRkNYozt11x+nd+z8JSI5OUhEVIBpvRW9aomzlOqVcEc4lr0gT7wLTY8xQZbrIK4IwmIg50mtqx6D4duclExWMuA7HVjoRo+w/tf6M7gHmmAWg4se4GthtGm9mCXjoKE2NwA0ju1a1e/qDys+H4X5jTDHxfkzIQ65KbzGUqzzV4uRdJXZIGNEKdIQPOs5hZE99I/9XhUiBkS6+XvBh5fQpnpUc25QqjT/Ne2ctAouArXJE+DWTmXImqk7duNDehEkn7ZBsupmp/8WyEX2mlRi+fczc05CrsfC6uxNRspue9kkcOULBUQxA7KpAXixMcLEeULPbK0/+DbM8UYOo7C1bbi6Bi8LmQRRZtNIS3STj5fPYx3RExB1X8LMliEh3ANUtysTtKZnJS5qa28FaY7iltFH/cjvXj0xuwhFdeuv+omuKjTm6c1UxO2H9L5Ro20pG0Ms3IQEB1xA216CZRMnreTy3xwMSzjALLqsKJNvJRj8AB6fw6EhbqQVlzhtN6R0GJGK6kbqpXTqaQKfd6JiXwfTHPlwWs9RRcGbqeU2rjXl3npGBU5HZuv7myMZLVZCl/UYEksulOOnY01NPyvp7JXN7RPybXQEsZu5wQ1lA3SjtA6Q9yJJJIwTja8ANmBYDDr9BbfEqqM7YprSUrwmUlQpio+eF1J7GuRbXF5VmLYC7mbeBItN1bdjyDq87Y7z0oxxNdubIL+0X0coftx2i+OW5diXSfjkmN8vH2+CwtPha2HuZqhECsTrSq0qKhmMWp4gI5B71dAis1g6EwJcWu/damAXOqrL27/8WA0zTp27BzboUU6NkRLLBzaaL0LSqbTypFsQJ3Ud14N1lEUPKVje1685yI+RbKF9GxYoMiMqvOlv0TssAcnwVqykDC1a5MukHi97EclQ9jBm7+EEA/GxgforvtRSVK//A+1Stb6zDIdjLhg0MDdh0UU8XZcddiktzEoS1x6rbo2plI3A1JTz0t5QAEt63n5OMAs4ZZjZ3GRZlBeEP7BifL0jO8AuXx2RuyyX70pDJQmWJLr+xy3SiNcYAGS1KcBJdrKYnjukmycMEoWKG6YyuBoUwKvpTRohA8mCOpDt/QycVcb3PNCfDVhc/VPeSHgjw4xLXlhhfP3hvq8kiC7i6M+X2njbpPj5pLn9Lxu7YRALFW9zbosBrXc=",
+  "created_at": "2026-11-11T06:50:17Z"
+}

@@ -1,0 +1,439 @@
+{
+  "meta": {
+    "profile": "repo-public",
+    "generated": "2026-11-11T06:50:14Z",
+    "count": 8,
+    "schema_version": "2.2",
+    "tool": "gateway",
+    "schema": "https://mdm.cameron-dietz.com/schema/v2/collection.schema.json",
+    "split_by": "type",
+    "split_key": "product"
+  },
+  "items": [
+    {
+      "id": "4c20f9e3-01da-5311-b9aa-52c823384ed8",
+      "uri": "https://mdm.cameron-dietz.com/id/product/4c20f9e3-01da-5311-b9aa-52c823384ed8",
+      "type": "product",
+      "label": "Digi ECIU-9-LR-PCA",
+      "summary": "ECIU, LORAWAN, ELECTRICITY METER",
+      "category": {
+        "kind": "oem",
+        "realm": "aventrek",
+        "vendor_category": "communications-networking"
+      },
+      "status": "active",
+      "visibility": "public",
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "aba184d5-3267-5dcf-b689-dc9170386f9f",
+          "label": "Digi"
+        }
+      ],
+      "identifiers": {
+        "mpn": [
+          "ECIU-9-LR-PCA"
+        ]
+      },
+      "source_system": "digikey",
+      "checksum_sha256": "b435812dc9b50e1942b56df23a408d6d509e644fea48fd1dfb1cdee9b92b874c",
+      "created_at": "2026-10-27T00:20:04Z",
+      "updated_at": "2026-10-27T00:20:04Z",
+      "data": {
+        "mpn": "ECIU-9-LR-PCA",
+        "brand": "Digi",
+        "specs": {
+          "status": "Obsolete",
+          "rohs_status": "Unknown",
+          "reach_status": "REACH Unknown"
+        },
+        "compliance": {
+          "rohs": "Unknown",
+          "reach": "REACH Unknown"
+        }
+      }
+    },
+    {
+      "id": "57e4422d-7c37-5f0a-b133-76c9a36c9193",
+      "uri": "https://mdm.cameron-dietz.com/id/product/57e4422d-7c37-5f0a-b133-76c9a36c9193",
+      "type": "product",
+      "label": "Antaira Technologies DIN-RAIL-20",
+      "summary": "35mm Steel DIN-Rail Track - 20 I",
+      "category": {
+        "kind": "oem",
+        "realm": "aventrek",
+        "vendor_category": "communications-networking"
+      },
+      "status": "active",
+      "visibility": "public",
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "7c0a88f1-a549-5f3d-b92f-d4c9e23b9fa5",
+          "label": "Antaira Technologies"
+        }
+      ],
+      "identifiers": {
+        "mpn": [
+          "DIN-RAIL-20"
+        ]
+      },
+      "source_system": "digikey",
+      "checksum_sha256": "ed3e832c6554f1a72ae064c81ad840e7e641dcc30d40ea193dca976c76c63447",
+      "created_at": "2026-10-27T00:20:04Z",
+      "updated_at": "2026-10-27T00:20:04Z",
+      "data": {
+        "mpn": "DIN-RAIL-20",
+        "brand": "Antaira Technologies",
+        "specs": {
+          "accessory_type": "Track",
+          "for_use_with_related_products": "Networking",
+          "status": "Active",
+          "rohs_status": "Unknown",
+          "reach_status": "REACH Unknown"
+        },
+        "compliance": {
+          "rohs": "Unknown",
+          "reach": "REACH Unknown"
+        }
+      }
+    },
+    {
+      "id": "61f8823e-ce1f-59fc-b8ce-8ec83809175b",
+      "uri": "https://mdm.cameron-dietz.com/id/product/61f8823e-ce1f-59fc-b8ce-8ec83809175b",
+      "type": "product",
+      "label": "Advantech Corporation BB-806-39105",
+      "summary": "NETWORKING DIN RAIL CLIP",
+      "category": {
+        "kind": "oem",
+        "realm": "aventrek",
+        "vendor_category": "communications-networking"
+      },
+      "status": "active",
+      "visibility": "public",
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "d649dc52-a9e1-54ac-a74f-b2cbb424040c",
+          "label": "Advantech Corporation"
+        }
+      ],
+      "identifiers": {
+        "mpn": [
+          "BB-806-39105"
+        ],
+        "hts": [
+          "8504.90.9690"
+        ]
+      },
+      "attachments": [
+        {
+          "role": "datasheet",
+          "href": "http://advdownload.advantech.com/productfile/PIS/BB-855-19724/Product%20-%20Datasheet/IE-MiniMc_1217ds20171129111415.pdf"
+        }
+      ],
+      "source_system": "digikey",
+      "checksum_sha256": "2b7ad9cae9d479eb75953c4253188d1c192d9b6ca9257d04066e518e577bafc8",
+      "created_at": "2026-10-27T00:20:04Z",
+      "updated_at": "2026-10-27T00:20:04Z",
+      "data": {
+        "mpn": "BB-806-39105",
+        "brand": "Advantech Corporation",
+        "specs": {
+          "accessory_type": "DIN Rail Clip",
+          "for_use_with_related_products": "-",
+          "datasheet": "http://advdownload.advantech.com/productfile/PIS/BB-855-19724/Product%20-%20Datasheet/IE-MiniMc_1217ds20171129111415.pdf",
+          "status": "Active",
+          "htsus_code": "8504.90.9690",
+          "rohs_status": "ROHS3 Compliant",
+          "reach_status": "REACH Unaffected"
+        },
+        "compliance": {
+          "rohs": "ROHS3 Compliant",
+          "reach": "REACH Unaffected"
+        }
+      }
+    },
+    {
+      "id": "6c473f4d-a1d1-5c75-83d7-d8022d2a3ccb",
+      "uri": "https://mdm.cameron-dietz.com/id/product/6c473f4d-a1d1-5c75-83d7-d8022d2a3ccb",
+      "type": "product",
+      "label": "Lantronix, Inc. ACC-500-103",
+      "summary": "NETWORKING CABLE RJ45 TO DB9 6'",
+      "category": {
+        "kind": "oem",
+        "realm": "aventrek",
+        "vendor_category": "communications-networking"
+      },
+      "status": "active",
+      "visibility": "public",
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "ae506266-727a-5037-9776-0a2bf13ecadc",
+          "label": "Lantronix, Inc."
+        }
+      ],
+      "identifiers": {
+        "mpn": [
+          "ACC-500-103"
+        ],
+        "hts": [
+          "8544.42.9090"
+        ]
+      },
+      "source_system": "digikey",
+      "checksum_sha256": "421ad144c69845154aa666dc6c0b0709840affebb52f23711ad08d1d03466ed7",
+      "created_at": "2026-10-27T00:20:04Z",
+      "updated_at": "2026-10-27T00:20:04Z",
+      "data": {
+        "mpn": "ACC-500-103",
+        "brand": "Lantronix, Inc.",
+        "specs": {
+          "accessory_type": "Cable",
+          "for_use_with_related_products": "XPress™ DR+",
+          "status": "Active",
+          "htsus_code": "8544.42.9090",
+          "rohs_status": "ROHS3 Compliant",
+          "reach_status": "REACH Unknown"
+        },
+        "compliance": {
+          "rohs": "ROHS3 Compliant",
+          "reach": "REACH Unknown"
+        }
+      }
+    },
+    {
+      "id": "6e2b6964-ae95-56a8-b088-6e2489effd13",
+      "uri": "https://mdm.cameron-dietz.com/id/product/6e2b6964-ae95-56a8-b088-6e2489effd13",
+      "type": "product",
+      "label": "ATOP Technologies M12 SEALING CAP(METAL)",
+      "summary": "METAL SEALING CAP FOR UNOCCUPIED",
+      "category": {
+        "kind": "oem",
+        "realm": "aventrek",
+        "vendor_category": "communications-networking"
+      },
+      "status": "active",
+      "visibility": "public",
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "9fc12d58-14af-51e0-a59e-1c6c82788075",
+          "label": "ATOP Technologies"
+        }
+      ],
+      "identifiers": {
+        "mpn": [
+          "M12 SEALING CAP(METAL)"
+        ],
+        "hts": [
+          "3926.90.9989"
+        ]
+      },
+      "attachments": [
+        {
+          "role": "datasheet",
+          "href": "//mm.digikey.com/Volume0/opasdata/d220001/medias/docus/7466/CAEMG8510v08.pdf"
+        }
+      ],
+      "source_system": "digikey",
+      "checksum_sha256": "441219e06033a4695c5428b1c778f4f8f50f4f9ecb12799391e644bd84f407d0",
+      "created_at": "2026-10-27T00:20:04Z",
+      "updated_at": "2026-10-27T00:20:04Z",
+      "data": {
+        "mpn": "M12 SEALING CAP(METAL)",
+        "brand": "ATOP Technologies",
+        "specs": {
+          "accessory_type": "Sealing Cap",
+          "for_use_with_related_products": "EMG8510 Series",
+          "datasheet": "//mm.digikey.com/Volume0/opasdata/d220001/medias/docus/7466/CAEMG8510v08.pdf",
+          "status": "Active",
+          "htsus_code": "3926.90.9989",
+          "rohs_status": "ROHS3 Compliant",
+          "reach_status": "REACH Unaffected"
+        },
+        "compliance": {
+          "rohs": "ROHS3 Compliant",
+          "reach": "REACH Unaffected"
+        }
+      }
+    },
+    {
+      "id": "e4649155-35fe-550f-8a9b-6c0cc6afe9b9",
+      "uri": "https://mdm.cameron-dietz.com/id/product/e4649155-35fe-550f-8a9b-6c0cc6afe9b9",
+      "type": "product",
+      "label": "Coherent XPDV2120R-VF-FP",
+      "summary": "SENSOR PHOTODETECTOR SGL",
+      "category": {
+        "kind": "oem",
+        "realm": "aventrek",
+        "vendor_category": "communications-networking"
+      },
+      "status": "active",
+      "visibility": "public",
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "14dba132-28e6-5a09-b9ef-21d1eea3bdaf",
+          "label": "Coherent"
+        }
+      ],
+      "identifiers": {
+        "mpn": [
+          "XPDV2120R-VF-FP"
+        ],
+        "hts": [
+          "9027.50.4060"
+        ]
+      },
+      "attachments": [
+        {
+          "role": "datasheet",
+          "href": "https://www.coherent.com/resources/datasheet/networking/50ghz-photodetector-ds.pdf"
+        }
+      ],
+      "source_system": "digikey",
+      "checksum_sha256": "1b6794a7c6ba8e2217c3b9dceb6d034a3d1562a73b379feafa5e08869fbb6a00",
+      "created_at": "2026-10-27T00:20:04Z",
+      "updated_at": "2026-10-27T00:20:04Z",
+      "data": {
+        "mpn": "XPDV2120R-VF-FP",
+        "brand": "Coherent",
+        "specs": {
+          "accessory_type": "Photodetector",
+          "for_use_with_related_products": "Optical Communications",
+          "datasheet": "https://www.coherent.com/resources/datasheet/networking/50ghz-photodetector-ds.pdf",
+          "status": "Active",
+          "htsus_code": "9027.50.4060",
+          "rohs_status": "RoHS Compliant",
+          "reach_status": "REACH Unknown"
+        },
+        "compliance": {
+          "rohs": "RoHS Compliant",
+          "reach": "REACH Unknown"
+        }
+      }
+    },
+    {
+      "id": "f85aebc3-7415-58eb-bbc6-952b7c9d07bb",
+      "uri": "https://mdm.cameron-dietz.com/id/product/f85aebc3-7415-58eb-bbc6-952b7c9d07bb",
+      "type": "product",
+      "label": "Digi 76000671",
+      "summary": "NETWORKING ADAPTER DB9 FEM 8PK",
+      "category": {
+        "kind": "oem",
+        "realm": "aventrek",
+        "vendor_category": "communications-networking"
+      },
+      "status": "active",
+      "visibility": "public",
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "aba184d5-3267-5dcf-b689-dc9170386f9f",
+          "label": "Digi"
+        }
+      ],
+      "identifiers": {
+        "mpn": [
+          "76000671"
+        ],
+        "hts": [
+          "8544.49.2000"
+        ]
+      },
+      "attachments": [
+        {
+          "role": "datasheet",
+          "href": "http://ftp1.digi.com/support/cabling/90000613_a.pdf"
+        }
+      ],
+      "source_system": "digikey",
+      "checksum_sha256": "c924f9402df6561aaf885d9650f59ecda1573217d353e9c0e4d54f9a7729da46",
+      "created_at": "2026-10-27T00:20:04Z",
+      "updated_at": "2026-10-27T00:20:04Z",
+      "data": {
+        "mpn": "76000671",
+        "brand": "Digi",
+        "specs": {
+          "accessory_type": "Adapter",
+          "for_use_with_related_products": "Digi CM™",
+          "datasheet": "http://ftp1.digi.com/support/cabling/90000613_a.pdf",
+          "status": "Active",
+          "htsus_code": "8544.49.2000",
+          "rohs_status": "RoHS Compliant",
+          "reach_status": "REACH Unaffected"
+        },
+        "compliance": {
+          "rohs": "RoHS Compliant",
+          "reach": "REACH Unaffected"
+        }
+      }
+    },
+    {
+      "id": "f8603318-e9b8-5d23-a330-7bba982dbe34",
+      "uri": "https://mdm.cameron-dietz.com/id/product/f8603318-e9b8-5d23-a330-7bba982dbe34",
+      "type": "product",
+      "label": "HMS Networks 1.01.0097.00000",
+      "summary": "IXXAT CANCHECK CAN INSTALL TEST",
+      "category": {
+        "kind": "oem",
+        "realm": "aventrek",
+        "vendor_category": "communications-networking"
+      },
+      "status": "active",
+      "visibility": "public",
+      "relations": [
+        {
+          "rel": "manufacturer",
+          "type": "organization",
+          "id": "a67a2430-061c-5880-ab15-79e4362c8ff0",
+          "label": "HMS Networks"
+        }
+      ],
+      "identifiers": {
+        "mpn": [
+          "1.01.0097.00000"
+        ],
+        "hts": [
+          "8517.62.0090"
+        ]
+      },
+      "attachments": [
+        {
+          "role": "datasheet",
+          "href": "https://media.hms-networks.com/image/upload/v1748998655/Documents/Generated_Datasheets/Production/en/hms-1.01.0097.00000-en-Ixxat-CANcheck.pdf"
+        }
+      ],
+      "source_system": "digikey",
+      "checksum_sha256": "ae9932621873f98494f583a8448fc2d9c5b46b434d413148c5301055ffaed09c",
+      "created_at": "2026-10-27T00:20:04Z",
+      "updated_at": "2026-10-27T00:20:04Z",
+      "data": {
+        "mpn": "1.01.0097.00000",
+        "brand": "HMS Networks",
+        "specs": {
+          "accessory_type": "Tester",
+          "for_use_with_related_products": "CAN Networks",
+          "datasheet": "https://media.hms-networks.com/image/upload/v1748998655/Documents/Generated_Datasheets/Production/en/hms-1.01.0097.00000-en-Ixxat-CANcheck.pdf",
+          "status": "Active",
+          "htsus_code": "8517.62.0090",
+          "rohs_status": "ROHS3 Compliant",
+          "reach_status": "REACH Unaffected"
+        },
+        "compliance": {
+          "rohs": "ROHS3 Compliant",
+          "reach": "REACH Unaffected"
+        }
+      }
+    }
+  ]
+}

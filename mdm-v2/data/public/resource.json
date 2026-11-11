@@ -1,11 +1,10 @@
 {
-  "$schema": "../../schema/collection.schema.json",
   "meta": {
-    "type": "resource",
+    "profile": "repo-public",
+    "generated": "2026-10-24T05:23:58Z",
     "count": 79,
-    "generated": "2026-10-27T00:23:53Z",
-    "tool": "mdm.py",
-    "schema_version": "2.1"
+    "schema_version": "2.1",
+    "schema": "https://mdm.cameron-dietz.com/schema/v2/collection.schema.json"
   },
   "items": [
     {
@@ -20,6 +19,7 @@
         "subject": "engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -29,16 +29,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#350:tool",
-      "checksum_sha256": "74160b943ba5d3f85082336bca0c816b740ddf6b83d348dc43e9b49c3d404598",
+      "checksum_sha256": "bca35790253ace67ab7051f09cdc00534515cb3cc02ee8b87d2975683a83487b",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -58,6 +54,7 @@
         "subject": "computer-science.operating-systems"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -67,16 +64,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#367:page",
-      "checksum_sha256": "8ad66bbc852b4a9363e88e8157744e570be2277b6fb4ca752115aa7b021af369",
+      "checksum_sha256": "63aed4ee1ea293958e310f8c8c4ae84ef4d2ad74106a63a23417b6ebb2895c3b",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -93,6 +86,7 @@
         "subject": "computer-science.algorithms"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -102,16 +96,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#364:page",
-      "checksum_sha256": "f1b4ba6f28d4b6da08be55461dd61ad3b8b854301eb615b98891012af4d1057b",
+      "checksum_sha256": "db21ce5125291ee9d1770e9af690144b2e09fc99b4896e6ce5a4b97bd11b0792",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -128,6 +118,7 @@
         "subject": "design.ux-ui-design"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -137,16 +128,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#392:page",
-      "checksum_sha256": "1d7606ca9b080385c71f37f07e620664f076014f79b7331079b0c096da62b6bb",
+      "checksum_sha256": "afb15d005bfb45de16a220833383984356c81fd9410301ede554c553621a94ab",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -163,6 +150,7 @@
         "subject": "computer-science.databases"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -172,16 +160,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#366:page",
-      "checksum_sha256": "632a80066715beb29fc843bc0ee220695cbbc1da8728e55c12b8d67a7436ef56",
+      "checksum_sha256": "ce7cecc06c40047c4d32c274be4351265ed323be518a2f9857af5a1c722fe132",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -198,6 +182,7 @@
         "subject": "automation.robotics.industrial-robotics.universal-robots"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -207,16 +192,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#411:page",
-      "checksum_sha256": "f9030c61e1e097e287b1afc42dab607e08b3080d442ea27bd7ac3154f96f82ae",
+      "checksum_sha256": "480ac6c4f4ac1758ace265550c9c86d815094c04034af10bda2fe93a493c0f9d",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -233,6 +214,7 @@
         "subject": "computer-science.data-structures"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -242,16 +224,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#365:page",
-      "checksum_sha256": "c808e8e0c32835359276d0f28d7535c7345e34490e3b3217dafcce3e4f1b84a9",
+      "checksum_sha256": "281cad98535923d6089d1910010edfb65588a1aeb4bed94bd0335df3c6144c93",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -268,6 +246,7 @@
         "subject": "automation.industrial-networking.opc-ua"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -277,16 +256,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#402:page",
-      "checksum_sha256": "f20f71a733f7ca0f4254e695685dcc60f91961764215b6c3da5dbbfabdc05c9d",
+      "checksum_sha256": "388c01cb57c07c74a7776394a5ac68fef61c430b1c5351dd9a9b8d7d892c0469",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -303,6 +278,7 @@
         "subject": "computer-science.artificial-intelligence"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -312,16 +288,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#372:page",
-      "checksum_sha256": "2c933ec07ac37c116d89d836c7d1d0719b34a2e69c02f13cda3099d7fc9aa67c",
+      "checksum_sha256": "79a042545a7a06359f864a53e8cd3baa289a5e1911730a92d7c51426550aed1f",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -338,6 +310,7 @@
         "subject": "automation.controls-engineering.control-loops"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -347,16 +320,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#413:page",
-      "checksum_sha256": "893f26d6addd632d9ea54f36518b0db072083475e20ef24b94b86d21242a44cc",
+      "checksum_sha256": "e2765ca6e0f594782664a0113bdf8cd1e7fc3ad833293fb10e14b84b4ee9a683",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -373,6 +342,7 @@
         "subject": "automation.robotics.industrial-robotics.kuka-robots"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -382,16 +352,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#410:page",
-      "checksum_sha256": "8b9ea4950f2fcb063f5bfe61f44f487bb57e27c3d029a75f0722a44b12879738",
+      "checksum_sha256": "7179446dc77cf0ca084fa46aa4d6a76a0320935332d0c36366fa1fd77cb9acac",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -408,6 +374,7 @@
         "subject": "automation.motion-control"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -417,16 +384,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#385:page",
-      "checksum_sha256": "7558ccd779098da6b6d48af7b111b7641001cf69a359ce8fb682564252d40d7c",
+      "checksum_sha256": "134e4c283c539d1d4497e60ff2dd9337d7c589f8ef5e1cbaeb404976c245c610",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -443,6 +406,7 @@
         "subject": "hydraulic-filtration"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -452,16 +416,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#406:page",
-      "checksum_sha256": "cdd7a49ef1c79034c03cc2e6601030962b30eadfb7d7eeb840d9b7f8067def32",
+      "checksum_sha256": "8c4d103621af7fd2f2d65715b50e24f900816322e139c9e50d1c098f03632404",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -478,6 +438,7 @@
         "subject": "automation.instrumentation"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -487,16 +448,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#387:page",
-      "checksum_sha256": "490b45ca0efda518c31f622be5e4f04d64effa360302f3d1c9745384409ae883",
+      "checksum_sha256": "eccc2c9acd1b6fcca42b817bde51ba472b4a408c801a6899c7b588890bae0266",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -513,6 +470,7 @@
         "subject": "automation.actuators"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -522,16 +480,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#384:page",
-      "checksum_sha256": "7c6fce4dee8f1d4f7445ee03f75f5762221b0c6200b3e77945c9479fbd4d1186",
+      "checksum_sha256": "6358287fd6f457db62f3bc7645d61f26417acd47d2a0e190fab062aed1f05c37",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -548,6 +502,7 @@
         "subject": "automation.robotics"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -557,16 +512,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#382:page",
-      "checksum_sha256": "74070ba82fe72e914074b6dde1531551ed3eed04f003f7ee0224356f9c9afb05",
+      "checksum_sha256": "149381dafed762316a97858edd8813c6b4ed28830b2af34ffbeb2db78a335da9",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -583,6 +534,7 @@
         "subject": "automation.industrial-networking"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -592,16 +544,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#381:page",
-      "checksum_sha256": "b761384d7b29a8e3d08f76b168c02e7585fdf11ca922adff818677479472726c",
+      "checksum_sha256": "c378fdd22c5312787d6b191db4aa7d87ffdbdb475ef8e51c72f9ef9aae698adf",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -618,6 +566,7 @@
         "subject": "computer-science"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -627,16 +576,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#345:tool",
-      "checksum_sha256": "d3dfbb3956b4d06f90bb0ae44eb0b2b0d22bf4d604ccd71c285d1bfd1dbd64ec",
+      "checksum_sha256": "779e9a19db58b74609c7445407c1edea9ed6e46c952c83ea36d0d8742a86714c",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -656,6 +601,7 @@
         "subject": "computer-science"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -665,16 +611,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#349:tool",
-      "checksum_sha256": "c0b8a7522130ea0d4d8865f0867f28b5393bd027ea4b8f1f900b643d8fa710ca",
+      "checksum_sha256": "9e69cd6647cbc5a01a62f0deda0756751e3f84e337d628d33fe86fcd9922533e",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -694,6 +636,7 @@
         "subject": "engineering.industrial-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -703,16 +646,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#357:page",
-      "checksum_sha256": "fe56e79a260bc11b19f4d3b17377c7d553de363b3e95a1be03089092cbafc162",
+      "checksum_sha256": "3c19aa3005d05160366c73f711508be78e1ceeeebeb877fb6812a83cf87ed51d",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -729,6 +668,7 @@
         "subject": "information-technology.devops"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -738,16 +678,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#377:page",
-      "checksum_sha256": "2302cbd45429ba1328aadbdefdb283a14c9d6183be4469117756c77b01cf1c95",
+      "checksum_sha256": "8b6181975c76363227b11e75c7cd456d50e8bf069718e2bd9e5e8a81912bfb26",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -764,6 +700,7 @@
         "subject": "automation.industrial-networking.ethernet-ip"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -773,16 +710,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#397:page",
-      "checksum_sha256": "3e22e296b607bf69b3226226ddb1ef15b9e145bf9d0770132ca07e03add27836",
+      "checksum_sha256": "804b461453113c44249e634f2aa7fb20d2149ab2cdfe936ec653fd8bb1966a5a",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -799,6 +732,7 @@
         "subject": "automation.actuators.cylinders"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -808,16 +742,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#388:page",
-      "checksum_sha256": "399c4d6c1ac53699aaa194aac825128d8fe89755ad7f77468304ba001894fd8c",
+      "checksum_sha256": "929207fea1847021577b1581886e2fe51fea0342b5c735cc01530b97cf297cc7",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -834,6 +764,7 @@
         "subject": "engineering.electrical-engineering.industrial-electrical"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -843,16 +774,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#394:page",
-      "checksum_sha256": "81fd550cef9eb6218f1814d47e58d24db1013f5e8d6f6669cfc4f8282e536ac5",
+      "checksum_sha256": "1dfcc2cfb17eecf59e54b01907c5919387f3b20e3dc0f288a1845e47dc0d585a",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -869,6 +796,7 @@
         "subject": "automation.industrial-networking.modbus"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -878,16 +806,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#399:page",
-      "checksum_sha256": "b381a5eda005000a73b96c0ad8f5eeabd8f8ef7f83a886d1f4a12f1dfba938cb",
+      "checksum_sha256": "0f7de7627277cee604fbf72bace722610ae22a3bab94e641b7c8ca2d821251a1",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -904,6 +828,7 @@
         "subject": "computer-science"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -913,16 +838,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#338:tool",
-      "checksum_sha256": "25cc9ef52345620baeacbd81196d7ac4a2ebf6118d4d83ce5ae83c11f52d1b3c",
+      "checksum_sha256": "45a657dc8a123731cd1d8885d9b4673fdc80fae3d29437816d19fa7f8c5159ba",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -942,6 +863,7 @@
         "subject": "engineering.electrical-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -951,16 +873,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#354:page",
-      "checksum_sha256": "aa939fec536ad8847ebc311438ef838f42363a68317a25858008b62a20faa5d1",
+      "checksum_sha256": "2f86b6de30e94e05ff4c1bd56040455fa17d2c0d5747a25985bd700b80f25bca",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -977,6 +895,7 @@
         "subject": "information-technology.windows-server"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -986,16 +905,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#374:page",
-      "checksum_sha256": "382675644bfdee511f913358cea13d252da7103af6899a506f3f4af36ea168c2",
+      "checksum_sha256": "be79912cdcb4ac587e058e41aab2e8a6a98a6d7f950127cd4f30cfea3eba64c3",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1012,6 +927,7 @@
         "subject": "engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1021,16 +937,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#348:tool",
-      "checksum_sha256": "8ce2b14cb7dfd7897e9cec1b6c588f7fd4c2436b073c10ea6cbba3b495586cad",
+      "checksum_sha256": "c5df488fc3800facfe3c493ce4f33db267da9d8ee51aecda3ba4b9c4f57652d4",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -1049,17 +961,14 @@
         "kind": "tool"
       },
       "status": "active",
+      "visibility": "public",
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#341:tool",
-      "checksum_sha256": "983dab97acd2f8d8d613274a1af9765e1ad8f78c9bcf99fb923aa161ef67b7e5",
+      "checksum_sha256": "4b51cf8b1bfb98e0949b362ccf1425ea2eeac2a15fb9711b737ad377e59cbf92",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -1079,6 +988,7 @@
         "subject": "engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1088,16 +998,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#347:tool",
-      "checksum_sha256": "e9dd233d8de8bed09216a59fe4ddcb0ed416a20472560a8fc4077be6e9803b72",
+      "checksum_sha256": "c66be0885214e62f364ca4039a1ae262311cae8cfeb4f9967ede694799c588ca",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -1117,6 +1023,7 @@
         "subject": "information-technology.virtualization"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1126,16 +1033,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#376:page",
-      "checksum_sha256": "dfa803bbcda5c8ae10bdda990c3db755b0d272da31348959274e0d55728cbd65",
+      "checksum_sha256": "b96fcf732bdb75f1c57a73dbfa08ada649233fd99f035252f08a59075955e6ee",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1152,6 +1055,7 @@
         "subject": "automation.scada"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1161,16 +1065,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#380:page",
-      "checksum_sha256": "bec2dff7e11430b47a67b4f9ae838a59b4ba3c22e9a2e635e5bb488938346753",
+      "checksum_sha256": "efaa685140e864e45546056c1e507dfad4058925722244b0f6412fc3af409322",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1187,6 +1087,7 @@
         "subject": "automation.industrial-networking.devicenet"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1196,16 +1097,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#400:page",
-      "checksum_sha256": "579dae440fa4e3decea1f1dcae8f85616262aa90bbf29e08db2024bb4c26be01",
+      "checksum_sha256": "0d1dd5616347bc9a1473dfe0de0bc0ba3ec4d0d504d542d618937fc3448b81b5",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1222,6 +1119,7 @@
         "subject": "automation.actuators.cylinders.hydraulic-cylinders"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1231,16 +1129,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#405:page",
-      "checksum_sha256": "a2570fb9bc1ecf726742182d4d3fb6b54e3c6b9624c685c31b1e81866c1fa4f7",
+      "checksum_sha256": "cac45c8f19c2cfde785f1ff6af74981fa6a194bd2f036b60177ffcbe6d17b17b",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1257,6 +1151,7 @@
         "subject": "hydraulic-schematics"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1266,16 +1161,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#407:page",
-      "checksum_sha256": "7965586b9dd8047bf439f1fa143f22b49ec2265ea7736b44587fb46e70907cfe",
+      "checksum_sha256": "09d7b692b730c6268c9226bf0a7b0660a2eb76bd10bb68a3d5880b19d84d2606",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1292,6 +1183,7 @@
         "subject": "computer-science.web-development"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1301,16 +1193,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#371:page",
-      "checksum_sha256": "c3811b52633a666764134272d8a78c64d1f26e950cc3fb03455670c039ea7892",
+      "checksum_sha256": "4e08ee5063c31a316259bc7d84f2555136d234ba2f7c979323488981e13891b4",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1327,6 +1215,7 @@
         "subject": "design.graphic-design"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1336,16 +1225,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#390:page",
-      "checksum_sha256": "4a5bbb3eb822ea620f08f402cd70df35596dda005903eb055ee4c41d386bdb4e",
+      "checksum_sha256": "d95cbe6e9c2b92579af6ed6219ae19dd37d900fcfd1b6a3194f505aff2b454c8",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1361,17 +1246,14 @@
         "kind": "tool"
       },
       "status": "active",
+      "visibility": "public",
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#339:tool",
-      "checksum_sha256": "d35f5f93ebf9216dab00b5e123549409b2d21b64982808b77d54b5641b2da185",
+      "checksum_sha256": "fc6233ac737911e98f7dd466ce9ed03530af28cde9f3dca2ae7a7a09de73c1d5",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -1391,6 +1273,7 @@
         "subject": "engineering.mechanical-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1400,16 +1283,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#353:page",
-      "checksum_sha256": "d85777d4596b5532945bda9e7c26213ce94bba270cbaab48661b74e71213d8c2",
+      "checksum_sha256": "3692fafe48582e49b531cffeb04d819aa59929859438767dd89bffaabf58706d",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1426,6 +1305,7 @@
         "subject": "engineering.materials-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1435,16 +1315,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#358:page",
-      "checksum_sha256": "072d57d6a563bf6d7ed276bd8937333cc1eb5bad7f1c33332e70d3eab3b5e11b",
+      "checksum_sha256": "9d689155e83c5fe30368cfc56985192c6371298bb1a1440c8057c8261cc75e57",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1461,6 +1337,7 @@
         "subject": "safety.industrial-safety.machine-guarding"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1470,16 +1347,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#415:page",
-      "checksum_sha256": "7ce0839f11e8c7ab7218855243761b2c05988d29a243961ed227fd7bc767d2a4",
+      "checksum_sha256": "ee4002c86ab66a0783d88dce315e73c82ebdffc5ad30a060fc8da5e355fbe503",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1496,6 +1369,7 @@
         "subject": "automation.industrial-automation"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1505,16 +1379,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#393:page",
-      "checksum_sha256": "fdbeccdb4f04566f7a2620c573382a6b8c9a4daef11f765ef433c7d7d5bb4fff",
+      "checksum_sha256": "a2437f2b0b010162bd5ad77e939cd5de72f2c6daf6ae44019905881fd5954e40",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1531,6 +1401,7 @@
         "subject": "information-technology.cloud-computing"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1540,16 +1411,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#375:page",
-      "checksum_sha256": "ec7b73477ad255772f5a7b40a450939ad94fc357dd0522a6e188dae3eaa4fefa",
+      "checksum_sha256": "7ab081b1beee345b952be260018a41e35529c92169993452ae3f9c0e3810ef38",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1566,6 +1433,7 @@
         "subject": "engineering.biomedical-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1575,16 +1443,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#362:page",
-      "checksum_sha256": "8a0afe675f166b037fd28b697fc3364b793541117de501eb194d6687d24820c4",
+      "checksum_sha256": "a11ec2dff14172cd9bbf4406539021648128ccfee380d54800b3d3ad6453e6ec",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1600,17 +1464,14 @@
         "kind": "tool"
       },
       "status": "active",
+      "visibility": "public",
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#337:tool",
-      "checksum_sha256": "6aaf2b42f6072e1cfd98ee93c8a02672d1c0d36209f18cc6b15ffcffeddbe5ba",
+      "checksum_sha256": "e3d7958d98b7ca9f4809f793bba37ce6f31e00d0c415e1998a393c8ba7c9deff",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -1630,6 +1491,7 @@
         "subject": "automation.actuators.power-units"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1639,16 +1501,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#389:page",
-      "checksum_sha256": "03e59b26a5e09b324a7b9df8598da857597d7c3b447dccb2ac392fa5a90cde83",
+      "checksum_sha256": "d0353cf370a2197523446be52fc34caab89d2a7c9b779879f44cb6a0e762daf2",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1665,6 +1523,7 @@
         "subject": "automation.robotics.industrial-robotics.fanuc-robots"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1674,16 +1533,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#408:page",
-      "checksum_sha256": "a83ae44398747e45e37bcb0f80ff2193e7aebd3b021c6c8a81b663d7c4921fe5",
+      "checksum_sha256": "6bd9e74728a1ddc2a97cc2e4804719363f7c9adc558bbe4b130fc63bcf14ad1f",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1700,6 +1555,7 @@
         "subject": "automation.industrial-networking.profinet"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1709,16 +1565,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#398:page",
-      "checksum_sha256": "991a0ead308dee0826226bb2b44dc8bf6209f117baec0aa1fc2effc2e6f63075",
+      "checksum_sha256": "c096fa42f1d727d70ed915c04d78792b9b9b1977a372f98cb94d8246f5c32c58",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1735,6 +1587,7 @@
         "subject": "automation.plc"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1744,16 +1597,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#379:page",
-      "checksum_sha256": "0499fd3aea83bf551c7cc900ecb310d109d46e9fa9a8dd088c2c62511a1b883b",
+      "checksum_sha256": "d8b0255da346379926561f46dc7a65090b64c9a46267c18364c2638f7524051d",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1770,6 +1619,7 @@
         "subject": "information-technology.industrial-it"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1779,16 +1629,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#395:page",
-      "checksum_sha256": "6fd2bf3de3aea8a55d1cdc41c033babbca4ce6d80f57194ddc09252863b38134",
+      "checksum_sha256": "2efd27b0d814d2da10e213fcdc532988789cbdeb03b0a86f88dda42bcfc13c03",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1805,6 +1651,7 @@
         "subject": "automation.industrial-networking.serial-communications"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1814,16 +1661,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#403:page",
-      "checksum_sha256": "85ff31c905cdb09c686f50a441befc30c8a5cb2d0530be4d6da591ab7e4585f2",
+      "checksum_sha256": "11c59b293c101dea0d00c7fb3c596788f7b4ba95b2080a0597d0986b181cd84b",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1840,6 +1683,7 @@
         "subject": "hydraulic-systems"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1849,16 +1693,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#404:page",
-      "checksum_sha256": "33ff1dddb949f8853a31ad06d4e7dc0a4791a639c9f04507cd85a26010bc425d",
+      "checksum_sha256": "c7fbb9c5441f0f4b932c0ba409bc22e9d33bb0252031a7c5fc4213f30a99ec3e",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1875,6 +1715,7 @@
         "subject": "engineering.civil-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1884,16 +1725,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#355:page",
-      "checksum_sha256": "ba977d8a472876646c722cd147cce7a8c49172509b73b7287c5d456a33e14c03",
+      "checksum_sha256": "e8db567426bd2e434baaa7cb3e979d96027ec96714db40cd9a7d93fd5d0c71a5",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1910,6 +1747,7 @@
         "subject": "computer-science.networking"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1919,16 +1757,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#368:page",
-      "checksum_sha256": "38e246287e3a2ea25263003ca95a70dad0cde1d160556769f76862f5bebb4a4c",
+      "checksum_sha256": "a0d8818848cc76abac53b32640fb03a4ffe9836f334b5af2ee74c127676d637f",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -1945,6 +1779,7 @@
         "subject": "engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1954,16 +1789,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#344:tool",
-      "checksum_sha256": "bf6430862e73f458ff8f4e8c793206f78dc2815ff447beb5237fb2c9e43741d8",
+      "checksum_sha256": "7d349139aa4af45ca9fef363abd90b16a7341d3bf696910c6254ba3d9b5d9b18",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -1983,6 +1814,7 @@
         "subject": "safety.industrial-safety.lockout-tagout"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -1992,16 +1824,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#414:page",
-      "checksum_sha256": "6dc102a43bd80a5803af8ccbe8ddc35b3d96ad164540bb391bb510235a12c8e9",
+      "checksum_sha256": "814da4e1bce763a8c3f68a6e544c9b4c1586035b1103c50a62e3ae8b79b8873a",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2018,6 +1846,7 @@
         "subject": "computer-science.programming"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2027,16 +1856,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#363:page",
-      "checksum_sha256": "361d2cc1c64f8ae7f2ea2d6e9d0021db450ad22a29061a7d0366cb260c948ff5",
+      "checksum_sha256": "e9844ea510bfef26bf51af7772b76c384b8241d4a58ede8a48d26dc5de8f8162",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2052,17 +1877,14 @@
         "kind": "tool"
       },
       "status": "active",
+      "visibility": "public",
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#340:tool",
-      "checksum_sha256": "876326e6d1348b8d38ac37a7a1fd406ce7c9f39cab3952faea5abe63db5e6573",
+      "checksum_sha256": "922124cd5542bb307c89d91552e4572d42a3e47be96203c2a07c6adeb9bf52ee",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -2082,6 +1904,7 @@
         "subject": "computer-science.embedded-systems"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2091,16 +1914,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#370:page",
-      "checksum_sha256": "268abfe209189623fcd33774c227a08219d7f7a971ca0b3a8642a58e4edbc1ec",
+      "checksum_sha256": "c29d70c8d9aa583ddb5aa71952163a765ffaf75bda21ce74fcc96b9eb19320fb",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2117,6 +1936,7 @@
         "subject": "automation.industrial-networking.can-bus"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2126,16 +1946,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#401:page",
-      "checksum_sha256": "e07a2797c06420ca14f017cd859760b91214fee4d23d3cf20b21da1adc6515d0",
+      "checksum_sha256": "70f7b6f19fcab44a169fbc75353b1bed39901193efc9146746d9f172e194b849",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2152,6 +1968,7 @@
         "subject": "engineering.systems-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2161,16 +1978,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#359:page",
-      "checksum_sha256": "c635fa4c84c8f1aadb3f6e96fb1e8ffe02e94b30573204aa1facaa269e8986f0",
+      "checksum_sha256": "64b3dcc5179cfc4bef8bf9edcf45b6958a654247e138f39004e286f2e566fe23",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2187,6 +2000,7 @@
         "subject": "automation.controls-engineering.pid-control"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2196,16 +2010,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#412:page",
-      "checksum_sha256": "9507c22142df0a71003d3c860dfc9c762583f6ce958e83f40e677a30ab98f7f0",
+      "checksum_sha256": "bf5565429f0e0d8e8f01010073126371ead2588631064b5a1c76bcf2cc1e0cad",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2222,6 +2032,7 @@
         "subject": "information-technology.it-support"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2231,16 +2042,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#378:page",
-      "checksum_sha256": "975db1585d8c6fc6e9d7ad0ba51e9057c6574c51196afd03dcde8145693af2b8",
+      "checksum_sha256": "11257011ab0293958d6387089b4b8868ec587708e719ee5519d4d25ef520248c",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2257,6 +2064,7 @@
         "subject": "automation.sensors"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2266,16 +2074,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#383:page",
-      "checksum_sha256": "641dbcdbdbd7f8a09e88ece08b3ba5941bf6398c7a45e40a8d784b8a8172c139",
+      "checksum_sha256": "ee65ec435f3dcdcbee0bede4f35630cb7947f03820b6cfcc02adc1daad328671",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2292,6 +2096,7 @@
         "subject": "engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2301,16 +2106,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#351:tool",
-      "checksum_sha256": "07ee21fdce0fdb73e041d05256bdafd0516773badfd27373ffc61ce8ec02c38a",
+      "checksum_sha256": "bdf223a2eaad52c4a52353355f356ae48596680ec0cee4a251ae0d8da067c506",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -2330,6 +2131,7 @@
         "subject": "engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2339,16 +2141,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#346:tool",
-      "checksum_sha256": "0fe61ae579d308c3e4820a1083188a9e82f4a63b62c83f0bbae69465d676f646",
+      "checksum_sha256": "ce6f7793bef86d441edfc04aa662bd35d8fec207ed75a903021254bed7bb7c8c",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -2368,6 +2166,7 @@
         "subject": "information-technology.linux"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2377,16 +2176,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#373:page",
-      "checksum_sha256": "06166ccdd53403da5fd13d06e1c40941539ba85fa722d5070f933717db90ee76",
+      "checksum_sha256": "4de7510d51ed403bad0a9609993d999dbb9f2a3c510512c5b220429b727e30c5",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2403,6 +2198,7 @@
         "subject": "engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2412,16 +2208,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#342:tool",
-      "checksum_sha256": "79c9e049b05e5ae41c35c7ac831101140149ee9dcd414993ae137ebf2e3fe49f",
+      "checksum_sha256": "2cdfbe1a452500e67b6b95cfc21279d002ff488457906aae2306460bb36c88ae",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -2441,6 +2233,7 @@
         "subject": "engineering.chemical-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2450,16 +2243,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#356:page",
-      "checksum_sha256": "ec2de9217714b8f826686f01cedbb7007e20c2458ebdf51b45eefd84e9363021",
+      "checksum_sha256": "919841eb0812e23828c7948678c9187ea08ab4ad9aa201ce4c94871982a07647",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2476,6 +2265,7 @@
         "subject": "engineering.mechatronics"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2485,16 +2275,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#360:page",
-      "checksum_sha256": "6774372acb68105b9d2db37778980690c1d0d123c720a68375bdbc1f4fd00c1f",
+      "checksum_sha256": "3f80fb98cdb5cee62f6b3c15b756588da6db2bab025490a2f8f8b03c73b16724",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2511,6 +2297,7 @@
         "subject": "automation.controls-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2520,16 +2307,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#396:page",
-      "checksum_sha256": "48998b1d394975b4aa7fc796e177c0cef24d2c39e1c6a9cd4fb6ff3db027e2fb",
+      "checksum_sha256": "fa462fc7d4ef02e1d2e95aebfdb736a299fbaa6dfe6c993f4216c78a188a9466",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2546,6 +2329,7 @@
         "subject": "engineering.aerospace-engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2555,16 +2339,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#361:page",
-      "checksum_sha256": "7c7914f2e73db9b61e51b638392da3defca47738d48d4b1985f146f8ee98055f",
+      "checksum_sha256": "1c09c2db3b586d48d8b97c69ae6e798c3f3ecc0d56f01554536d4020fca0668c",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2581,6 +2361,7 @@
         "subject": "engineering"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2590,16 +2371,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#343:tool",
-      "checksum_sha256": "487a1a370ba5faf607c41af8dc641cc15335072d6c83716f03b633708689faad",
+      "checksum_sha256": "07f230858aca599ed7651e6a0f9576449b8b77c78401c2ad8a70875d5e7356ac",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -2619,6 +2396,7 @@
         "subject": "automation.process-control"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2628,16 +2406,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#386:page",
-      "checksum_sha256": "4f48ccde25ad335a63ee1a091c27c0fd16f8ea1ec57f148924002faa0f92c291",
+      "checksum_sha256": "d669ff7ed47e210e1e686fc7f7307344eec4dd2b3e61d12e7bbcaaf36044cd56",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2654,6 +2428,7 @@
         "subject": "design.industrial-design"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2663,16 +2438,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#391:page",
-      "checksum_sha256": "095ceb38391e046a5916d13c0b8e26782597bf41dd8875fab9297bbb54482d3a",
+      "checksum_sha256": "f252dfaa2536949d317f7e47ed418457a80caac37a6cd6447b1e9eb3d3259e48",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2689,6 +2460,7 @@
         "subject": "automation.robotics.industrial-robotics.abb-robots"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2698,16 +2470,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#409:page",
-      "checksum_sha256": "f431fc4fbc86161f9cf0ef0594501c76debfbe97f573e042ca50dd310f5d66c1",
+      "checksum_sha256": "6370b9b6464528f46e5e36b3a562e9e1ade222a5561f97b487033174d5881f7b",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }
@@ -2724,6 +2492,7 @@
         "subject": "computer-science"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2733,16 +2502,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#352:tool",
-      "checksum_sha256": "3ec7f5598221d39a66a7d4ac7a52a9b57e8e7777ed1856318060f1757303752d",
+      "checksum_sha256": "a5a24dc5144d79e8c57d18c4e446d321f9ca5ef6a116ccfa4e86ae45073d8023",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "tool",
         "embed": {
@@ -2762,6 +2527,7 @@
         "subject": "computer-science.cybersecurity"
       },
       "status": "active",
+      "visibility": "public",
       "relations": [
         {
           "rel": "classified_as",
@@ -2771,16 +2537,12 @@
         }
       ],
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#369:page",
-      "checksum_sha256": "2d3a035181c363a354d7f3a5abd62b51f3f450e9b0ef545abff8bd884b95806a",
+      "checksum_sha256": "b0af7156c8db363c3d3e05381ee7e17ef0c1f76069f09048d22aaea1339acfdd",
       "apps": [
         "engineering-reference"
       ],
-      "created_at": "2026-10-27T00:19:44Z",
-      "updated_at": "2026-10-27T00:19:45Z",
-      "metadata": {
-        "publish": true
-      },
+      "created_at": "2026-10-24T05:23:31Z",
+      "updated_at": "2026-10-24T05:23:32Z",
       "data": {
         "resource_kind": "article"
       }

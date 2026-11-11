@@ -1,0 +1,659 @@
+{
+  "datasets": {
+    "public/document.json": {
+      "profile": "repo-public",
+      "mode": "clear",
+      "destination": "repo",
+      "types": [
+        "document"
+      ],
+      "count": 12,
+      "max_c": 0,
+      "key_slots": [],
+      "split_by": "type",
+      "split_key": "document",
+      "sha256": "609510463945de62547ea86b8340ef718a070766178723b7ebc8cba1c35b5170",
+      "generated": "2026-11-11T06:50:14Z"
+    },
+    "public/place.json": {
+      "profile": "repo-public",
+      "mode": "clear",
+      "destination": "repo",
+      "types": [
+        "place"
+      ],
+      "count": 72,
+      "max_c": 0,
+      "key_slots": [],
+      "split_by": "type",
+      "split_key": "place",
+      "sha256": "a167d737065b04ad375832f346a49352055a00a9a356b654908b895b84405eaf",
+      "generated": "2026-11-11T06:50:14Z"
+    },
+    "public/product.json": {
+      "profile": "repo-public",
+      "mode": "clear",
+      "destination": "repo",
+      "types": [
+        "product"
+      ],
+      "count": 8,
+      "max_c": 0,
+      "key_slots": [],
+      "split_by": "type",
+      "split_key": "product",
+      "sha256": "9b3e4fb986bba0422576f95043b9a8453c9621d0d39254ad36238d51a6475bd5",
+      "generated": "2026-11-11T06:50:14Z"
+    },
+    "public/resource.json": {
+      "profile": "repo-public",
+      "mode": "clear",
+      "types": [
+        "resource"
+      ],
+      "count": 79,
+      "max_c": 0,
+      "key_slots": [],
+      "sha256": "5188ecca86dbd00249054287b812972f78cdcf1601593cc4d80a7d1407a84054",
+      "generated": "2026-10-24T05:23:58Z"
+    },
+    "public/taxonomy_scheme.json": {
+      "profile": "repo-public",
+      "mode": "clear",
+      "destination": "repo",
+      "types": [
+        "taxonomy_scheme"
+      ],
+      "count": 4,
+      "max_c": 0,
+      "key_slots": [],
+      "split_by": "type",
+      "split_key": "taxonomy_scheme",
+      "sha256": "7ed25de75de42747d97ce0f9f62fdeb9fc7ee56e8b560fb63055fa4aa09842d6",
+      "generated": "2026-11-11T06:50:14Z"
+    },
+    "public/taxonomy_term.json": {
+      "profile": "repo-public",
+      "mode": "clear",
+      "destination": "repo",
+      "types": [
+        "taxonomy_term"
+      ],
+      "count": 603,
+      "max_c": 0,
+      "key_slots": [],
+      "split_by": "type",
+      "split_key": "taxonomy_term",
+      "sha256": "b9ccf2708355dc2bdb5793f11cc0a0342169c52dfcefc9413a2c11d0899ddba5",
+      "generated": "2026-11-11T06:50:14Z"
+    },
+    "public/organization.json": {
+      "profile": "repo-public",
+      "mode": "clear",
+      "destination": "repo",
+      "types": [
+        "organization"
+      ],
+      "count": 287,
+      "max_c": 0,
+      "key_slots": [],
+      "split_by": "type",
+      "split_key": "organization",
+      "sha256": "9ad1fe796240093e2971e33dbdb10591aa2acd96ae5899b3e4620dec498d2603",
+      "generated": "2026-11-11T06:50:14Z"
+    },
+    "enc/internal/document.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "document"
+      ],
+      "count": 12,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "document",
+      "sha256": "53231ad460fe3d11d2fee2a4ee30ce7d6889b69873ee0695161c57ef1af9d7b4",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/employment.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "employment"
+      ],
+      "count": 146,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "employment",
+      "sha256": "34f15ae4d4d349295a24e5c076020d1bc78f88b1bcdfe5b75a22e43616bd5aaf",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/event.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "event"
+      ],
+      "count": 1,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "event",
+      "sha256": "17db0ac7488e9b725f7ede9a3aaf372d08e4baed64d625448b997e2ff27caf8d",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/goal.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "goal"
+      ],
+      "count": 3,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "goal",
+      "sha256": "59b47e497ff2d252aed5a2eb02ef89a30c5a70f81b1fbcb4a6fdfd71845bc821",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/job_listing.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "job_listing"
+      ],
+      "count": 214,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "job_listing",
+      "sha256": "f638c90e07f931e27a6e7f7768d35e3c99704195d0de3d3f7136f33904dc6591",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/mapping.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "mapping"
+      ],
+      "count": 159,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "mapping",
+      "sha256": "88011f3363120bdade1e4356d192c9f3b8cc3e2c926d759b11d3e51ae974c537",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/milestone.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "milestone"
+      ],
+      "count": 1,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "milestone",
+      "sha256": "e6b3859d44da872f466f951a9528a875c932c280334255128e1ab2bc19ac6ae3",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/objective.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "objective"
+      ],
+      "count": 4,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "objective",
+      "sha256": "f220facd1350151a45bd08635ce3c00f89e16b934008ea542310a063753fb4e8",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/organization.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "organization"
+      ],
+      "count": 543,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "organization",
+      "sha256": "896e7ce883c545da2737bd5ac66f873cf24f565fc6df7ee9618737a2602159de",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/part_number.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "part_number"
+      ],
+      "count": 8,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "part_number",
+      "sha256": "6d820b8fc80471119bfbbb9e1fc9b2ad207f3292ed658f5d8a615baa8345b2a4",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/person.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "person"
+      ],
+      "count": 824,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "person",
+      "sha256": "aee807f08774e49dcc2d177d91ee2bf6affe9fec793c86be21f430ccc20207c1",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/place.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "place"
+      ],
+      "count": 72,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "place",
+      "sha256": "251b8afd58397ffcfcccc0d6a124e7e77865cc3ddc07cfbacf45996847b982aa",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/procedure.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "procedure"
+      ],
+      "count": 5,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "procedure",
+      "sha256": "8fd0ca71002dfacde5bf2237cc636138bf89918291f191c7545229afca9af724",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/product.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "product"
+      ],
+      "count": 8,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "product",
+      "sha256": "5106af7ea0cea8ff37d87519f5253ce08f6f3fa64549222c68aa67f3f07a20fa",
+      "generated": "2026-11-11T06:50:15Z"
+    },
+    "enc/internal/strategy.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "strategy"
+      ],
+      "count": 1,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "strategy",
+      "sha256": "c8e1bfc170729587a4e34caa4e3c746dd794f35211a740a0ce754e15ffe714b2",
+      "generated": "2026-11-11T06:50:16Z"
+    },
+    "enc/internal/task.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "task"
+      ],
+      "count": 9,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "task",
+      "sha256": "0f5b14164ae8fa6994fec0a5949037538887c50e21d6043b054654715f8a75ea",
+      "generated": "2026-11-11T06:50:16Z"
+    },
+    "enc/internal/taxonomy_scheme.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "taxonomy_scheme"
+      ],
+      "count": 6,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "taxonomy_scheme",
+      "sha256": "558e90ae2c462e39c195d027b306697d8d7c8dc0f291c86463de30ea02b43089",
+      "generated": "2026-11-11T06:50:16Z"
+    },
+    "enc/internal/taxonomy_term.enc.json": {
+      "profile": "repo-internal",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "taxonomy_term"
+      ],
+      "count": 23779,
+      "max_c": 2,
+      "key_slots": [
+        "internal",
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "taxonomy_term",
+      "sha256": "49392aa6cca3d66e6cfa5cd87fbb6a60b2402a401419173b007806f16c1decec",
+      "generated": "2026-11-11T06:50:16Z"
+    },
+    "enc/management/employment.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "employment"
+      ],
+      "count": 146,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "employment",
+      "sha256": "40623cc0257770f893d6ebff0e93835d38c4da02b50069380ddf5173182f1dbc",
+      "generated": "2026-11-11T06:50:16Z"
+    },
+    "enc/management/event.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "event"
+      ],
+      "count": 1,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "event",
+      "sha256": "0182d65073b240a041925716356108bee5e8dfd1fd8e481e683e5465847c8bb8",
+      "generated": "2026-11-11T06:50:16Z"
+    },
+    "enc/management/goal.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "goal"
+      ],
+      "count": 3,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "goal",
+      "sha256": "8fedc5274b91b9239189538967dc41d13762e1e66ebc5de0458f8f11c115ff99",
+      "generated": "2026-11-11T06:50:17Z"
+    },
+    "enc/management/milestone.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "milestone"
+      ],
+      "count": 1,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "milestone",
+      "sha256": "7d8a1e33c538619c31d2d266e77cfd3d5af90a8b289c29e2997efe2a422b3212",
+      "generated": "2026-11-11T06:50:17Z"
+    },
+    "enc/management/objective.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "objective"
+      ],
+      "count": 4,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "objective",
+      "sha256": "97bef2de2031bf2d7535ea7e0bf786a55d4651298349cdd8ee72a619851a374c",
+      "generated": "2026-11-11T06:50:17Z"
+    },
+    "enc/management/organization.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "organization"
+      ],
+      "count": 543,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "organization",
+      "sha256": "0ac7d1226ba86e86b15008f6deb55bf87632c276a9941c5ef06138145ed3f5d2",
+      "generated": "2026-11-11T06:50:17Z"
+    },
+    "enc/management/person.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "person"
+      ],
+      "count": 1132,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "person",
+      "sha256": "12a2c15354b0b0c6295637a279f0c784d6fdcfd1852f09d6e728c90b661d92f5",
+      "generated": "2026-11-11T06:50:17Z"
+    },
+    "enc/management/procedure.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "procedure"
+      ],
+      "count": 5,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "procedure",
+      "sha256": "0d220875253a8d117bb9751629d52fd7f6d738a8e9a2cce7eaa1e5226d168126",
+      "generated": "2026-11-11T06:50:17Z"
+    },
+    "enc/management/strategy.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "strategy"
+      ],
+      "count": 1,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "strategy",
+      "sha256": "a4094c3b36a2571258eaa055915cdf85dfb4365833149d7fc32bdc1f2e1a7841",
+      "generated": "2026-11-11T06:50:17Z"
+    },
+    "enc/management/task.enc.json": {
+      "profile": "repo-management",
+      "mode": "encrypted",
+      "destination": "repo",
+      "types": [
+        "task"
+      ],
+      "count": 9,
+      "max_c": 3,
+      "key_slots": [
+        "management",
+        "highcom",
+        "owner"
+      ],
+      "split_by": "type",
+      "split_key": "task",
+      "sha256": "5cf5f46ed864ef2fc843fd27108fd32364426befeceee1535c168fe8133ee150",
+      "generated": "2026-11-11T06:50:17Z"
+    }
+  },
+  "generated": "2026-11-11T06:50:17Z",
+  "publisher": "gateway/index.html",
+  "schema": "https://mdm.cameron-dietz.com/schema/v2/record.schema.json"
+}

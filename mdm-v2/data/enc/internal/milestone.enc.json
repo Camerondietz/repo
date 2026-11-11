@@ -1,0 +1,33 @@
+{
+  "format": "c2-enc",
+  "version": 2,
+  "cipher": "AES-256-GCM",
+  "kdf": "PBKDF2-HMAC-SHA256",
+  "iterations": 600000,
+  "salt": "trvxfkOzBBN/tsBtpSsXUg==",
+  "keys": [
+    {
+      "name": "internal",
+      "nonce": "oezwnN3rrslHV0J5",
+      "wrapped": "uB1dExuF3oY9HJ7dU3iAX89vXlUG5uDGqoI09FgmFEXiecgAdMRu5z2FdN03Hjvz"
+    },
+    {
+      "name": "management",
+      "nonce": "rFIiebM4WTGj9OPR",
+      "wrapped": "3Vr5pHdGzPEqNfV7JQwCCxXlbi7+DWLUISQnUw/WJCf6TulARQCjQmxmFjmPyR7q"
+    },
+    {
+      "name": "highcom",
+      "nonce": "kiIoNv4Yhn22Qh4p",
+      "wrapped": "+uXSZwfJzOTq3iHUpwREyZj+b7xTAXLlm5VM3Wus8nNGI2JFGGiLRHLOJHjuVkgp"
+    },
+    {
+      "name": "owner",
+      "nonce": "TCQf0XTAAtQ1QYrN",
+      "wrapped": "8jwfHC0LleTu2WE5l846EVUHcpkksBbyP2/YF2Kzgq9qQf7eVFufm0WG3Au8jDpJ"
+    }
+  ],
+  "nonce": "7aLS0xB7K7Vsh9tn",
+  "ciphertext": "eRRMJHH8E3B7ong81Kn9SLYoI1DkZljnPuW8Vg9mgS+jecmPAT6YIFHfZ7WMK4NwgnjWZNrh6m8HlbWpz8iC8dFJy11Qq4TC5zhcDj6LzPOhThkvi2IFxrQ9SV90J3URGzo0khORUebQbi/Xa1MwS7CfVKtULH38SrFOUf9ZCseyYvFi1gNt8DaeTJ9LgoJV6lc1+APQWlRHXbtpQ2PSlLCOs3qTT9X60xnIeEAf6PgWXhFhuhnxVr5aYQkGqSx5ReQTfklC69lMVJoHjrnu8FwuJjvFTQ6O7/9NQfQzvZsj5AfAX5qD33jq1V/QkCxE8at8ORCAaLovagWh1HD2MENRvNLOJMEUIj7F+GciAI5hNXoETuX97b7KkYlSf2XB4jw/gZrkkui1KmbcPh9ypCS9fNCGpXno1Cs0BAAdv1OUJB/dX3Bpow+HdC8LeDVH5faszp7RwgdgkHn91wOOAMcPQ+hOSc1/PR2tuyCO7CymhOJrxajcs+/VhR1QYvjqDeBnZKo1kFTBfSgKe416LcQGd7DLXz6Oj0K5y0AYvtu0gKF/6ifTfm8c5LvjUCttZi67TSnjwnmyQrgDE1DBTGLZL3o8zVIoQ8oC6g1ceQc0P6gN4Nf1zoDjx2tzX6uueiCVeEVw8Z39/H9Jf+ZTqD1uIKpSnzf0nIE9VbXtnYezXGSjLK4vMnDW+ycq3tDpe8NN2bEAyrXF8HG0xSdkE2lLyZKcnrIj9uStDb5KYccK4UCsv3+4doYha2438/xqMhfzIinOOrjaXuEWOgmE5VDoRTbMiIcbjRoebvgLII6OvS7kOKnfQSrHOS0+epm/wS7VQseJIZ4JzimP0QLCUwkyJK6X55bzMPQdh+L4kFdCeysfa08Pt6ap2ncf4k0U/Hq86kHdm2vB35x05OYmMIqH0l2/m08uloshSAq5MKrHbGwAyb7xCN3H2UgaHcC80K+BYQ1PbiZJYRDbXHbNhnA/Htcxo3qvCt7T7mxZoO7TDnMMIMGmU7WRjSM=",
+  "created_at": "2026-11-11T06:50:15Z"
+}

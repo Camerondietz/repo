@@ -1,11 +1,13 @@
 {
-  "$schema": "../../schema/collection.schema.json",
   "meta": {
-    "type": "place",
-    "count": 53,
-    "generated": "2026-10-27T00:23:53Z",
-    "tool": "mdm.py",
-    "schema_version": "2.1"
+    "profile": "repo-public",
+    "generated": "2026-11-11T06:50:14Z",
+    "count": 72,
+    "schema_version": "2.2",
+    "tool": "gateway",
+    "schema": "https://mdm.cameron-dietz.com/schema/v2/collection.schema.json",
+    "split_by": "type",
+    "split_key": "place"
   },
   "items": [
     {
@@ -19,6 +21,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -32,7 +35,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#2:state",
       "checksum_sha256": "e5324a04daf4417046f755ee69972a48bd285d78e6478b6456d39344d49248cc",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -51,6 +53,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -64,7 +67,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#21:state",
       "checksum_sha256": "6f145e2b839024b00ca0334a3a86b74869a70153d57723c3b9808205eae15821",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -83,6 +85,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -96,12 +99,51 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#36:state",
       "checksum_sha256": "e8876606de2c4f039a889b1810b895aefaec3a229b81aac39a7cfe27bd673a43",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "0f4e612a-ecde-54df-954d-f7044bfec401",
+      "uri": "https://mdm.cameron-dietz.com/id/place/0f4e612a-ecde-54df-954d-f7044bfec401",
+      "type": "place",
+      "slug": "us-tx-marble-falls",
+      "label": "Marble Falls",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "46c3464e1ba0ffbfa8bca3ee29ba546ef70f5a3f030ea837ecc5c03e72cdcc5e",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
+      }
+    },
+    {
+      "id": "16f01912-c024-588c-93ec-00ed8d114605",
+      "uri": "https://mdm.cameron-dietz.com/id/place/16f01912-c024-588c-93ec-00ed8d114605",
+      "type": "place",
+      "slug": "us-tx-austin",
+      "label": "Austin",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "a660f30fa643fbd38f13ea3d2a6438aaca76ba52e7df5c3dc22bfc2ef631cdaa",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -115,6 +157,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -128,7 +171,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#25:state",
       "checksum_sha256": "9385212723e86ad2ae02418ef835962f6227ab20930227e43e57481c295045f3",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -147,6 +189,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -160,7 +203,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#48:state",
       "checksum_sha256": "398d84f38b36011f21319ed5b95e2f5ed1d34d95a43cf7725ed17332ad0c4130",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -179,6 +221,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -192,12 +235,51 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#17:state",
       "checksum_sha256": "4b38c39e4d36c957ed09be92b9f9056e6e6078bfc7bee57350307a5f9158ce1c",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "2359ddce-3918-5213-a3fe-3f8841171840",
+      "uri": "https://mdm.cameron-dietz.com/id/place/2359ddce-3918-5213-a3fe-3f8841171840",
+      "type": "place",
+      "slug": "us-tx-round-rock",
+      "label": "Round Rock",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "cb18acb06a991e67d6f31bced67af88249525afeaeb86407d212cc11d138cc7a",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
+      }
+    },
+    {
+      "id": "24a955cd-5e22-5754-9817-89ebb1eb9c9a",
+      "uri": "https://mdm.cameron-dietz.com/id/place/24a955cd-5e22-5754-9817-89ebb1eb9c9a",
+      "type": "place",
+      "slug": "us-tx-hye",
+      "label": "Hye",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "a19c8f1e65c5368933317ed4f0e3a60f86fff8b6affc6a3b0b0bb9ace145e42d",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -211,6 +293,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -224,7 +307,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#32:state",
       "checksum_sha256": "d4de2141a0257c826acd0f1d6d898306abf094482475f831f0ef12f2f2057342",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -243,6 +325,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -256,12 +339,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#34:state",
       "checksum_sha256": "5e155509e830acbd4f51fac82f8ae01468fbedead0fce407a991df49e1c0345c",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "265d61d8-e5fe-5f77-a09c-4826b24b501d",
+      "uri": "https://mdm.cameron-dietz.com/id/place/265d61d8-e5fe-5f77-a09c-4826b24b501d",
+      "type": "place",
+      "slug": "us-tx-fredericksburg",
+      "label": "Fredericksburg",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "6827bb2367190593ea4228a73989d0caee397dc98a0ca85871a0e1949e270639",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -275,6 +377,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -288,7 +391,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#6:state",
       "checksum_sha256": "496e2298dd5eaf96ea84080b754f42d7fedb5591973f7e176885f31afa8879c1",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -307,6 +409,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -320,12 +423,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#31:state",
       "checksum_sha256": "cca618057ee614ae22e3b6438c450dde5289452508aa9f1997998c0fc36000e0",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "33a8e811-6c23-5f8a-9668-5ff27725831f",
+      "uri": "https://mdm.cameron-dietz.com/id/place/33a8e811-6c23-5f8a-9668-5ff27725831f",
+      "type": "place",
+      "slug": "us-tx-round-mountain",
+      "label": "Round Mountain",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "621831906236394939aa15aa3b94b20e78b4e167533bd232456ddf79dc4c0f4b",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -339,6 +461,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -352,7 +475,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#33:state",
       "checksum_sha256": "087991326ba9ddbfc0756366281b0240e3fcdd6b5788af76186638a970ad3804",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -371,6 +493,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -384,7 +507,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#39:state",
       "checksum_sha256": "aa59068384223c1beb920061ccff33272f9a7c564a192e9ab16558d493ecddc8",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -403,6 +525,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -416,12 +539,51 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#41:state",
       "checksum_sha256": "6cd36fa209c5f0f80efee62249a153d0f7ad394a593d70aa8e32eb3c36ee2dea",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "3ec48533-5b83-56de-bf51-dd2764fc3840",
+      "uri": "https://mdm.cameron-dietz.com/id/place/3ec48533-5b83-56de-bf51-dd2764fc3840",
+      "type": "place",
+      "slug": "us-tx-dripping-springs",
+      "label": "Dripping Springs",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "7b2910f222c9941498cccf37a654d6de31de679b2042dcbc7ec460a1ef5c7a2f",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
+      }
+    },
+    {
+      "id": "45ae00e8-395d-52f3-ab6a-7f7bd322374e",
+      "uri": "https://mdm.cameron-dietz.com/id/place/45ae00e8-395d-52f3-ab6a-7f7bd322374e",
+      "type": "place",
+      "slug": "us-tx-wimberley",
+      "label": "Wimberley",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "f44f5091acf5522722f9ae644efbb4cb43d1bb32405b88d46f8409bf4fe19fe6",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -435,6 +597,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -448,7 +611,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#19:state",
       "checksum_sha256": "083e8abee5663c36eeb027d697622097b863c2bfbcbdff671a0bb27e65eb84ce",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -467,6 +629,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -480,7 +643,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#4:state",
       "checksum_sha256": "e7d4cfb1ece1680b409a0752a703364bdccff2430da02b15e00d57ba83545524",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -499,6 +661,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -512,7 +675,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#28:state",
       "checksum_sha256": "0978a524527c4ad6c5a4c0e0b76c8353da75a8ac1e5d0fca6937558c5b7f127f",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -531,6 +693,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -544,7 +707,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#49:state",
       "checksum_sha256": "f9f26932bafa7310f2d0696906c650a21814ba70226dd4f26b15d0b83aa9b1ee",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -563,6 +725,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -576,7 +739,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#35:state",
       "checksum_sha256": "9354b072b27446b25119f3624caa9350cb0d666e83e828cfdfd890ffa9ac60dc",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -595,6 +757,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -608,7 +771,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#18:state",
       "checksum_sha256": "cc10a58d68bb68858827603ef1d94fe7fbddc5ad8e09a44d9a0608da32b546ab",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -627,6 +789,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -640,12 +803,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#14:state",
       "checksum_sha256": "a22db2eb52959eb870ba66e7dbd2a96b9ad46f6bb299ddbb75d7ee6c7f6da05a",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "600e1624-28f7-5ca8-adf9-c064d80106f5",
+      "uri": "https://mdm.cameron-dietz.com/id/place/600e1624-28f7-5ca8-adf9-c064d80106f5",
+      "type": "place",
+      "slug": "us-tx-stonewall",
+      "label": "Stonewall",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "12f9b0ab915e779520349623b007f9aa427a79d4b9238a8057008fda0a53f2de",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -659,6 +841,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -672,7 +855,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#51:state",
       "checksum_sha256": "4a3bbb4f00657a783357414e80e7223a4c67218c61655fe8dd41ee202d167c28",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -691,6 +873,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -704,7 +887,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#22:state",
       "checksum_sha256": "0893495aa83161c4b14ad3cde98a3199b596f1b48dbd07550397729306bff46d",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -723,6 +905,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -736,7 +919,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#37:state",
       "checksum_sha256": "a21055cb0401421f9517976497226c77f1040694a945d3cd4bc1eadf0b68a733",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -755,6 +937,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -768,7 +951,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#29:state",
       "checksum_sha256": "8687ba8d325d96e6da2b1e4d15b724125721a5fbdd0296f6d39173c72eaf545e",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -787,6 +969,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -800,12 +983,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#46:state",
       "checksum_sha256": "9ab11961d2439dfe4f79f62d7fea6d69d28e2fa8a5ab357dc6b17a58a3d678d5",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "75ccddcf-8db6-583d-b5d4-de4f78640b46",
+      "uri": "https://mdm.cameron-dietz.com/id/place/75ccddcf-8db6-583d-b5d4-de4f78640b46",
+      "type": "place",
+      "slug": "us-tx-driftwood",
+      "label": "Driftwood",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "9d557772cd1328b7f2c50f2094d713297d5e80078bf6a7cccbe5606fb20f5fd5",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -819,6 +1021,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -832,7 +1035,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#23:state",
       "checksum_sha256": "670273be2928d9547b66f445e850318ac7743e7295d752186b3c0a5c50901ff0",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -851,6 +1053,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -864,7 +1067,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#50:state",
       "checksum_sha256": "c1f5712be3ffffccf713ed6651f3de26e2fbc995ce9ba5663bfea7c16fd30b01",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -883,6 +1085,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -896,7 +1099,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#27:state",
       "checksum_sha256": "72d49522c3e247c99a80cf701380eb4ede15d01329f5535941bc89faf8ee6cc5",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -915,6 +1117,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -928,7 +1131,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#52:state",
       "checksum_sha256": "8e00ca23a060f96f8f9031655682fbb4937eb0fcbbb6db232c2bcfba47dff834",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -947,6 +1149,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -960,7 +1163,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#13:state",
       "checksum_sha256": "6c2d78cf68dc1a1ac893e6b2ef32379aa81e0a25ddd2b064b7dcfe1b983dcd7e",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -979,6 +1181,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -992,7 +1195,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#26:state",
       "checksum_sha256": "d00339bde1ae6edb0453213c4cfa3308dd10d1d7b7c500638926817f7600039d",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1011,6 +1213,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1024,12 +1227,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#45:state",
       "checksum_sha256": "706c6cad7021bda8587bd105420796ad2d36fe93c1bb7b4232e7754c31db90a3",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "8a522c33-be49-5422-8a57-9a99527aca13",
+      "uri": "https://mdm.cameron-dietz.com/id/place/8a522c33-be49-5422-8a57-9a99527aca13",
+      "type": "place",
+      "slug": "us-tx-burnet",
+      "label": "Burnet",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "c906039bee3094eeade57721e4021406aaab5b23ac86fdf42d74bbe841f24182",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -1043,6 +1265,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1056,7 +1279,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#7:state",
       "checksum_sha256": "3d9eeef9dcd3360ee6d2c47eb14a9949ebcbf9fc285582aa32e3113394ac3e49",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1075,6 +1297,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1088,7 +1311,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#12:state",
       "checksum_sha256": "508d23fed0eee69d5b0a670d8dc3494ffc82ebf3acff565ae9b57896f53cdf89",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1107,6 +1329,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1120,12 +1343,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#8:state",
       "checksum_sha256": "3e4a95686e320ac5d9017bd3119f811cabac1750cd7d9831bf4000a36d735b56",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "917950ac-bccd-5ef6-9cc4-5cf109a9ed8a",
+      "uri": "https://mdm.cameron-dietz.com/id/place/917950ac-bccd-5ef6-9cc4-5cf109a9ed8a",
+      "type": "place",
+      "slug": "us-tx-wellborn",
+      "label": "Wellborn",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "3f0a72aad43cf415054a24808f8bc9c6ae0c7c27b2d07fd652d02a6e40affd1e",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -1139,6 +1381,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1152,12 +1395,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#44:state",
       "checksum_sha256": "7030150ab55f23bdf610fd05bfcb7cbe6a211786e6ed1c940bdd88907141cbba",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "9bd42ad7-3eef-5713-a5ea-d21cd776a64f",
+      "uri": "https://mdm.cameron-dietz.com/id/place/9bd42ad7-3eef-5713-a5ea-d21cd776a64f",
+      "type": "place",
+      "slug": "us-tx-johnson-city",
+      "label": "Johnson City",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "971bf8b92100fb9db0e0d2cb429ab0149ef111680a0d02a3f38b1a7217a88c60",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -1171,6 +1433,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1184,7 +1447,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#24:state",
       "checksum_sha256": "fcc66fa9c3feca8431961c4bc4a78f9d5d3505f8a0fa8637f8bbc878fec9c7a9",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1203,6 +1465,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1216,7 +1479,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#47:state",
       "checksum_sha256": "3e48810131487f07d515f224eeb5489dfb1ba1094ed012cdc38fe1bc5128d6b1",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1235,6 +1497,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1248,12 +1511,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#3:state",
       "checksum_sha256": "35185d61ab9aaa85ba42e2b18a3c38fff193368534770b6c778b60d4d4280f73",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "a714a6b7-22dc-57f8-ad75-5022559ad61c",
+      "uri": "https://mdm.cameron-dietz.com/id/place/a714a6b7-22dc-57f8-ad75-5022559ad61c",
+      "type": "place",
+      "slug": "us-tx-new-braunfels",
+      "label": "New Braunfels",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "4e700858b69ccb2c158378c83a1b60dd9d169712c6f5aade3b181c79ee62192a",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -1267,6 +1549,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1280,7 +1563,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#42:state",
       "checksum_sha256": "71f3eb29060a2d1f997a1ec1e2736e03cf3e0b5f2b1aff832ed91b2be8aca665",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1299,6 +1581,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1312,12 +1595,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#10:state",
       "checksum_sha256": "0167323abe542ae2d6e5b03dcc25760e9a6f22c65e73dfa07509823f8f9cd581",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "ad8d189d-9ec8-5b9d-bb7c-65e72a801354",
+      "uri": "https://mdm.cameron-dietz.com/id/place/ad8d189d-9ec8-5b9d-bb7c-65e72a801354",
+      "type": "place",
+      "slug": "us-tx-georgetown",
+      "label": "Georgetown",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "6e9e3bdf72f998f0c6472dfca662d9a9060eac4b1544c844dc69876536539fe4",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -1331,6 +1633,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1344,12 +1647,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#11:state",
       "checksum_sha256": "8b3c4a3e9310621725ce4972ca963e165c2eafafba758e3ede497f0fe1f04dbe",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "b3e117c7-e75c-5194-9965-064cb88ac8ae",
+      "uri": "https://mdm.cameron-dietz.com/id/place/b3e117c7-e75c-5194-9965-064cb88ac8ae",
+      "type": "place",
+      "slug": "us-tx-san-antonio",
+      "label": "San Antonio",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "31a0bbf89b8828b7c0e6bb0e14ca99b141e10bde85a216cd955a5f5001b22d8c",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -1363,6 +1685,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1376,7 +1699,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#43:state",
       "checksum_sha256": "c00af138dc09332e01678d03d619c6adeb9c40c038219b92f47314d288e02cd7",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1395,6 +1717,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1408,7 +1731,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#9:state",
       "checksum_sha256": "50f494e6b3fc2f42fe6564af6c091ca193e23614eb3ff88843009ef4ac3ae890",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1427,6 +1749,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1440,7 +1763,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#38:state",
       "checksum_sha256": "c3b9b70f1d39cf246833bdd84cd66df3988f925ddb5d9db45e3a879ce0153a27",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1459,6 +1781,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1472,12 +1795,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#40:state",
       "checksum_sha256": "244f989033cfdfa188380f2e76ada3779de370136bd2ae9b56a6f491453f5e0c",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "cb4dc115-cb24-5802-ba3a-a1144816f64f",
+      "uri": "https://mdm.cameron-dietz.com/id/place/cb4dc115-cb24-5802-ba3a-a1144816f64f",
+      "type": "place",
+      "slug": "us-tx-college-station",
+      "label": "College Station",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "e8d437f668df0c7b1ac7c0be0042d644eb1a5012027535e56d8f4b7c6aa290c1",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -1491,6 +1833,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1504,7 +1847,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#15:state",
       "checksum_sha256": "79140d6f010cb5057f9d5379869c0c075c6f4888c9dc0435974575fb4b16b51f",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1523,6 +1865,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1536,7 +1879,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#20:state",
       "checksum_sha256": "c72f89e4ed8b78353896cfce9fa03588f8a5a29c31db676a099bf47521cf12c3",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1555,6 +1897,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1568,7 +1911,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#5:state",
       "checksum_sha256": "e2b2dffe372fbe92d1c91d654fb0c4142f1a34259da27c33abc419b40de8dc73",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1586,18 +1928,38 @@
         "kind": "country",
         "realm": "public"
       },
+      "visibility": "public",
       "identifiers": {
         "iso3166_1": [
           "US"
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#1:us",
       "checksum_sha256": "7a65dc0dc547da01da8abd9eb7dd3db2917f43a890626487b0e636f5bcd4437e",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 0
+      }
+    },
+    {
+      "id": "f0392e52-940c-5da4-9a81-de1fb567d42f",
+      "uri": "https://mdm.cameron-dietz.com/id/place/f0392e52-940c-5da4-9a81-de1fb567d42f",
+      "type": "place",
+      "slug": "us-tx-fischer",
+      "label": "Fischer",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "109740dbc7e30a01c2c3aac52c0705e8ab61758ce8750196f4c129865d49d9d9",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     },
     {
@@ -1611,6 +1973,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1624,7 +1987,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#16:state",
       "checksum_sha256": "4139e262e997cd3a05c19a3ba8ec300c84051e60625a02ad87e458ea51e9707c",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1643,6 +2005,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1656,7 +2019,6 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#1:state",
       "checksum_sha256": "f60ba0a1ddb0c480c8c1dcfb258ae44b706e2a7f7c196ba34ef6197ad2fbd066",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
@@ -1675,6 +2037,7 @@
         "jurisdiction": "state",
         "realm": "public"
       },
+      "visibility": "public",
       "parent_id": "eb27f932-411b-526e-8a4f-6da5db8227cb",
       "identifiers": {
         "fips_state": [
@@ -1688,12 +2051,31 @@
         ]
       },
       "source_system": "gazetteer",
-      "source_record_id": "us-states.csv#30:state",
       "checksum_sha256": "4f8c031b4f6ef5e9121194a64c70dccffa10768294394e3cef6b0bf1c5315091",
       "created_at": "2026-10-27T00:19:53Z",
       "updated_at": "2026-10-27T00:19:53Z",
       "data": {
         "adm_level": 1
+      }
+    },
+    {
+      "id": "f9cd919c-8817-5796-af7d-41b176ef5f7d",
+      "uri": "https://mdm.cameron-dietz.com/id/place/f9cd919c-8817-5796-af7d-41b176ef5f7d",
+      "type": "place",
+      "slug": "us-tx-bryan",
+      "label": "Bryan",
+      "category": {
+        "kind": "locality",
+        "realm": "public"
+      },
+      "visibility": "public",
+      "parent_id": "9a8327f3-632c-5e99-be07-d0ae1c1a34b5",
+      "source_system": "organizations",
+      "checksum_sha256": "708bd53e5a8d4750be3691bbd3a5692a90745f2be932b948bcd128e5d0ec1f76",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
+      "data": {
+        "adm_level": 3
       }
     }
   ]

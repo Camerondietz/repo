@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Repo data</title>
+<style>
+/*
+ * Repo data viewer: browse everything the gateway (or mdm.py publish) put in this folder.
+ * Reads catalog.json next to it. Clear files open directly; encrypted files (c2-enc v2) are opened in this
+ * tab with a password. The password and anything decrypted live only in this tab's memory: nothing is
+ * stored, nothing is sent anywhere, and closing or reloading the tab forgets it all.
+ */
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --ink: #1c2330; --muted: #5d6878; --line: #dfe3ea; --soft: #eef1f5;
+  --accent: #1f6feb; --accent-ink: #ffffff; --ok: #1a7f37; --warn: #9a6700; --bad: #cf222e;
+  --c0: #1a7f37; --c1: #2f81f7; --c2: #9a6700; --c3: #d1242f; --c4: #8250df;
+  --radius: 8px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1419; --panel: #161b22; --ink: #e6edf3; --muted: #9aa6b4; --line: #2d3540; --soft: #1e252e;
+    --accent: #4493f8; --ok: #3fb950; --warn: #d29922; --bad: #f85149; --c0: #3fb950; --c1: #58a6ff; --c2: #d29922; --c3: #f85149; --c4: #a371f7;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1419; --panel: #161b22; --ink: #e6edf3; --muted: #9aa6b4; --line: #2d3540; --soft: #1e252e;
+  --accent: #4493f8; --ok: #3fb950; --warn: #d29922; --bad: #f85149; --c0: #3fb950; --c1: #58a6ff; --c2: #d29922; --c3: #f85149; --c4: #a371f7;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.45 var(--font); }
+button, input, select { font: inherit; color: inherit; }
+.top { position: sticky; top: 0; z-index: 5; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.brand { display: flex; flex-direction: column; margin-right: auto; }
+.brand b { font-size: 16px; }
+.brand small { color: var(--muted); }
+.lock { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+input[type=text], input[type=password], input[type=search], select { padding: 6px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+.btn { padding: 6px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); cursor: pointer; white-space: nowrap; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.sm { padding: 3px 8px; font-size: 12px; }
+.pill { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; background: var(--soft); color: var(--muted); font-size: 12px; white-space: nowrap; }
+.pill.ok { color: var(--ok); } .pill.warn { color: var(--warn); }
+.c { display: inline-block; min-width: 26px; text-align: center; padding: 0 5px; border-radius: 4px; font-size: 11.5px; font-weight: 600; color: #fff; }
+.c0 { background: var(--c0); } .c1 { background: var(--c1); } .c2 { background: var(--c2); } .c3 { background: var(--c3); } .c4, .c5, .c6, .c7 { background: var(--c4); }
+.layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 14px; padding: 14px 16px 40px; max-width: 1500px; margin: 0 auto; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+.side { padding: 8px; max-height: calc(100vh - 90px); overflow: auto; position: sticky; top: 72px; }
+.side h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 12px 6px 4px; }
+.ds { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 7px 8px; border-radius: 6px; cursor: pointer; }
+.ds:hover { background: var(--soft); }
+.ds.on { background: var(--accent); color: var(--accent-ink); }
+.ds.on .pill { background: rgba(255,255,255,.2); color: inherit; }
+.ds .name { font-family: var(--mono); font-size: 12.5px; word-break: break-all; }
+.ds .meta { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; font-size: 12px; }
+.main { padding: 14px; min-width: 0; }
+.muted { color: var(--muted); }
+.note { border-left: 3px solid var(--warn); background: var(--soft); padding: 8px 12px; border-radius: 4px; margin: 0 0 12px; }
+.note.bad { border-color: var(--bad); } .note.ok { border-color: var(--ok); }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.grow { flex: 1; }
+h2 { font-size: 16px; margin: 0; word-break: break-all; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); font-weight: 600; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.rec { cursor: pointer; } tr.rec:hover td { background: var(--soft); }
+.mono { font-family: var(--mono); font-size: 12px; }
+pre.json { font-family: var(--mono); font-size: 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px; overflow: auto; max-height: 60vh; white-space: pre-wrap; word-break: break-word; margin: 8px 0 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 12px 0; }
+.card { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; background: var(--bg); }
+.card .n { font-size: 20px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.card .l { color: var(--muted); font-size: 12px; }
+@media (max-width: 820px) {
+  .layout { grid-template-columns: 1fr; }
+  .side { position: static; max-height: 45vh; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><b>Repo data</b><small id="sub">published datasets</small></div>
+  <form class="lock" id="lockForm" autocomplete="off">
+    <span class="pill" id="lockState">locked</span>
+    <input type="password" id="pw" placeholder="Password for encrypted data" autocomplete="off" style="width:240px">
+    <button class="btn primary" type="submit">Unlock</button>
+    <button class="btn" type="button" id="lockBtn" hidden>Lock</button>
+  </form>
+</header>
+
+<div class="layout">
+  <nav class="panel side" id="side"><p class="muted" style="padding:6px">Reading catalog.json…</p></nav>
+  <main class="panel main" id="main"></main>
+</div>
+
+<script>
+"use strict";
+/* ---------------------------------------------------------------- config */
+const CATALOG = "catalog.json";            // written by the gateway next to this page
+const AAD_DATA = new TextEncoder().encode("c2-enc/2/data");
+const AAD_KEY = new TextEncoder().encode("c2-enc/2/key");
+
+/* ---------------------------------------------------------------- state (memory only) */
+const S = {
+  catalog: null, datasets: [],             // [{path, ...catalog entry}]
+  password: null,                          // never stored
+  opened: new Map(),                       // path -> {items, slot, error}
+  cur: null, q: "", type: "", sel: null,
+};
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const cBadge = (c) => (c == null ? "" : `<span class="c c${Math.min(c, 7)}">C${c}</span>`);
+const VIS_TO_C = { public: 0, internal: 1, restricted: 3, confidential: 4 };
+const recC = (r) => (typeof r.classification?.c === "number" ? r.classification.c : null);
+/** Record level: its own classification, else the visibility label (the type default lives in the registry, not here). */
+const recLevel = (r) => (recC(r) != null ? cBadge(recC(r)) : r.visibility ? `<span class="pill">${esc(r.visibility)}</span>` : "");
+/** Dataset level: clear files are C0 by policy; for encrypted ones the catalog gives the profile's ceiling. */
+const dsLevel = (d) => (isEnc(d) ? (d.max_c == null ? "" : `<span class="c c${Math.min(d.max_c, 7)}" title="highest level this file may hold">≤C${d.max_c}</span>`) : cBadge(0));
+const plural = (n, w) => `${(n ?? "?").toLocaleString()} ${w}${n === 1 ? "" : "s"}`;
+
+/* ---------------------------------------------------------------- reading files */
+function recordsOf(doc) {
+  if (Array.isArray(doc)) return doc;
+  if (doc && typeof doc === "object") { for (const k of ["items", "records", "upserts"]) if (Array.isArray(doc[k])) return doc[k]; if (doc.id && doc.type) return [doc]; }
+  return [];
+}
+/** JSON file, or a .js file of the form  window.X = {...};  */
+function parseText(t) {
+  return JSON.parse(t.replace(/^﻿/, "").replace(/^\s*\/\*[\s\S]*?\*\/\s*/, "").replace(/^window\.\w+\s*=\s*/, "").replace(/;\s*$/, ""));
+}
+async function fetchDoc(path) {
+  const res = await fetch(path, { cache: "no-cache" });
+  if (!res.ok) throw new Error(`${path}: ${res.status} ${res.statusText}`);
+  return parseText(await res.text());
+}
+
+/* ---------------------------------------------------------------- c2-enc v2 decryption (WebCrypto) */
+const b64d = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const kekCache = new Map();
+async function kek(password, env) {
+  const k = `${env.iterations}:${env.salt}`;
+  if (kekCache.has(k)) return kekCache.get(k);
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt: b64d(env.salt), iterations: env.iterations }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+  kekCache.set(k, key);
+  return key;
+}
+async function openEnvelope(env, password) {
+  const k = await kek(password, env);
+  for (const slot of env.keys || []) {
+    let dek;
+    try { dek = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64d(slot.nonce), additionalData: AAD_KEY }, k, b64d(slot.wrapped)); } catch (_) { continue; }
+    const key = await crypto.subtle.importKey("raw", dek, "AES-GCM", false, ["decrypt"]);
+    const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64d(env.nonce), additionalData: AAD_DATA }, key, b64d(env.ciphertext));
+    return { doc: JSON.parse(new TextDecoder().decode(pt)), slot: slot.name };
+  }
+  return null;
+}
+
+/* ---------------------------------------------------------------- catalog */
+async function loadCatalog() {
+  try {
+    S.catalog = await fetchDoc(CATALOG);
+  } catch (e) {
+    $("#side").innerHTML = `<div class="note bad" style="margin:6px">No catalog here (${esc(e.message)}). Run the gateway with "update catalog" ticked; it writes <span class="mono">catalog.json</span> next to this page.</div>`;
+    renderHome();
+    return;
+  }
+  // Only entries inside this folder can be fetched from here (gateway may also list linked or outside targets).
+  S.datasets = Object.entries(S.catalog.datasets || {})
+    .filter(([p]) => !p.startsWith("..") && !p.startsWith("@") && !p.startsWith("/"))
+    .map(([path, d]) => ({ path, ...d }))
+    .sort((a, b) => a.path.localeCompare(b.path));
+  $("#sub").textContent = `${S.datasets.length} datasets · catalog ${S.catalog.generated ? new Date(S.catalog.generated).toLocaleString() : ""}`;
+  renderSide();
+  const want = decodeURIComponent(location.hash.slice(1));
+  if (want && S.datasets.some((d) => d.path === want)) select(want); else renderHome();
+}
+const isEnc = (d) => d.mode === "encrypted" || /\.enc\.(json|js)$/.test(d.path);
+const folderOf = (p) => (p.includes("/") ? p.slice(0, p.lastIndexOf("/")) : ".");
+
+/* ---------------------------------------------------------------- rendering */
+function renderSide() {
+  const groups = new Map();
+  for (const d of S.datasets) { const f = folderOf(d.path); if (!groups.has(f)) groups.set(f, []); groups.get(f).push(d); }
+  $("#side").innerHTML = `<button class="ds ${S.cur ? "" : "on"}" data-home><div><b>Overview</b></div></button>` +
+    [...groups].map(([f, ds]) => `<h4>${esc(f)}</h4>` + ds.map((d) => {
+      const o = S.opened.get(d.path);
+      const lock = isEnc(d) ? (o?.items ? `<span class="pill ok">open · ${esc(o.slot)}</span>` : `<span class="pill warn">encrypted</span>`) : `<span class="pill">clear</span>`;
+      return `<button class="ds ${S.cur === d.path ? "on" : ""}" data-path="${esc(d.path)}"><div class="name">${esc(d.path.slice(f.length + 1) || d.path)}</div>
+        <div class="meta">${lock}${dsLevel(d)}<span class="pill">${plural(d.count, "record")}</span></div></button>`;
+    }).join("")).join("");
+  $("#side").querySelectorAll("[data-path]").forEach((b) => (b.onclick = () => select(b.dataset.path)));
+  $("#side").querySelector("[data-home]").onclick = () => { S.cur = null; history.replaceState(null, "", location.pathname); renderSide(); renderHome(); };
+}
+function renderHome() {
+  const ds = S.datasets, enc = ds.filter(isEnc), total = ds.reduce((s, d) => s + (d.count || 0), 0);
+  const types = new Map(); for (const d of ds) for (const t of d.types || []) types.set(t, (types.get(t) || 0) + 1);
+  const profiles = [...new Set(ds.map((d) => d.profile))];
+  $("#main").innerHTML = `
+    <h2>Published data</h2>
+    <p class="muted" style="margin:4px 0 0">Everything listed in <span class="mono">catalog.json</span>. Clear files open directly. Encrypted files open with a password, in this tab only: nothing is saved and reloading the page locks everything again.</p>
+    <div class="cards">
+      <div class="card"><div class="n">${ds.length}</div><div class="l">datasets</div></div>
+      <div class="card"><div class="n">${total.toLocaleString()}</div><div class="l">records (by catalog)</div></div>
+      <div class="card"><div class="n">${ds.length - enc.length}</div><div class="l">clear</div></div>
+      <div class="card"><div class="n">${enc.length}</div><div class="l">encrypted</div></div>
+      <div class="card"><div class="n">${profiles.length}</div><div class="l">profiles</div></div>
+    </div>
+    <div class="row" style="margin-bottom:10px"><input type="search" id="allQ" placeholder="Search every opened dataset (label, id, type)" class="grow"><button class="btn" id="openClear">Open all clear</button>${S.password ? `<button class="btn" id="openEnc">Open all encrypted</button>` : ""}</div>
+    <div id="allHits"></div>
+    <div class="scroll"><table><thead><tr><th>Dataset</th><th>Profile</th><th>Mode</th><th>Level</th><th>Slots</th><th>Types</th><th class="num">Records</th><th>Generated</th></tr></thead><tbody>
+    ${ds.map((d) => `<tr class="rec" data-path="${esc(d.path)}"><td class="mono">${esc(d.path)}</td><td>${esc(d.profile)}</td><td>${isEnc(d) ? '<span class="pill warn">encrypted</span>' : '<span class="pill">clear</span>'}</td><td>${dsLevel(d)}</td>
+      <td>${esc((d.key_slots || []).join(", "))}</td><td>${esc((d.types || []).join(", "))}</td><td class="num">${(d.count ?? "").toLocaleString()}</td><td class="muted">${d.generated ? esc(new Date(d.generated).toLocaleString()) : ""}</td></tr>`).join("") || `<tr><td colspan="8" class="muted">Nothing published yet.</td></tr>`}
+    </tbody></table></div>`;
+  $("#main").querySelectorAll("tr[data-path]").forEach((tr) => (tr.onclick = () => select(tr.dataset.path)));
+  $("#openClear").onclick = () => openMany(ds.filter((d) => !isEnc(d)));
+  if ($("#openEnc")) $("#openEnc").onclick = () => openMany(enc);
+  $("#allQ").oninput = (e) => searchAll(e.target.value);
+}
+async function openMany(list) {
+  for (const d of list) { await open(d); renderSide(); }
+  renderHome(); toast(`${list.length} datasets checked`);
+}
+function searchAll(q) {
+  q = q.trim().toLowerCase();
+  const box = $("#allHits");
+  if (q.length < 2) { box.innerHTML = ""; return; }
+  const hits = [];
+  for (const [path, o] of S.opened) for (const r of o.items || []) {
+    if (`${r.label || ""} ${r.id || ""} ${r.type || ""} ${r.slug || ""}`.toLowerCase().includes(q)) hits.push([path, r]);
+    if (hits.length >= 200) break;
+  }
+  const opened = [...S.opened.values()].filter((o) => o.items).length;
+  box.innerHTML = `<p class="muted" style="margin:0 0 6px">${hits.length}${hits.length >= 200 ? "+" : ""} matches in ${opened} opened datasets.</p>` + (hits.length ? `<div class="scroll" style="margin-bottom:14px"><table><tbody>${hits.map(([p, r], i) =>
+    `<tr class="rec" data-hit="${i}"><td>${esc(r.label)}</td><td>${esc(r.type)}</td><td>${recLevel(r)}</td><td class="mono muted">${esc(p)}</td></tr>`).join("")}</tbody></table></div>` : "");
+  box.querySelectorAll("[data-hit]").forEach((tr) => (tr.onclick = () => { const [p, r] = hits[+tr.dataset.hit]; S.sel = r.id; select(p, true); }));
+}
+
+async function open(d) {
+  const have = S.opened.get(d.path);
+  if (have?.items) return have;
+  let doc, slot = null;
+  try {
+    doc = await fetchDoc(d.path);
+  } catch (e) { const o = { error: e.message }; S.opened.set(d.path, o); return o; }
+  if (doc && doc.format === "c2-enc") {
+    if (!S.password) { const o = { locked: true, env: doc }; S.opened.set(d.path, o); return o; }
+    const r = await openEnvelope(doc, S.password).catch(() => null);
+    if (!r) { const o = { denied: true, env: doc }; S.opened.set(d.path, o); return o; }
+    doc = r.doc; slot = r.slot;
+  }
+  const o = { items: recordsOf(doc), meta: doc && !Array.isArray(doc) ? doc.meta || null : null, slot: slot || "clear" };
+  S.opened.set(d.path, o);
+  return o;
+}
+
+async function select(path, keepSel = false) {
+  const d = S.datasets.find((x) => x.path === path); if (!d) return;
+  S.cur = path; if (!keepSel) S.sel = null; S.q = ""; S.type = "";
+  history.replaceState(null, "", "#" + encodeURIComponent(path));
+  renderSide();
+  $("#main").innerHTML = `<p class="muted">Opening ${esc(path)}…</p>`;
+  const o = await open(d);
+  renderSide();
+  renderDataset(d, o);
+}
+function renderDataset(d, o) {
+  const head = `<div class="row"><h2 class="grow">${esc(d.path)}</h2>${isEnc(d) ? '<span class="pill warn">encrypted</span>' : '<span class="pill">clear</span>'}${dsLevel(d)}<a class="btn sm" href="${esc(d.path)}" target="_blank" rel="noopener">raw file</a></div>
+    <p class="muted" style="margin:4px 0 12px">Profile <b>${esc(d.profile)}</b>${d.split_by ? ` · split by ${esc(d.split_by)} = ${esc(d.split_key)}` : ""}${(d.key_slots || []).length ? ` · opens with: ${esc(d.key_slots.join(", "))}` : ""} · generated ${d.generated ? esc(new Date(d.generated).toLocaleString()) : "?"}</p>`;
+  if (o.error) { $("#main").innerHTML = head + `<div class="note bad">Could not read the file: ${esc(o.error)}</div>`; return; }
+  if (o.locked) { $("#main").innerHTML = head + `<div class="note">Encrypted. Enter a password at the top to open it. Slots in this file: ${esc((o.env.keys || []).map((k) => k.name).join(", "))}.</div>`; $("#pw").focus(); return; }
+  if (o.denied) { $("#main").innerHTML = head + `<div class="note bad">The password you entered opens none of this file's slots (${esc((o.env.keys || []).map((k) => k.name).join(", "))}). Check for a typo, or this file is for a different audience.</div>`; return; }
+  const types = [...new Set(o.items.map((r) => r.type))].sort();
+  $("#main").innerHTML = head + `${o.slot !== "clear" ? `<div class="note ok">Opened with the <b>${esc(o.slot)}</b> key slot.</div>` : ""}
+    <div class="row" style="margin-bottom:10px">
+      <input type="search" id="q" placeholder="Search label, id, slug, any text" class="grow" value="${esc(S.q)}">
+      ${types.length > 1 ? `<select id="tf"><option value="">all types</option>${types.map((t) => `<option ${t === S.type ? "selected" : ""}>${esc(t)}</option>`).join("")}</select>` : ""}
+      <button class="btn sm" id="dl">Download as shown</button>
+    </div>
+    <div id="recs"></div><div id="detail"></div>`;
+  $("#q").oninput = (e) => { S.q = e.target.value; renderRecords(o); };
+  if ($("#tf")) $("#tf").onchange = (e) => { S.type = e.target.value; renderRecords(o); };
+  $("#dl").onclick = () => {
+    if (o.slot !== "clear" && !confirm("This saves decrypted data to your computer in clear text. Continue?")) return;
+    const blob = new Blob([JSON.stringify(filtered(o), null, 2)], { type: "application/json" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = d.path.split("/").pop().replace(/\.enc/, ".decrypted").replace(/\.js$/, ".json"); a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  };
+  renderRecords(o);
+}
+function filtered(o) {
+  const q = S.q.trim().toLowerCase();
+  return o.items.filter((r) => (!S.type || r.type === S.type) && (!q || JSON.stringify(r).toLowerCase().includes(q)));
+}
+function renderRecords(o) {
+  const rs = filtered(o), shown = rs.slice(0, 500);
+  $("#recs").innerHTML = `<p class="muted" style="margin:0 0 6px">${rs.length.toLocaleString()} of ${o.items.length.toLocaleString()} records${rs.length > 500 ? " (first 500 shown; search to narrow)" : ""}</p>
+    <div class="scroll"><table><thead><tr><th>Label</th><th>Type</th><th>Level</th><th>Status</th><th>Apps</th><th>Updated</th><th>Id</th></tr></thead><tbody>
+    ${shown.map((r, i) => `<tr class="rec" data-i="${i}"><td>${esc(r.label)}</td><td>${esc(r.type)}</td><td>${recLevel(r)}</td><td>${esc(r.status || "")}</td><td>${esc((r.apps || []).join(", "))}</td><td class="muted">${esc((r.updated_at || "").slice(0, 10))}</td><td class="mono muted">${esc(r.id)}</td></tr>`).join("")}
+    </tbody></table></div>`;
+  $("#recs").querySelectorAll("tr[data-i]").forEach((tr) => (tr.onclick = () => showRecord(shown[+tr.dataset.i])));
+  const pre = S.sel && o.items.find((r) => r.id === S.sel);
+  if (pre) showRecord(pre); else $("#detail").innerHTML = "";
+}
+function showRecord(r) {
+  S.sel = r.id;
+  $("#detail").innerHTML = `<div style="margin-top:14px"><div class="row"><b class="grow">${esc(r.label || r.id)}</b><button class="btn sm" id="cp">Copy JSON</button><button class="btn sm" id="cl">Close</button></div><pre class="json">${esc(JSON.stringify(r, null, 2))}</pre></div>`;
+  $("#cp").onclick = () => navigator.clipboard?.writeText(JSON.stringify(r, null, 2)).then(() => toast("Copied"));
+  $("#cl").onclick = () => { S.sel = null; $("#detail").innerHTML = ""; };
+  $("#detail").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+/* ---------------------------------------------------------------- lock / unlock */
+function setLockUi() {
+  $("#lockState").textContent = S.password ? "unlocked (this tab)" : "locked";
+  $("#lockState").className = "pill " + (S.password ? "ok" : "");
+  $("#lockBtn").hidden = !S.password;
+}
+$("#lockForm").onsubmit = async (e) => {
+  e.preventDefault();
+  const pw = $("#pw").value; if (!pw) return;
+  S.password = pw; $("#pw").value = ""; kekCache.clear();
+  for (const [p, o] of S.opened) if (o.locked || o.denied) S.opened.delete(p);  // retry with the new password
+  setLockUi();
+  if (S.cur) await select(S.cur, true); else { renderSide(); renderHome(); }
+};
+$("#lockBtn").onclick = () => {
+  S.password = null; kekCache.clear();
+  for (const [p, o] of S.opened) if (o.slot && o.slot !== "clear") S.opened.delete(p);
+  setLockUi();
+  if (S.cur) select(S.cur); else { renderSide(); renderHome(); }
+};
+function toast(msg) { $("#sub").dataset.prev ||= $("#sub").textContent; $("#sub").textContent = msg; clearTimeout(toast.t); toast.t = setTimeout(() => { $("#sub").textContent = $("#sub").dataset.prev; delete $("#sub").dataset.prev; }, 2500); }
+
+setLockUi();
+loadCatalog();
+</script>
+</body>
+</html>

@@ -1,41 +1,55 @@
 {
-  "$schema": "../../schema/collection.schema.json",
   "meta": {
-    "type": "taxonomy_scheme",
-    "count": 3,
-    "generated": "2026-10-27T00:23:53Z",
-    "tool": "mdm.py",
-    "schema_version": "2.1"
+    "profile": "repo-public",
+    "generated": "2026-11-11T06:50:14Z",
+    "count": 4,
+    "schema_version": "2.2",
+    "tool": "gateway",
+    "schema": "https://mdm.cameron-dietz.com/schema/v2/collection.schema.json",
+    "split_by": "type",
+    "split_key": "taxonomy_scheme"
   },
   "items": [
     {
-      "id": "b5407da0-9d4e-5568-98b8-63528ee57f21",
-      "uri": "https://mdm.cameron-dietz.com/id/taxonomy_scheme/b5407da0-9d4e-5568-98b8-63528ee57f21",
+      "id": "3885802e-11e4-5e79-afcb-0d5df9bc70fe",
+      "uri": "https://mdm.cameron-dietz.com/id/taxonomy_scheme/3885802e-11e4-5e79-afcb-0d5df9bc70fe",
       "type": "taxonomy_scheme",
-      "slug": "etim",
-      "label": "ETIM classification",
-      "summary": "ETIM product groups and classes as delivered in product-initial-taxonomy.xlsx.",
+      "slug": "organizations",
+      "label": "Organizations",
+      "summary": "Review-site categories for local businesses, venues and attractions (Best of Austin).",
       "category": {
         "realm": "public"
       },
-      "classification": {
-        "caveats": [
-          "license_check"
-        ]
-      },
-      "source_system": "etim",
-      "source_record_id": "product-initial-taxonomy.xlsx#1:etim_scheme",
-      "checksum_sha256": "fe00d45e13cb9f9c938a88725c534e47920dc23687c13c043afd82d916461f67",
-      "created_at": "2026-10-27T00:19:48Z",
-      "updated_at": "2026-10-27T00:19:49Z",
+      "visibility": "public",
+      "source_system": "organizations",
+      "checksum_sha256": "4412f8a05315f79fd5a581c48f9e1ae4aa5ab2db56d0495e360ff793499a0db1",
+      "created_at": "2026-11-08T23:21:16Z",
+      "updated_at": "2026-11-08T23:21:17Z",
       "data": {
-        "authority": "external",
-        "publisher": "ETIM International",
-        "dimension": "etim",
+        "authority": "internal",
+        "dimension": "review",
         "applies_to": [
-          "product"
+          "organization",
+          "content_item"
         ],
-        "license": "ETIM classification - check ETIM license terms before public redistribution"
+        "authoring_file": "taxonomy/schemes/organizations.csv"
+      }
+    },
+    {
+      "id": "8fb7907d-a863-4949-87bd-967740daa7c2",
+      "uri": "https://mdm.cameron-dietz.com/id/taxonomy_scheme/8fb7907d-a863-4949-87bd-967740daa7c2",
+      "type": "taxonomy_scheme",
+      "label": "Organizations",
+      "status": "active",
+      "visibility": "public",
+      "apps": [
+        "taxonomy"
+      ],
+      "created_at": "2026-11-06T07:30:58Z",
+      "updated_at": "2026-11-06T07:31:20Z",
+      "data": {
+        "authority": "internal",
+        "applies_to": []
       }
     },
     {
@@ -48,8 +62,8 @@
       "category": {
         "realm": "public"
       },
+      "visibility": "public",
       "source_system": "etim",
-      "source_record_id": "product-initial-taxonomy.xlsx#1:product_scheme",
       "checksum_sha256": "37fadcc41abe1931cec248025898150923a686222738f0224456efddd47b2a09",
       "created_at": "2026-10-27T00:19:48Z",
       "updated_at": "2026-10-27T00:19:49Z",
@@ -72,8 +86,8 @@
       "slug": "subjects",
       "label": "Subjects",
       "summary": "Knowledge subjects used by the engineering reference and other knowledge apps.",
+      "visibility": "public",
       "source_system": "subjects",
-      "source_record_id": "subjects.csv#1:scheme",
       "checksum_sha256": "d5aa91270b1be5ba9f623b4bbb4ac7cdac623699168d985f6d24569f43376886",
       "created_at": "2026-10-27T00:19:44Z",
       "updated_at": "2026-10-27T00:19:44Z",
